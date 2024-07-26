@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.perfree.mapper.RoleMapper">
+
+    <select id="getByUserId" resultType="com.perfree.model.Role">
+        select * from p_role where id in (select roleId from p_user_role where userId = #{userId})
+    </select>
+</mapper>

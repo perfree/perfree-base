@@ -1,0 +1,99 @@
+html,
+body,
+#app {
+    padding: 0;
+    height: 100%;
+    margin: 0;
+    --el-menu-item-height: 42px;
+    --el-menu-sub-item-height: 42px;
+    --el-menu-horizontal-height: 42px;
+    background-color: var(--el-bg-color);
+    overflow-x: hidden;
+}
+
+.fullMaxHeight {
+    height: 100%;
+}
+.themeSettingBox .el-drawer__header {
+    margin: 0;
+    padding: 0;
+    height: 60px;
+    padding-left: 15px;
+    padding-right: 15px;
+    border-bottom: 1px solid var(--el-color-info-light-8);
+}
+.themeSettingBox .el-drawer__footer {
+    border-top: 1px solid var(--el-color-info-light-8);
+    display: flex;
+    padding-bottom: 10px;
+}
+
+.theme-light,
+.dark .theme-default,
+.dark .theme-purple {
+    --sider-text-color: var(--el-text-color-primary);
+    --sider-bg-color: var(--el-bg-color);
+    --sider-menu-hover-bg-color: var(--el-color-info-light-8);
+    --sider-menu-active-bg-color: var(--el-color-primary-light-9);
+    --sider-menu-open-color: var(--sider-bg-color);
+}
+.theme-default {
+    --sider-text-color: var(--el-color-info-light-9);
+    --sider-bg-color: #001428;
+    --sider-menu-hover-bg-color: #17293b;
+    --sider-menu-active-bg-color: var(--el-color-primary);
+    --sider-menu-open-color: var(--sider-bg-color);
+}
+.theme-purple {
+    --sider-text-color: var(--el-color-info-light-9);
+    --sider-bg-color: #302b63;
+    --sider-menu-hover-bg-color: #17293b;
+    --sider-menu-active-bg-color: var(--el-color-primary);
+    --sider-menu-open-color: var(--sider-bg-color);
+}
+.el-popper .poper-menu {
+    .el-menu {
+        background-color: var(--sider-bg-color);
+        padding-left: 5px;
+        padding-right: 5px;
+        .menu-item {
+            color: var(--sider-text-color);
+        }
+        .menu-item:hover,
+        .el-sub-menu__title:hover {
+            background-color: var(--sider-menu-hover-bg-color);
+        }
+        .menu-item.is-active {
+            background-color: var(--sider-menu-active-bg-color) !important;
+        }
+        .el-sub-menu__title {
+            color: var(--sider-text-color);
+        }
+        .is-opened {
+            background-color: var(--sider-menu-open-color);
+        }
+    }
+}
+#nprogress .bar {
+    background: var(--el-color-primary) !important;
+}
+
+.themeSettingBox {
+    color: var(--el-text-color-primary);
+}
+
+
+.page{
+    .right-tool{
+        margin-left: auto;
+    }
+    .table-box {
+        margin-top: 8px;
+
+        .el-pagination {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 20px;
+        }
+    }
+}

@@ -9,9 +9,14 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <groupId>org.example</groupId>
+    <groupId>com.perfree</groupId>
     <artifactId>perfree-system</artifactId>
     <name>${project.artifactId}</name>
+    <version>1.0-SNAPSHOT</version>
+    <modules>
+        <module>perfree-system-api</module>
+        <module>perfree-system-biz</module>
+    </modules>
     <packaging>pom</packaging>
     <description>system服务</description>
 
@@ -24,7 +29,7 @@
         <dependencies>
             <dependency>
                 <groupId>com.perfree</groupId>
-                <artifactId>perfree-common</artifactId>
+                <artifactId>perfree-core</artifactId>
                 <version>1.0-SNAPSHOT</version>
             </dependency>
         </dependencies>

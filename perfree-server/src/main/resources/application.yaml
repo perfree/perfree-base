@@ -1,0 +1,109 @@
+version: 4.0.0
+server:
+  port: 8080
+  servlet:
+    encoding:
+      force: true
+  compression:
+    enabled: true
+    mime-types: application/json,application/xml,text/html,text/xml,text/plain,application/javascript,text/javascript,text/css
+    min-response-size: 2048
+  tomcat:
+    uri-encoding: UTF-8
+    accept-count: 1000
+    max-connections: 6500
+    connection-timeout: 12000
+logging:
+  level:
+    root: info
+
+spring:
+  aop:
+    proxy-target-class: true
+  servlet:
+    multipart:
+      max-file-size: -1
+      max-request-size: -1
+  mvc:
+    view:
+      prefix: classpath:/
+    servlet:
+      load-on-startup: 1
+  datasource:
+    username: root
+    url: jdbc:mysql://153.153.234.13:3306/perfree_b?useSSL=false&allowPublicKeyRetrieval=true&useUnicode=true&characterEncoding=UTF-8&nullCatalogMeansCurrent=true
+    password: xwt@123
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
+    druid:
+      initial-size: 20
+      max-active: 300
+      min-idle: 20
+      max-wait: 60000
+      db-type: mysql
+      web-stat-filter:
+        enabled: true
+      stat-view-servlet:
+        enabled: true
+        allow:
+        url-pattern: /druid/*
+        login-username: druid
+        login-password: druid123..
+      filter:
+        stat:
+          enabled: true
+          log-slow-sql: true
+          slow-sql-millis: 100
+          merge-sql: true
+        wall:
+          config:
+            multi-statement-allow: true
+# MyBatis Plus 的配置项
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    map-underscore-to-camel-case: false
+  global-config:
+    db-config:
+      id-type: NONE
+  type-aliases-package: com.perfree.*.model
+  mapper-locations: classpath*:mapper/*.xml
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    tags-sorter: alpha
+    operations-sorter: alpha
+  api-docs:
+    path: /v3/api-docs
+  group-configs:
+    - group: '公共接口'
+      paths-to-match: '/**'
+      packages-to-scan: com.perfree.controller.common
+    - group: '认证接口'
+      paths-to-match: '/**'
+      packages-to-scan: com.perfree.controller.auth
+    - group: '视图接口'
+      paths-to-match: '/**'
+      packages-to-scan: com.perfree.controller.view
+# knife4j的增强配置
+knife4j:
+  enable: true
+  setting:
+    language: zh_cn
+    enable-version: true
+    enable-home-custom: true
+    home-custom-path: classpath:markdown/home.md
+    enable-footer-custom: true
+    footer-custom-content: Apache License 2.0 | Copyright  2019-[浙江八一菜刀股份有限公司](https://gitee.com/xiaoym/knife4j)
+  cors: false
+  production: false
+  basic:
+    enable: false
+    username: test
+    password: 12313
+perfree:
+  # 是否开启开发环境插件自动更新,当执行build modules时,会自动更新插件
+  autoLoadDevPlugin: true
+  # 监听插件是否发生改变的时间间隔(毫秒)
+  autoLoadDevPluginTime: 5000

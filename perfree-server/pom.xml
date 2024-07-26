@@ -10,24 +10,20 @@
     </parent>
 
     <groupId>com.perfree</groupId>
-    <artifactId>perfree-plugins</artifactId>
-    <name>${project.artifactId}</name>
-    <packaging>pom</packaging>
-    <description>插件包</description>
+    <artifactId>perfree-server</artifactId>
 
     <properties>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     </properties>
 
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>com.perfree</groupId>
-                <artifactId>perfree-core</artifactId>
-                <version>1.0-SNAPSHOT</version>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
+    <dependencies>
+        <dependency>
+            <groupId>com.perfree</groupId>
+            <artifactId>perfree-system-biz</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
 
 </project>
