@@ -52,12 +52,6 @@ public interface MenuService extends IService<Menu> {
     List<String> getPermissionByUserId(Integer userId);
 
     /**
-     * 前台菜单列表
-     * @return List<MenuTreeListRespVO>
-     */
-    List<MenuTreeListRespVO> menuFrontList();
-
-    /**
      * 创建菜单
      * @param menu menu
      */

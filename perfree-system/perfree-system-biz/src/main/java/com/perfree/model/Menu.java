@@ -45,9 +45,6 @@ public class Menu extends BaseModel implements Serializable {
     /** 排序序号 */
     private Integer seq;
 
-    /** 菜单类型0:前台,1:后台 */
-    private Integer type;
-
     /** 菜单打开方式:0本页,1:新窗口  */
     private Integer target;
 

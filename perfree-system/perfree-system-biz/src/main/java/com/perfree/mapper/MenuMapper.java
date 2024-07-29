@@ -24,10 +24,9 @@ public interface MenuMapper extends BaseMapperX<Menu> {
     /**
      * 根据用户id和菜单类型获取菜单
      * @param userId 用户id
-     * @param type 类型
      * @return List<Menu>
      */
-    List<Menu> menuListByUserId(@Param("userId") Integer userId, @Param("type") Integer type);
+    List<Menu> menuListByUserId(@Param("userId") Integer userId);
 
     /**
      * 菜单列表
@@ -37,7 +36,6 @@ public interface MenuMapper extends BaseMapperX<Menu> {
     default List<Menu> menuList(MenuListReqVO pageVO){
         return selectList(new LambdaQueryWrapper<Menu>()
                 .like(StringUtils.isNotBlank(pageVO.getName()), Menu::getName, pageVO.getName())
-                .eq(null != pageVO.getType(), Menu::getType, pageVO.getType())
                 .orderByAsc(Menu::getSeq));
     }
 
@@ -56,15 +54,14 @@ public interface MenuMapper extends BaseMapperX<Menu> {
      * @param userId 用户id
      * @return List<String>
      */
-    List<String> getPermissionByUserId(@Param("userId") Integer userId, @Param("type") Integer type);
+    List<String> getPermissionByUserId(@Param("userId") Integer userId, @Param("menuType") Integer menuType);
 
 
     /**
      * 获取管理员菜单
-     * @param type 菜单类型
      * @return List<Menu>
      */
-    List<Menu> menuListByAdmin(@Param("type") Integer type);
+    List<Menu> menuListByAdmin();
 
     default void deleteMenuByPluginId(String pluginId){
         delete(new LambdaQueryWrapper<Menu>().eq(Menu::getPluginId, pluginId));

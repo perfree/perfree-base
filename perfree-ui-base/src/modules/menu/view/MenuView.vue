@@ -6,12 +6,6 @@
           <el-input v-model="searchForm.name" placeholder="请输入菜单名称" clearable/>
         </el-form-item>
 
-        <el-form-item label="菜单分类">
-          <el-select v-model="searchForm.type"  placeholder="请选择菜单分类" clearable style="width: 200px">
-            <el-option :key="0" label="前台" :value="0" />
-            <el-option :key="1" label="后台" :value="1" />
-          </el-select>
-        </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="initList" :icon="Search">查询</el-button>
           <el-button :icon="Refresh" @click="resetSearchForm">重置</el-button>
@@ -45,12 +39,6 @@
           <template #default="scope">
             <el-tag class="ml-2" type="success" v-if="scope.row.status === 0">开启</el-tag>
             <el-tag class="ml-2" type="danger" v-else>关闭</el-tag>
-          </template>
-        </el-table-column>
-        <el-table-column prop="type" label="菜单分类" width="80">
-          <template #default="scope">
-            <el-tag class="ml-2" type="success" v-if="scope.row.type === 0">前台</el-tag>
-            <el-tag class="ml-2" type="info" v-else>后台</el-tag>
           </template>
         </el-table-column>
         <el-table-column label="操作" width="240" fixed="right">
@@ -100,14 +88,6 @@
               <el-input v-model="addForm.name" placeholder="请输入菜单名称"/>
             </el-form-item>
           </el-col>
-          <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12" >
-            <el-form-item label="菜单分类" prop="type">
-              <el-radio-group v-model="addForm.type">
-                <el-radio :label="0" :value="0">前台</el-radio>
-                <el-radio :label="1" :value="1">后台</el-radio>
-              </el-radio-group>
-            </el-form-item>
-          </el-col>
           <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12" v-if="addForm.menuType === 0 || addForm.menuType === 1">
             <el-form-item label="菜单图标" prop="icon">
               <el-icon-picker v-model="addForm.icon"></el-icon-picker>
@@ -131,19 +111,19 @@
             </el-form-item>
           </el-col>
 
-          <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12" v-if="addForm.menuType === 1 && addForm.type === 1">
+          <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12" v-if="addForm.menuType === 1">
             <el-form-item label="组件名称" prop="componentName">
               <el-input v-model="addForm.componentName"  placeholder="请输入组件名称"/>
             </el-form-item>
           </el-col>
 
-          <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12" v-if="addForm.menuType === 1 && addForm.type === 1">
+          <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12" v-if="addForm.menuType === 1">
             <el-form-item label="模块名称" prop="moduleName">
               <el-input v-model="addForm.moduleName"  placeholder="请输入模块名称"/>
             </el-form-item>
           </el-col>
 
-          <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12" v-if="addForm.menuType === 1 && addForm.type === 1">
+          <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12" v-if="addForm.menuType === 1">
             <el-form-item label="组件路径" prop="component">
               <el-input v-model="addForm.component" placeholder="请输入组件路径"/>
             </el-form-item>
@@ -206,7 +186,6 @@ const searchFormRef = ref();
 const ruleFormRef = ref();
 const searchForm = ref({
   name: '',
-  type: 0
 });
 
 let loading = ref(false);
@@ -224,7 +203,6 @@ const treeSelectProps = reactive({
 let addForm = ref({
   seq: 0,
   icon: '',
-  type: 0,
   pid: '-1',
   name: '',
   url: '',
@@ -246,7 +224,6 @@ const addRule = reactive({
   target: [{ required: true, message: '请选择菜单打开方式', trigger: 'blur' }],
   isFrame: [{ required: true, message: '请选择菜单是否为外链', trigger: 'blur' }],
   url: [{ required: true, message: '请输入菜单地址', trigger: 'blur' }],
-  type: [{ required: true, message: '请选择菜单类型', trigger: 'blur' }],
 });
 
 /**
@@ -267,7 +244,6 @@ function initList() {
 function resetSearchForm() {
   searchForm.value = {
     name: '',
-    type: 0
   }
   searchFormRef.value.resetFields();
   initList();
@@ -374,7 +350,6 @@ function resetForm() {
   addForm.value = {
     seq: 0,
     icon: '',
-    type: 0,
     pid: '-1',
     name: '',
     url: '',

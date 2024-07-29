@@ -7,7 +7,7 @@
         INNER JOIN p_role_menu prm ON pm.id = prm.menuId
         INNER JOIN p_user_role pur ON prm.roleId = pur.roleId
         LEFT JOIN p_plugin pp ON pm.pluginId = pp.pluginId
-        WHERE pm.type = #{type,jdbcType=INTEGER} AND pur.userId = #{userId,jdbcType=INTEGER} AND pm.menuType in(0, 1)
+        WHERE pur.userId = #{userId,jdbcType=INTEGER} AND pm.menuType in(0, 1)
           AND (pp.pluginId IS NULL OR pp.status = 1)
         order by pm.seq asc
     </select>
@@ -16,13 +16,13 @@
         INNER JOIN p_role_menu prm ON pm.id = prm.menuId
         INNER JOIN p_user_role pur ON prm.roleId = pur.roleId
         LEFT JOIN p_plugin pp ON pm.pluginId = pp.pluginId
-        WHERE pm.menuType = #{type,jdbcType=INTEGER} AND pur.userId = #{userId,jdbcType=INTEGER}
+        WHERE pm.menuType = #{menuType,jdbcType=INTEGER} AND pur.userId = #{userId,jdbcType=INTEGER}
           AND (pp.pluginId IS NULL OR pp.status = 1)
     </select>
     <select id="menuListByAdmin" resultType="com.perfree.model.Menu">
         SELECT pm.* FROM p_menu pm
         LEFT JOIN p_plugin pp ON pm.pluginId = pp.pluginId
-        WHERE pm.type = #{type,jdbcType=INTEGER} AND pm.menuType in(0, 1)
+        WHERE pm.menuType in(0, 1)
           AND (pp.pluginId IS NULL OR pp.status = 1)
         order by pm.seq asc
     </select>

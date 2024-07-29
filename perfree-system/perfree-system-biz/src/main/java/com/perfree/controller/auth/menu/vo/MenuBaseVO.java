@@ -22,10 +22,6 @@ public class MenuBaseVO {
     @Schema(description = "排序序号")
     private Integer seq;
 
-    @Schema(description = "菜单类型0:前台,1:后台")
-    @NotNull(message = "菜单类型不能为空")
-    private Integer type;
-
     @Schema(description = "菜单打开方式:0本页,1:新窗口")
     @NotNull(message = "菜单打开方式不能为空")
     private Integer target;
