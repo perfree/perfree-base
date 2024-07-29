@@ -12,7 +12,7 @@ public class AttachUpdateVO {
     private Integer id;
 
     @Schema(description = "附件描述")
-    private String desc;
+    private String remark;
 
     @Schema(description = "附件名")
     @NotBlank(message = "附件名不能为空")

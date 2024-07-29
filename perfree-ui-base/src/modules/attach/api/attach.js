@@ -7,7 +7,7 @@ export function getAllAttachGroupApi() {
 }
 
 export function attachUpdateApi(data) {
-    return axios.put('/apiv/attach/update', data);
+    return axios.put('/api/auth/attach/update', data);
 }
 
 export function getAttachApi(id) {

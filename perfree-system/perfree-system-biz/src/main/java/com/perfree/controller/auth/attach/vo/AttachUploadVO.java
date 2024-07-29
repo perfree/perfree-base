@@ -14,7 +14,7 @@ public class AttachUploadVO {
     private MultipartFile file;
 
     @Schema(description = "附件描述")
-    private String desc;
+    private String remark;
 
     @Schema(description = "附件名")
     private String name;

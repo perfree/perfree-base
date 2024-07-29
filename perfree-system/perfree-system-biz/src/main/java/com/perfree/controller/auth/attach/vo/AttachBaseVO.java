@@ -11,7 +11,7 @@ public class AttachBaseVO {
     private String name;
 
     @Schema(description = "附件描述")
-    private String desc;
+    private String remark;
 
     @Schema(description = "附件路径")
     private String path;

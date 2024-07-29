@@ -132,7 +132,7 @@
           </el-select>
         </el-form-item>
 
-        <el-form-item label="附件描述" prop="name">
+        <el-form-item label="附件" prop="name">
           <el-upload
               class="upload-demo"
               drag
@@ -212,7 +212,7 @@
                 <el-input v-model="showForm.url" disabled />
               </el-form-item>
               <el-form-item label="附件描述">
-                <el-input v-model="showForm.desc"  :autosize="{ minRows: 2, maxRows: 4 }" type="textarea" resize="none" placeholder="请输入附件描述"/>
+                <el-input v-model="showForm.remark"  :autosize="{ minRows: 2, maxRows: 4 }" type="textarea" resize="none" placeholder="请输入附件描述"/>
               </el-form-item>
             </el-form>
           </div>
@@ -286,7 +286,7 @@ const showForm = ref({
   attachGroup: 'default',
   path: '',
   url: '',
-  desc: '',
+  remark: '',
   mineType: ''
 })
 
@@ -395,7 +395,7 @@ function resetShowForm() {
     attachGroup: 'default',
     path: '',
     url: '',
-    desc: '',
+    remark: '',
     mineType: ''
   }
   if (showFormRef.value) {

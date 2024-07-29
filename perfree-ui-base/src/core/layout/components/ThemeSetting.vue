@@ -145,6 +145,7 @@ const primaryColor2 = useCssVar('--el-color-primary-dark-2', el)
 const predefineColors = ref([
     '#5FB878',
   '#ff4500',
+  '#646CFF',
   '#ff8c00',
   '#ffd700',
   '#90ee90',

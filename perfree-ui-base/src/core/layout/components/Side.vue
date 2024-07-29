@@ -78,6 +78,7 @@ watch(
   :deep().el-menu-item.is-active {
     transition: all 0.2s;
     background-color: var(--sider-menu-active-bg-color) !important;
+    color: var(--sider-text-active-color);
   }
   :deep().is-opened {
     transition: all 0.2s;

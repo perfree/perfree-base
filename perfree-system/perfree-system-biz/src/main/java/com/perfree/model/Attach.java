@@ -41,8 +41,7 @@ public class Attach extends BaseModel implements Serializable {
     /**
      * 附件描述
      */
-    @TableField(value = "`desc`")
-    private String desc;
+    private String remark;
 
     /**
      * 附件路径

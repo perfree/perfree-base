@@ -18,11 +18,6 @@
       </el-breadcrumb>
     </div>
     <div class="h-right">
-      <el-tooltip content="前往首页" placement="bottom">
-        <div class="h-btn" @click="toFront">
-          <font-awesome-icon icon="fa-solid fa-earth-americas" />
-        </div>
-      </el-tooltip>
       <el-tooltip content="源码地址" placement="bottom">
         <div class="h-btn">
           <font-awesome-icon icon=" fa-brands fa-github " />
@@ -126,9 +121,6 @@ const logout = () => {
   router.replace("/login")
 }
 
-function toFront() {
-  window.location.href = "/"
-}
 </script>
 
 <style scoped>

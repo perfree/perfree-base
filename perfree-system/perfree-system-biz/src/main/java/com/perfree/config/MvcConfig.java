@@ -19,6 +19,7 @@ public class MvcConfig implements WebMvcConfigurer {
     private static final Logger LOGGER = LoggerFactory.getLogger(MvcConfig.class);
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
+        // 如果前端放在后端容器运行
         registry.addViewController("/admin/**").setViewName("/static/admin/index.html");
         registry.addViewController("/login").setViewName("/static/admin/index.html");
         WebMvcConfigurer.super.addViewControllers(registry);

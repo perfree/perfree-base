@@ -32,9 +32,10 @@ body,
 .dark .theme-default,
 .dark .theme-purple {
     --sider-text-color: var(--el-text-color-primary);
+    --sider-text-active-color: var(--el-color-primary);
     --sider-bg-color: var(--el-bg-color);
     --sider-menu-hover-bg-color: var(--el-color-info-light-8);
-    --sider-menu-active-bg-color: var(--el-color-primary-light-9);
+    --sider-menu-active-bg-color: rgba(100, 108, 255, 0.1);
     --sider-menu-open-color: var(--sider-bg-color);
 }
 .theme-default {
@@ -43,6 +44,7 @@ body,
     --sider-menu-hover-bg-color: #17293b;
     --sider-menu-active-bg-color: var(--el-color-primary);
     --sider-menu-open-color: var(--sider-bg-color);
+    --sider-text-active-color: var(--el-bg-color-overlay);
 }
 .theme-purple {
     --sider-text-color: var(--el-color-info-light-9);
@@ -50,6 +52,7 @@ body,
     --sider-menu-hover-bg-color: #17293b;
     --sider-menu-active-bg-color: var(--el-color-primary);
     --sider-menu-open-color: var(--sider-bg-color);
+    --sider-text-active-color: var(--el-bg-color-overlay);
 }
 .el-popper .poper-menu {
     .el-menu {
