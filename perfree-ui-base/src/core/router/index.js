@@ -26,13 +26,13 @@ const router = createRouter({
         {
             path: '/login',
             name: 'login',
-            component: LoginView,
+            component: () => import('../views/login/LoginView.vue')
         },
         {
             path: '/register',
             name: 'register',
-            component: RegisterView,
-        }
+            component: () => import('../views/register/RegisterView.vue')
+        },
     ],
 });
 
@@ -68,6 +68,11 @@ router.beforeEach((to, from, next) => {
         let allRouter = [];
         getAllRouter(commonStore.menuList, allRouter);
         Promise.all([genRoute(allRouter)], initUserInfo()).then(([r, s]) => {
+            router.addRoute(  {
+                path: '/:pathMatch(.*)*',
+                name: 'NotFound',
+                component: () => import('../views/404/404View.vue')
+            })
             commonStore.setMenuInit(true);
             next({...to, replace: true});
         })
