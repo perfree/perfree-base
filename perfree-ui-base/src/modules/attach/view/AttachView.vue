@@ -36,7 +36,7 @@
 
     <el-row :gutter="10" class="mb8">
       <el-col :span="1.5">
-        <el-button :icon="UploadFilled" type="primary" plain @click="handleAdd">上传附件</el-button>
+        <el-button :icon="UploadFilled" type="primary" plain @click="handleAdd" v-hasPermission="['admin:attach:upload']">上传附件</el-button>
       </el-col>
       <div class="right-tool">
         <el-button :icon="Refresh" circle @click="initList"/>
@@ -90,11 +90,11 @@
 
         <el-table-column label="操作" width="180" fixed="right">
           <template v-slot="scope">
-            <el-button size="small" type="primary" link :icon="View" @click="handleShow(scope.row)">详情</el-button>
+            <el-button size="small" type="primary" link :icon="View" @click="handleShow(scope.row)"  v-hasPermission="['admin:attach:desc']">详情</el-button>
             <el-link type="primary" :underline="false" target="_blank" :icon="Download" style="font-size: 12px;"
-                     :href="'/api/attach/file/' + scope.row.configId + '/get/' + scope.row.path">下载
+                     :href="'/api/attach/file/' + scope.row.configId + '/get/' + scope.row.path" v-hasPermission="['admin:attach:download']">下载
             </el-link>
-            <el-button size="small" type="primary" link :icon="Delete" @click="handleDelete(scope.row)">删除</el-button>
+            <el-button size="small" type="primary" link :icon="Delete" @click="handleDelete(scope.row)"  v-hasPermission="['admin:attach:delete']">删除</el-button>
           </template>
         </el-table-column>
       </el-table>

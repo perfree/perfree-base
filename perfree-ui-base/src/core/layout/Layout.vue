@@ -80,7 +80,7 @@ import {useAppStore} from '@/core/stores/appStore'
 import {ElConfigProvider} from 'element-plus'
 
 import zhCn from 'element-plus/dist/locale/zh-cn.mjs'
-import {clearTabs, tabsData} from "@/core/utils/tabs.js";
+import {tabsData} from "@/core/utils/tabs.js";
 import {useCommonStore} from "@/core/stores/commonStore.js";
 import {useRoute, useRouter} from "vue-router";
 import {nextTick, reactive, ref, watch} from "vue";

@@ -10,6 +10,7 @@ import {menus} from "@/core/data/menuData.js";
 import _import from "@/core/utils/_import.js";
 import {getAllRouter, initMenu} from "@/core/utils/perfree.js";
 import RegisterView from "@/core/views/register/RegisterView.vue";
+import {userInfo} from "@/core/api/system.js";
 
 const router = createRouter({
     history: createWebHistory(),
@@ -66,12 +67,21 @@ router.beforeEach((to, from, next) => {
     initMenu().then(() => {
         let allRouter = [];
         getAllRouter(commonStore.menuList, allRouter);
-        Promise.all([genRoute(allRouter)]).then(([r]) => {
+        Promise.all([genRoute(allRouter)], initUserInfo()).then(([r, s]) => {
             commonStore.setMenuInit(true);
             next({...to, replace: true});
         })
     });
 });
+
+function initUserInfo() {
+    return new Promise( (resolve, reject) => {
+        userInfo().then(r => {
+            resolve()
+            localStorage.setItem(CONSTANTS.STORAGE_USER_INFO, JSON.stringify(r.data))
+        })
+    });
+}
 
 // 生成路由
 function genRoute(routes) {

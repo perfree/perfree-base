@@ -17,7 +17,7 @@
 
     <el-row :gutter="10" class="mb8">
       <el-col :span="1.5">
-        <el-button :icon="Plus" type="primary" plain @click="handleAdd">新增</el-button>
+        <el-button :icon="Plus" type="primary" plain @click="handleAdd" v-hasPermission="['admin:user:create']">新增</el-button>
       </el-col>
       <div class="right-tool">
         <el-button :icon="Refresh" circle @click="initList"/>
@@ -45,10 +45,10 @@
         </el-table-column>
         <el-table-column label="操作" width="300" fixed="right">
           <template v-slot="scope">
-            <el-button size="small" type="primary" link :icon="Edit" @click="handleUpdate(scope.row)">修改</el-button>
-            <el-button size="small" type="primary" link :icon="Filter" @click="handleUserRole(scope.row)">分配角色</el-button>
-            <el-button size="small" type="primary" link :icon="RefreshLeft" @click="handleRestPassword(scope.row)">重置密码</el-button>
-            <el-button size="small" type="primary" link :icon="Delete" @click="handleDelete(scope.row)">删除</el-button>
+            <el-button size="small" type="primary" link :icon="Edit" @click="handleUpdate(scope.row)" v-hasPermission="['admin:user:update']">修改</el-button>
+            <el-button size="small" type="primary" link :icon="Filter" @click="handleUserRole(scope.row)" v-hasPermission="['admin:user:configRole']">分配角色</el-button>
+            <el-button size="small" type="primary" link :icon="RefreshLeft" @click="handleRestPassword(scope.row)" v-hasPermission="['admin:user:resetPassword']">重置密码</el-button>
+            <el-button size="small" type="primary" link :icon="Delete" @click="handleDelete(scope.row)" v-hasPermission="['admin:user:delete']">删除</el-button>
 
           </template>
         </el-table-column>

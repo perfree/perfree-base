@@ -2,9 +2,10 @@ package com.perfree.service.role;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.perfree.commons.common.PageResult;
-import com.perfree.controller.auth.role.vo.RoleAddOrUpdateReqVO;
+import com.perfree.controller.auth.role.vo.RoleAddReqVO;
 import com.perfree.controller.auth.role.vo.RoleMenuReqVO;
 import com.perfree.controller.auth.role.vo.RolePageReqVO;
+import com.perfree.controller.auth.role.vo.RoleUpdateReqVO;
 import com.perfree.model.Role;
 import com.perfree.model.RoleMenu;
 
@@ -50,11 +51,18 @@ public interface RoleService extends IService<Role> {
     Role get(Integer id);
 
     /**
-     * 添加或更新
-     * @param roleAddOrUpdateReqVO roleAddOrUpdateReqVO
+     * 添加
+     * @param roleAddReqVO roleAddReqVO
      * @return Role
      */
-    Role addOrUpdate(RoleAddOrUpdateReqVO roleAddOrUpdateReqVO);
+    Role add(RoleAddReqVO roleAddReqVO);
+
+    /**
+     * 更新
+     * @param roleUpdateReqVO roleUpdateReqVO
+     * @return Role
+     */
+    Role update(RoleUpdateReqVO roleUpdateReqVO);
 
     /**
      * 删除角色

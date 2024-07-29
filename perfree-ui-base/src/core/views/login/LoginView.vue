@@ -82,7 +82,7 @@
 
 <script setup>
 // 验证码开关
-import {getCodeImg, getOptionByNoAuth, login, userInfo} from "@/core/api/system.js";
+import {getCodeImg, getOptionByNoAuth, login} from "@/core/api/system.js";
 import {CONSTANTS} from "@/core/utils/constants.js";
 import {ElMessage} from "element-plus";
 import {useCommonStore} from "@/core/stores/commonStore.js";
@@ -125,10 +125,7 @@ const handleLogin = () => {
           commonStore.setMenuInit(false);
           clearTabs();
           localStorage.setItem(CONSTANTS.STORAGE_TOKEN, JSON.stringify(res.data));
-          userInfo().then(r => {
-            localStorage.setItem(CONSTANTS.STORAGE_USER_INFO, JSON.stringify(r.data))
-            router.replace("/admin");
-          })
+          router.replace("/admin");
         } else {
           ElMessage.error(res.msg);
           loginForm.value.code = "";

@@ -13,6 +13,7 @@ import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -36,6 +37,7 @@ public class AttachController {
 
     @PostMapping("/upload")
     @Operation(summary = "附件上传")
+    @PreAuthorize("@ss.hasPermission('admin:attach:upload')")
     public CommonResult<AttachRespVO> upload(AttachUploadVO attachUploadVO) {
         Attach attach = attachService.create(attachUploadVO);
         return success(AttachConvert.INSTANCE.convertRespVO(attach));
@@ -43,6 +45,7 @@ public class AttachController {
 
     @PostMapping("/page")
     @Operation(summary = "附件分页列表")
+    @PreAuthorize("@ss.hasPermission('admin:attach:page')")
     public CommonResult<PageResult<AttachRespVO>> page(@RequestBody AttachPageReqVO pageVO) {
         PageResult<Attach> rolePageResult = attachService.attachPage(pageVO);
         return success(AttachConvert.INSTANCE.convertPageResultVO(rolePageResult));
@@ -50,6 +53,7 @@ public class AttachController {
 
     @GetMapping("/get")
     @Operation(summary = "获取附件")
+    @PreAuthorize("@ss.hasPermission('admin:attach:get')")
     public CommonResult<AttachRespVO> get(@RequestParam(value = "id") Integer id) {
         Attach byId = attachService.getById(id);
         return success(AttachConvert.INSTANCE.convertRespVO(byId));
@@ -57,6 +61,7 @@ public class AttachController {
 
     @PutMapping("/update")
     @Operation(summary = "修改附件")
+    @PreAuthorize("@ss.hasPermission('admin:attach:update')")
     public CommonResult<Boolean> update(@RequestBody AttachUpdateVO attachUpdateVO) {
         return success(attachService.updateAttach(attachUpdateVO));
     }
@@ -64,6 +69,7 @@ public class AttachController {
 
     @DeleteMapping("/del")
     @Operation(summary = "删除附件")
+    @PreAuthorize("@ss.hasPermission('admin:attach:delete')")
     public CommonResult<Boolean> del(@RequestParam(value = "id") Integer id) {
         return success(attachService.del(id));
     }
@@ -71,6 +77,7 @@ public class AttachController {
 
     @GetMapping("/getAllAttachGroup")
     @Operation(summary = "获取所有附件分组")
+    @PreAuthorize("@ss.hasPermission('admin:attach:getAllAttachGroup')")
     public CommonResult<List<AttachGroupRespVO>> getAllAttachGroup() {
         List<Attach> attachList = attachService.getAllAttachGroup();
         return success(AttachConvert.INSTANCE.convertGroupRespVO(attachList));
@@ -78,6 +85,7 @@ public class AttachController {
 
     @PostMapping("/uploadAttachByUrl")
     @Operation(summary = "通过url下载并上传附件")
+    @PreAuthorize("@ss.hasPermission('admin:attach:uploadAttachByUrl')")
     public CommonResult<AttachByUrlRespVO> uploadAttachByUrl(@Valid @RequestBody AttachUploadByUrlVO attachUploadByUrlVO) {
         Attach attach = attachService.uploadAttachByUrl(attachUploadByUrlVO.getUrl());
         AttachByUrlRespVO attachByUrlRespVO = AttachConvert.INSTANCE.convertByUrlRespVO(attach);

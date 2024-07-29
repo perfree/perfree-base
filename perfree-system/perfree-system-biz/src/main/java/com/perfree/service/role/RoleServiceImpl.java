@@ -3,9 +3,10 @@ package com.perfree.service.role;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.perfree.commons.common.PageResult;
 import com.perfree.commons.utils.SortingFieldUtils;
-import com.perfree.controller.auth.role.vo.RoleAddOrUpdateReqVO;
+import com.perfree.controller.auth.role.vo.RoleAddReqVO;
 import com.perfree.controller.auth.role.vo.RoleMenuReqVO;
 import com.perfree.controller.auth.role.vo.RolePageReqVO;
+import com.perfree.controller.auth.role.vo.RoleUpdateReqVO;
 import com.perfree.convert.role.RoleConvert;
 import com.perfree.mapper.RoleMapper;
 import com.perfree.mapper.RoleMenuMapper;
@@ -68,17 +69,23 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
     }
 
     @Override
-    public Role addOrUpdate(RoleAddOrUpdateReqVO roleAddOrUpdateReqVO) {
-        Role role = RoleConvert.INSTANCE.convertAddOrUpdate(roleAddOrUpdateReqVO);
-        if (null != role.getId()) {
-            roleMapper.updateById(role);
-        } else {
-            roleMapper.insert(role);
-        }
+    @Transactional
+    public Role add(RoleAddReqVO roleAddReqVO) {
+        Role role = RoleConvert.INSTANCE.convertAddReqVO(roleAddReqVO);
+        roleMapper.insert(role);
         return role;
     }
 
     @Override
+    @Transactional
+    public Role update(RoleUpdateReqVO roleUpdateReqVO) {
+        Role role = RoleConvert.INSTANCE.convertUpdateReqVO(roleUpdateReqVO);
+        roleMapper.updateById(role);
+        return role;
+    }
+
+    @Override
+    @Transactional
     public Boolean del(Integer id) {
         roleMenuMapper.deleteByRoleId(id);
         roleMapper.deleteById(id);

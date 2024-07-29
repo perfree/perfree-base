@@ -11,6 +11,7 @@ import com.perfree.service.plugins.PluginsService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import static com.perfree.commons.common.CommonResult.success;
@@ -25,6 +26,7 @@ public class PluginsController {
 
     @PostMapping("/page")
     @Operation(summary = "插件分页列表")
+    @PreAuthorize("@ss.hasPermission('admin:plugin:page')")
     public CommonResult<PageResult<PluginsRespVO>> page(@RequestBody PluginsPageReqVO pageVO) {
         PageResult<Plugins> pluginsPageResult = pluginsService.pluginsPage(pageVO);
         return success(PluginsConvert.INSTANCE.convertPageResultVO(pluginsPageResult));
@@ -33,24 +35,28 @@ public class PluginsController {
 
     @PostMapping("/installPlugin")
     @Operation(summary = "插件安装")
+    @PreAuthorize("@ss.hasPermission('admin:plugin:install')")
     public CommonResult<Boolean> installPlugin(InstallPluginReqVO installPluginReqVO) {
         return success( pluginsService.installPlugin(installPluginReqVO.getFile()));
     }
 
     @PostMapping("/disablePlugin")
     @Operation(summary = "插件禁用")
+    @PreAuthorize("@ss.hasPermission('admin:plugin:disable')")
     public CommonResult<Boolean> disablePlugin(@RequestParam(value = "id") Integer id) {
         return success( pluginsService.disablePlugin(id));
     }
 
     @PostMapping("/enablePlugin")
     @Operation(summary = "插件启用")
+    @PreAuthorize("@ss.hasPermission('admin:plugin:enable')")
     public CommonResult<Boolean> enablePlugin(@RequestParam(value = "id") Integer id) {
         return success( pluginsService.enablePlugin(id));
     }
 
     @PostMapping("/uninstallPlugin")
     @Operation(summary = "卸载插件")
+    @PreAuthorize("@ss.hasPermission('admin:plugin:uninstall')")
     public CommonResult<Boolean> uninstallPlugin(@RequestParam(value = "id") Integer id) {
         return success( pluginsService.unInstallPlugin(id));
     }

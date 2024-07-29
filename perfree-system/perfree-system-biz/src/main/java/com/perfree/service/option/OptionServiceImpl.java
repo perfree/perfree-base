@@ -56,37 +56,6 @@ public class OptionServiceImpl extends ServiceImpl<OptionMapper, Option> impleme
 
     @Override
     @Transactional
-    public Boolean saveCurrentThemeSetting(OptionAddListReqVO optionAddListReqVO) {
-        String webTheme = optionCacheService.getDefaultValue(OptionEnum.WEB_THEME.getKey(), "");
-        if (StringUtils.isBlank(webTheme)) {
-            throw new ServiceException(ErrorCode.GET_CURRENT_THEME_ERROR);
-        }
-
-        List<Option> optionList = new ArrayList<>();
-        for (OptionAddReqVO optionAddReqVO : optionAddListReqVO.getOptions()) {
-            Option option = OptionConvert.INSTANCE.convertByAddReqVO(optionAddReqVO);
-            option.setIdentification(SystemConstants.THEME_OPTION_IDENT_PRE + webTheme);
-            optionList.add(option);
-        }
-        optionMapper.delByIdentification(SystemConstants.THEME_OPTION_IDENT_PRE + webTheme);
-        optionMapper.insertBatch(optionList);
-        for (Option option : optionList) {
-            optionCacheService.putOption(option.getKey(), OptionConvert.INSTANCE.convertModelToDTO(option));
-        }
-        return true;
-    }
-
-    @Override
-    public List<Option> getCurrentThemeSettingValue() {
-        String webTheme = optionCacheService.getDefaultValue(OptionEnum.WEB_THEME.getKey(), "");
-        if (StringUtils.isBlank(webTheme)) {
-            throw new ServiceException(ErrorCode.GET_CURRENT_THEME_ERROR);
-        }
-        return optionMapper.getSettingValueByIdentification(SystemConstants.THEME_OPTION_IDENT_PRE + webTheme);
-    }
-
-    @Override
-    @Transactional
     public Boolean saveOptionList(OptionAddListReqVO optionAddListReqVO) {
         if (optionAddListReqVO.getOptions().isEmpty()) {
             return true;

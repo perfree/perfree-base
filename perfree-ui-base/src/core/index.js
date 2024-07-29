@@ -22,8 +22,12 @@ import FcDesigner from '@form-create/designer'
 import formCreate from '@form-create/element-ui'
 import install from '@form-create/element-ui/auto-import'
 import {CONSTANTS} from "@/core/utils/constants.js";
+import {hasPermission} from "@/core/directive/permission/hasPermission.js";
 
 const app = createApp(App);
+
+// custom directive
+app.directive('hasPermission', hasPermission)
 
 // router
 window.router = router;

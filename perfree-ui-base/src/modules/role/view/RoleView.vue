@@ -14,7 +14,7 @@
 
     <el-row :gutter="10" class="mb8">
       <el-col :span="1.5">
-        <el-button :icon="Plus" type="primary" plain @click="handleAdd">新增</el-button>
+        <el-button :icon="Plus" type="primary" plain @click="handleAdd" v-hasPermission="['admin:role:create']">新增</el-button>
       </el-col>
       <div class="right-tool">
         <el-button :icon="Refresh" circle @click="initList"/>
@@ -34,10 +34,10 @@
         </el-table-column>
         <el-table-column label="操作" width="240" fixed="right">
           <template v-slot="scope">
-            <el-button size="small" type="primary" link :icon="Edit" @click="handleUpdate(scope.row)">修改</el-button>
-            <el-button size="small" type="primary" link :icon="Filter" @click="handleRoleMenu(scope.row)">菜单权限
+            <el-button size="small" type="primary" link :icon="Edit" @click="handleUpdate(scope.row)" v-hasPermission="['admin:role:update']">修改</el-button>
+            <el-button size="small" type="primary" link :icon="Filter" @click="handleRoleMenu(scope.row)" v-hasPermission="['admin:role:permission']">菜单权限
             </el-button>
-            <el-button size="small" type="primary" link :icon="Delete" @click="handleDelete(scope.row)">删除</el-button>
+            <el-button size="small" type="primary" link :icon="Delete" @click="handleDelete(scope.row)" v-hasPermission="['admin:role:delete']">删除</el-button>
 
           </template>
         </el-table-column>
@@ -129,7 +129,7 @@
 import {assignRoleMenuApi, getRoleMenusApi, menuListApi} from "../api/menu.js";
 import {ElMessage, ElMessageBox} from "element-plus";
 import {handleTree, parseTime} from "@/core/utils/perfree.js";
-import {roleAddOrUpdateApi, roleDelApi, roleGetRoleApi, rolePageApi} from "../api/role.js";
+import {roleAddApi, roleDelApi, roleGetRoleApi, rolePageApi, roleUpdateApi} from "../api/role.js";
 import {Delete, Edit, Filter, Plus, Refresh, Search} from "@element-plus/icons-vue";
 import {reactive, ref} from "vue";
 
@@ -181,16 +181,29 @@ let menuTreeLoading = ref(false);
 function submitAddForm() {
   addFormRef.value.validate(valid => {
     if (valid) {
-      roleAddOrUpdateApi(addForm.value).then((res) => {
-        if (res.code === 200) {
-          ElMessage.success('操作成功');
-          open.value = false;
-          resetAddForm();
-          initList();
-        } else {
-          ElMessage.error(res.msg);
-        }
-      })
+      if (addForm.value.id) {
+        roleUpdateApi(addForm.value).then((res) => {
+          if (res.code === 200) {
+            ElMessage.success('操作成功');
+            open.value = false;
+            resetAddForm();
+            initList();
+          } else {
+            ElMessage.error(res.msg);
+          }
+        })
+      } else {
+        roleAddApi(addForm.value).then((res) => {
+          if (res.code === 200) {
+            ElMessage.success('操作成功');
+            open.value = false;
+            resetAddForm();
+            initList();
+          } else {
+            ElMessage.error(res.msg);
+          }
+        })
+      }
     }
   })
 }

@@ -43,6 +43,7 @@ public class MenuController {
 
     @PostMapping("/list")
     @Operation(summary = "菜单列表")
+    @PreAuthorize("@ss.hasPermission('admin:menu:list')")
     public CommonResult<List<MenuRespVO>> list(@RequestBody MenuListReqVO pageVO) {
         List<Menu> menuList = menuService.menuList(pageVO);
         return success(MenuConvert.INSTANCE.convertListVO(menuList));

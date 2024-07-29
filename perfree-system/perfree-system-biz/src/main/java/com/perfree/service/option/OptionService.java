@@ -31,19 +31,6 @@ public interface OptionService extends IService<Option> {
     Boolean updateOptionByKey(String key, String value);
 
     /**
-     * 保存主题设置
-     * @param optionAddListReqVO optionThemeAddReqVO
-     * @return Boolean
-     */
-    Boolean saveCurrentThemeSetting(OptionAddListReqVO optionAddListReqVO);
-
-    /**
-     * 获取当前启用主题的设置项的所有值
-     * @return List<Option>
-     */
-    List<Option> getCurrentThemeSettingValue();
-
-    /**
      * 保存配置项
      * @param optionAddListReqVO optionAddListReqVO
      * @return Boolean

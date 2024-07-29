@@ -16,7 +16,7 @@
 
     <el-row :gutter="10" class="mb8">
       <el-col :span="1.5">
-        <el-button :icon="Plus" type="primary" plain @click="handleAdd" >新增</el-button>
+        <el-button :icon="Plus" type="primary" plain @click="handleAdd" v-hasPermission="['admin:menu:create']">新增</el-button>
       </el-col>
       <div class="right-tool">
         <el-button :icon="Refresh" circle @click="initList"/>
@@ -43,9 +43,9 @@
         </el-table-column>
         <el-table-column label="操作" width="240" fixed="right">
           <template v-slot="scope">
-            <el-button size="small" type="primary" link :icon="Edit" @click="handleUpdate(scope.row)">修改</el-button>
-            <el-button size="small" type="primary" link :icon="Plus" @click="handleAdd(scope.row)">新增</el-button>
-            <el-button size="small" type="primary" link :icon="Delete" @click="handleDelete(scope.row)">删除</el-button>
+            <el-button size="small" type="primary" link :icon="Edit" @click="handleUpdate(scope.row)" v-hasPermission="['admin:menu:update']">修改</el-button>
+            <el-button size="small" type="primary" link :icon="Plus" @click="handleAdd(scope.row)" v-hasPermission="['admin:menu:create']">新增</el-button>
+            <el-button size="small" type="primary" link :icon="Delete" @click="handleDelete(scope.row)" v-hasPermission="['admin:menu:del']">删除</el-button>
 
           </template>
         </el-table-column>

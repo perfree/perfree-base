@@ -14,7 +14,7 @@
 
     <el-row :gutter="10" class="mb8">
       <el-col :span="1.5">
-        <el-button :icon="Plus" type="primary" plain @click="handleInstallPlugin">安装插件</el-button>
+        <el-button :icon="Plus" type="primary" plain @click="handleInstallPlugin" v-hasPermission="['admin:plugin:install']">安装插件</el-button>
       </el-col>
       <div class="right-tool">
         <el-button :icon="Refresh" circle @click="initList"/>
@@ -48,9 +48,9 @@
         </el-table-column>
         <el-table-column label="操作" width="140" fixed="right">
           <template v-slot="scope">
-            <el-button size="small" type="primary" link :icon="Unlock" @click="handleEnable(scope.row)"  v-if="scope.row.status === 0">启用</el-button>
-            <el-button size="small" type="primary" link :icon="Lock" @click="handleDisable(scope.row)"  v-if="scope.row.status === 1">禁用</el-button>
-            <el-button size="small" type="primary" link :icon="Delete" @click="handleUnInstall(scope.row)">卸载</el-button>
+            <el-button size="small" type="primary" link :icon="Unlock" @click="handleEnable(scope.row)"  v-if="scope.row.status === 0" v-hasPermission="['admin:plugin:enable']">启用</el-button>
+            <el-button size="small" type="primary" link :icon="Lock" @click="handleDisable(scope.row)"  v-if="scope.row.status === 1" v-hasPermission="['admin:plugin:disable']">禁用</el-button>
+            <el-button size="small" type="primary" link :icon="Delete" @click="handleUnInstall(scope.row)" v-hasPermission="['admin:plugin:uninstall']">卸载</el-button>
           </template>
         </el-table-column>
       </el-table>

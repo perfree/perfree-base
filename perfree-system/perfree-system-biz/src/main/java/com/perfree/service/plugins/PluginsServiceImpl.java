@@ -9,6 +9,7 @@ import com.perfree.constant.PluginConstant;
 import com.perfree.controller.auth.plugins.vo.PluginsPageReqVO;
 import com.perfree.convert.plugins.PluginsConvert;
 import com.perfree.enums.ErrorCode;
+import com.perfree.mapper.MenuMapper;
 import com.perfree.mapper.PluginsMapper;
 import com.perfree.model.Plugins;
 import com.perfree.plugin.PluginDevManager;
@@ -60,6 +61,9 @@ public class PluginsServiceImpl extends ServiceImpl<PluginsMapper, Plugins> impl
 
     @Resource
     private PluginDevManager pluginDevManager;
+
+    @Resource
+    private MenuMapper menuMapper;
 
 
     @Override
@@ -182,6 +186,7 @@ public class PluginsServiceImpl extends ServiceImpl<PluginsMapper, Plugins> impl
                 } else {
                     // 可能是冗余数据,删掉
                     pluginsMapper.delByPluginId(plugins.getPluginId());
+                    menuMapper.deleteMenuByPluginId(plugins.getPluginId());
                 }
             }
         }

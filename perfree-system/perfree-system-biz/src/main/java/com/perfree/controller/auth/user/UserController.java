@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import static com.perfree.commons.common.CommonResult.success;
@@ -29,6 +30,7 @@ public class UserController {
 
     @PostMapping("/page")
     @Operation(summary = "用户分页列表")
+    @PreAuthorize("@ss.hasPermission('admin:user:page')")
     public CommonResult<PageResult<UserRespVO>> page(@RequestBody UserPageReqVO pageVO) {
         PageResult<User> userPageResult = userService.userPage(pageVO);
         return success(UserConvert.INSTANCE.convertPageResultVO(userPageResult));
@@ -36,42 +38,49 @@ public class UserController {
 
     @GetMapping("/get")
     @Operation(summary = "获取用户")
+    @PreAuthorize("@ss.hasPermission('admin:user:get')")
     public CommonResult<UserRespVO> get(@RequestParam(value = "id") Integer id) {
         return success(UserConvert.INSTANCE.convertRespVO(userService.get(id)));
     }
 
     @PostMapping("/add")
     @Operation(summary = "添加")
+    @PreAuthorize("@ss.hasPermission('admin:user:create')")
     public CommonResult<UserRespVO> add(@RequestBody @Valid UserAddReqVO userAddReqVO) {
         return success(UserConvert.INSTANCE.convertRespVO(userService.addUser(userAddReqVO)));
     }
 
     @PostMapping("/update")
     @Operation(summary = "更新")
+    @PreAuthorize("@ss.hasPermission('admin:user:update')")
     public CommonResult<UserRespVO> update(@RequestBody @Valid UserUpdateReqVO userUpdateReqVO) {
         return success(UserConvert.INSTANCE.convertRespVO(userService.updateUser(userUpdateReqVO)));
     }
 
     @DeleteMapping("/del")
     @Operation(summary = "删除用户")
+    @PreAuthorize("@ss.hasPermission('admin:user:delete')")
     public CommonResult<Boolean> del(@RequestParam(value = "id") Integer id) {
         return success(userService.del(id));
     }
 
     @PostMapping("/updateUserRole")
     @Operation(summary = "更新用户角色")
+    @PreAuthorize("@ss.hasPermission('admin:user:configRole')")
     public CommonResult<Boolean> updateUserRole(@RequestBody @Valid UserRoleReqVO userRoleReqVO) {
         return success(userService.updateUserRole(userRoleReqVO));
     }
 
     @GetMapping("/getUserRole")
     @Operation(summary = "获取用户角色id集合")
+    @PreAuthorize("@ss.hasPermission('admin:user:queryRoles')")
     public CommonResult<UserRoleRespVO> getUserRole(@RequestParam(value = "id") Integer id) {
         return success(userService.getUserRole(id));
     }
 
     @PostMapping("/resetPassword")
     @Operation(summary = "重置密码")
+    @PreAuthorize("@ss.hasPermission('admin:user:resetPassword')")
     public CommonResult<Boolean> resetPassword(@RequestBody @Valid UserResetPasswordReqVO resetPasswordReqVO) {
         return success(userService.resetPassword(resetPasswordReqVO));
     }

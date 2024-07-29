@@ -7,6 +7,8 @@ import { useAppStore } from '@/core/stores/appStore'
 import { themeSettings } from '@/core/theme'
 import {useCssVar} from '@vueuse/core'
 import {ref} from "vue";
+import {userInfo} from "@/core/api/system.js";
+import {CONSTANTS} from "@/core/utils/constants.js";
 
 const appStore = useAppStore()
 const el = ref(null)

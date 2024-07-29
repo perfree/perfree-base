@@ -3,10 +3,7 @@ package com.perfree.controller.auth.role;
 
 import com.perfree.commons.common.CommonResult;
 import com.perfree.commons.common.PageResult;
-import com.perfree.controller.auth.role.vo.RoleAddOrUpdateReqVO;
-import com.perfree.controller.auth.role.vo.RoleMenuReqVO;
-import com.perfree.controller.auth.role.vo.RolePageReqVO;
-import com.perfree.controller.auth.role.vo.RoleRespVO;
+import com.perfree.controller.auth.role.vo.*;
 import com.perfree.convert.role.RoleConvert;
 import com.perfree.model.Role;
 import com.perfree.model.RoleMenu;
@@ -15,6 +12,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -38,6 +36,7 @@ public class RoleController {
 
     @PostMapping("/page")
     @Operation(summary = "角色分页列表")
+    @PreAuthorize("@ss.hasPermission('admin:role:page')")
     public CommonResult<PageResult<RoleRespVO>> page(@RequestBody RolePageReqVO pageVO) {
         PageResult<Role> rolePageResult = roleService.rolePage(pageVO);
         return success(RoleConvert.INSTANCE.convertPageResultVO(rolePageResult));
@@ -45,6 +44,7 @@ public class RoleController {
 
     @GetMapping("/getRoleMenus")
     @Operation(summary = "获取角色所拥有的菜单列表")
+    @PreAuthorize("@ss.hasPermission('admin:role:getRoleMenus')")
     public CommonResult<List<String>> getRoleMenus(@RequestParam(value = "id") Integer id) {
         List<RoleMenu> roleMenus = roleService.getRoleMenus(id);
         List<String> result = new ArrayList<>();
@@ -56,30 +56,42 @@ public class RoleController {
 
     @PostMapping("/assignRoleMenu")
     @Operation(summary = "设置角色菜单权限")
+    @PreAuthorize("@ss.hasPermission('admin:role:permission')")
     public CommonResult<Boolean> assignRoleMenu(@RequestBody @Valid RoleMenuReqVO roleMenuReqVO) {
         return success(roleService.assignRoleMenu(roleMenuReqVO));
     }
 
     @GetMapping("/get")
     @Operation(summary = "获取角色")
+    @PreAuthorize("@ss.hasPermission('admin:role:get')")
     public CommonResult<RoleRespVO> get(@RequestParam(value = "id") Integer id) {
         return success(RoleConvert.INSTANCE.convertRespVO(roleService.get(id)));
     }
 
     @GetMapping("/listAll")
     @Operation(summary = "获取所有角色")
+    @PreAuthorize("@ss.hasPermission('admin:role:listAll')")
     public CommonResult<List<RoleRespVO>> listAll() {
         return success(RoleConvert.INSTANCE.convertRespListVO(roleService.list()));
     }
 
-    @PostMapping("/addOrUpdate")
-    @Operation(summary = "添加或更新")
-    public CommonResult<RoleRespVO> addOrUpdate(@RequestBody @Valid RoleAddOrUpdateReqVO roleAddOrUpdateReqVO) {
-        return success(RoleConvert.INSTANCE.convertRespVO(roleService.addOrUpdate(roleAddOrUpdateReqVO)));
+    @PostMapping("/add")
+    @Operation(summary = "添加角色")
+    @PreAuthorize("@ss.hasPermission('admin:role:create')")
+    public CommonResult<RoleRespVO> add(@RequestBody @Valid RoleAddReqVO roleAddReqVO) {
+        return success(RoleConvert.INSTANCE.convertRespVO(roleService.add(roleAddReqVO)));
+    }
+
+    @PostMapping("/update")
+    @Operation(summary = "更新角色")
+    @PreAuthorize("@ss.hasPermission('admin:role:update')")
+    public CommonResult<RoleRespVO> update(@RequestBody @Valid RoleUpdateReqVO roleUpdateReqVO) {
+        return success(RoleConvert.INSTANCE.convertRespVO(roleService.update(roleUpdateReqVO)));
     }
 
     @DeleteMapping("/del")
     @Operation(summary = "删除角色")
+    @PreAuthorize("@ss.hasPermission('admin:role:delete')")
     public CommonResult<Boolean> del(@RequestParam(value = "id") Integer id) {
         return success(roleService.del(id));
     }
