@@ -25,6 +25,10 @@ public class CodegenTableBaseVO {
     @NotNull(message = "模块名不能为空")
     private String moduleName;
 
+    @Schema(description = "前端模块名", requiredMode = Schema.RequiredMode.REQUIRED)
+    @NotNull(message = "前端模块名不能为空")
+    private String frontModuleName;
+
     @Schema(description = "类名称", requiredMode = Schema.RequiredMode.REQUIRED)
     @NotNull(message = "类名称不能为空")
     private String className;

@@ -39,6 +39,7 @@
         <minio.version>8.5.4</minio.version>
         <transmittable-thread-local.version>2.14.2</transmittable-thread-local.version>
         <tika-core.version>2.7.0</tika-core.version>
+        <velocity.version>2.3</velocity.version>
     </properties>
 
     <dependencyManagement>
@@ -156,6 +157,12 @@
                 <groupId>org.yaml</groupId>
                 <artifactId>snakeyaml</artifactId>
                 <version>2.2</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.velocity</groupId>
+                <artifactId>velocity-engine-core</artifactId>
+                <version>${velocity.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

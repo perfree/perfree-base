@@ -17,3 +17,12 @@ export function getCodegenInfoByTableId(tableId) {
 export function saveConfig(data) {
     return axios.post('/api/auth/codegen/saveConfig', data);
 }
+
+export function getCodeFileList(id) {
+    return axios.get('/api/auth/codegen/getCodeFileList?tableId=' + id);
+}
+
+export function getCodeFileContent(data) {
+    return axios.post('/api/auth/codegen/getCodeFileContent', data);
+}
+

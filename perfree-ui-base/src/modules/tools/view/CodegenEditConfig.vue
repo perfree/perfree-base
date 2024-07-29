@@ -5,7 +5,7 @@
         <el-form
             ref="baseFormRef"
             :model="baseForm"
-            label-width="80px"
+            label-width="120px"
             status-icon
             :rules="baseRule"
         >
@@ -32,8 +32,13 @@
               </el-form-item>
             </el-col>
             <el-col :span="12">
-              <el-form-item label="模块名称" prop="moduleName">
+              <el-form-item :label="baseForm.scene === 0 ? '后端模块名称' : '插件名称'" prop="moduleName">
                 <el-input v-model="baseForm.moduleName" placeholder="请输入模块名称"/>
+              </el-form-item>
+            </el-col>
+            <el-col :span="12">
+              <el-form-item label="前端模块名称" prop="moduleName">
+                <el-input v-model="baseForm.frontModuleName" placeholder="请输入模块名称"/>
               </el-form-item>
             </el-col>
             <el-col :span="12">
@@ -149,6 +154,7 @@ const baseForm = ref({
   id: '',
   scene: 0,
   moduleName: '',
+  frontModuleName: '',
   className: '',
   classComment: '',
   author: '',

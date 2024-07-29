@@ -53,6 +53,11 @@ public class CodegenTable extends BaseModel implements Serializable {
     private String moduleName;
 
     /**
+     * 前端模块名
+     */
+    private String frontModuleName;
+
+    /**
      * 类名称
      */
     private String className;

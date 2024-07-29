@@ -34,7 +34,7 @@
         </el-table-column>
         <el-table-column label="操作" width="280" fixed="right">
           <template v-slot="scope">
-            <el-button size="small" type="primary" link :icon="Edit" @click="handleUpdate(scope.row)">预览</el-button>
+            <el-button size="small" type="primary" link :icon="Edit" @click="handlePreview(scope.row)">预览</el-button>
             <el-button size="small" type="primary" link :icon="Filter" @click="handleConfig(scope.row)">配置</el-button>
             <el-button size="small" type="primary" link :icon="Filter" @click="handleRoleMenu(scope.row)">下载</el-button>
             <el-button size="small" type="primary" link :icon="Delete" @click="handleDelete(scope.row)">删除</el-button>
@@ -184,6 +184,10 @@ function submitAddForm() {
  */
 function handleConfig(item) {
   toPage(`代码生成-配置[${item.tableName}]`, '/admin/codegen/editConfig/' + item.id, '')
+}
+
+function handlePreview(item) {
+  toPage(`代码生成-预览[${item.tableName}]`, '/admin/codegen/preview/' + item.id, '')
 }
 
 initList();

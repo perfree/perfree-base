@@ -4,9 +4,7 @@ package com.perfree.controller.auth.codegen;
 import com.baomidou.mybatisplus.generator.config.po.TableInfo;
 import com.perfree.commons.common.CommonResult;
 import com.perfree.commons.common.PageResult;
-import com.perfree.controller.auth.codegen.vo.CodegenCreateListReqVO;
-import com.perfree.controller.auth.codegen.vo.CodegenInfoReqVO;
-import com.perfree.controller.auth.codegen.vo.CodegenInfoRespVO;
+import com.perfree.controller.auth.codegen.vo.*;
 import com.perfree.controller.auth.codegen.vo.table.CodegenTableListReqVO;
 import com.perfree.controller.auth.codegen.vo.table.CodegenTablePageReqVO;
 import com.perfree.controller.auth.codegen.vo.table.CodegenTableRespVO;
@@ -59,7 +57,7 @@ public class CodegenController {
 
     @GetMapping("/getCodegenInfoByTableId")
     @Operation(summary = "根据表id获取代码生成信息")
-    public CommonResult<CodegenInfoRespVO> getCodegenInfoByTableId(Integer tableId) {
+    public CommonResult<CodegenInfoRespVO> getCodegenInfoByTableId(@RequestParam(value = "tableId") Integer tableId) {
         return success(codegenService.getCodegenInfoByTableId(tableId));
     }
 
@@ -68,4 +66,18 @@ public class CodegenController {
     public CommonResult<Boolean> saveConfig(@RequestBody CodegenInfoReqVO codegenInfoReqVO) {
         return success(codegenService.saveConfig(codegenInfoReqVO));
     }
+
+    @GetMapping("/getCodeFileList")
+    @Operation(summary = "获取生成文件列表")
+    public CommonResult<List<CodegenFileListRespVO>> getCodeFileList(@RequestParam(value = "tableId") Integer tableId) {
+        return success(codegenService.getCodeFileList(tableId));
+    }
+
+    @PostMapping("/getCodeFileContent")
+    @Operation(summary = "获取代码文件内容")
+    @ResponseBody
+    public CommonResult<String> getCodeFileContent(@RequestBody CodeFileContentReqVO codeFileContentReqVO) {
+        return success(codegenService.getCodeFileContent(codeFileContentReqVO));
+    }
+
 }

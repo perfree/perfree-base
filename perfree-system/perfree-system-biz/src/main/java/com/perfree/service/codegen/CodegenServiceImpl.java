@@ -1,6 +1,11 @@
 package com.perfree.service.codegen;
 
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.io.FileUtil;
+import cn.hutool.core.io.IoUtil;
+import cn.hutool.core.io.file.FileReader;
+import cn.hutool.core.io.file.PathUtil;
+import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.generator.config.DataSourceConfig;
 import com.baomidou.mybatisplus.generator.config.GlobalConfig;
@@ -10,25 +15,35 @@ import com.baomidou.mybatisplus.generator.config.po.TableField;
 import com.baomidou.mybatisplus.generator.config.po.TableInfo;
 import com.baomidou.mybatisplus.generator.config.rules.DateType;
 import com.perfree.commons.common.PageResult;
+import com.perfree.commons.constant.SystemConstants;
+import com.perfree.commons.exception.ServiceException;
 import com.perfree.commons.utils.SortingFieldUtils;
 import com.perfree.constant.CodegenConstant;
 import com.perfree.constant.MenuConstant;
-import com.perfree.controller.auth.codegen.vo.CodegenCreateListReqVO;
-import com.perfree.controller.auth.codegen.vo.CodegenInfoReqVO;
-import com.perfree.controller.auth.codegen.vo.CodegenInfoRespVO;
+import com.perfree.controller.auth.codegen.vo.*;
 import com.perfree.controller.auth.codegen.vo.column.CodegenColumnReqVO;
 import com.perfree.controller.auth.codegen.vo.table.CodegenTableListReqVO;
 import com.perfree.controller.auth.codegen.vo.table.CodegenTablePageReqVO;
 import com.perfree.convert.codegen.CodegenConvert;
+import com.perfree.enums.ErrorCode;
 import com.perfree.mapper.CodegenColumnMapper;
 import com.perfree.mapper.CodegenTableMapper;
 import com.perfree.model.CodegenColumn;
 import com.perfree.model.CodegenTable;
 import jakarta.annotation.Resource;
+import org.apache.velocity.Template;
+import org.apache.velocity.VelocityContext;
+import org.apache.velocity.app.VelocityEngine;
+import org.apache.velocity.runtime.RuntimeConstants;
+import org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.File;
+import java.io.StringWriter;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Path;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -104,6 +119,87 @@ public class CodegenServiceImpl implements CodegenService{
         return true;
     }
 
+    @Override
+    public List<CodegenFileListRespVO> getCodeFileList(Integer tableId) {
+        CodegenTable codegenTable = codegenTableMapper.selectById(tableId);
+        List<CodegenColumn> codegenColumnList = codegenColumnMapper.selectByTableId(tableId);
+        File file = genCode(codegenTable, codegenColumnList);
+        List<CodegenFileListRespVO> result = new ArrayList<>();
+        genCodeListFile(file, result, "-1");
+        return result.stream()
+                .sorted(Comparator.comparing(CodegenFileListRespVO::getFileType, Comparator.comparing(s -> !s.equals("dir"))))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public String getCodeFileContent(CodeFileContentReqVO codeFileContentReqVO) {
+        CodegenTable codegenTable = codegenTableMapper.selectById(codeFileContentReqVO.getTableId());
+        if (null == codegenTable) {
+            return null;
+        }
+        File genDir = new File(SystemConstants.UPLOAD_TEMP_PATH + File.separator + codegenTable.getTableName());
+        boolean isSub = PathUtil.isSub(Path.of(genDir.getAbsolutePath()), Path.of(codeFileContentReqVO.getPath()));
+        if (!isSub) {
+            throw new ServiceException(ErrorCode.ACCESS_VIOLATION);
+        }
+        File findFile = new File(codeFileContentReqVO.getPath());
+        if (!findFile.exists()) {
+            return null;
+        }
+        FileReader fileReader = new FileReader(findFile);
+        return fileReader.readString();
+    }
+
+    private void genCodeListFile(File dir, List<CodegenFileListRespVO> result, String pid) {
+        File[] files = dir.listFiles();
+        if (files == null) {
+            return;
+        }
+        for (File file : files) {
+            CodegenFileListRespVO codegenFileListRespVO = new CodegenFileListRespVO();
+            codegenFileListRespVO.setFilePath(file.getAbsolutePath());
+            codegenFileListRespVO.setFileName(file.getName());
+            codegenFileListRespVO.setId(IdUtil.simpleUUID());
+            codegenFileListRespVO.setPid(pid);
+            if (file.isDirectory()) {
+                codegenFileListRespVO.setFileType("dir");
+                genCodeListFile(file, result, codegenFileListRespVO.getId());
+            } else {
+                if (file.getName().contains(".")) {
+                    codegenFileListRespVO.setFileType(file.getName().substring(file.getName().lastIndexOf(".")).replace(".", ""));
+                } else {
+                    codegenFileListRespVO.setFileType("other");
+                }
+            }
+            result.add(codegenFileListRespVO);
+        }
+    }
+
+
+    private File genCode( CodegenTable codegenTable,List<CodegenColumn> codegenColumnList) {
+        VelocityEngine velocityEngine = new VelocityEngine();
+        velocityEngine.setProperty(RuntimeConstants.RESOURCE_LOADER, "classpath");
+        velocityEngine.setProperty("classpath.resource.loader.class", ClasspathResourceLoader.class.getName());
+        velocityEngine.init();
+        VelocityContext velocityContext = new VelocityContext();
+        velocityContext.put("table", codegenTable);
+        velocityContext.put("columnList", codegenColumnList);
+        File genDir = new File(SystemConstants.UPLOAD_TEMP_PATH + File.separator + codegenTable.getTableName());
+        genCodeHandle(velocityEngine, velocityContext, "codeGen/java/Controller.vm",
+                genDir.getAbsolutePath() + "/java/com/perfree/controller/XxController.java");
+        genCodeHandle(velocityEngine, velocityContext, "codeGen/java/Model.vm",
+                genDir.getAbsolutePath() + "/java/com/perfree/model/XxModel.java");
+        return genDir;
+    }
+
+    private void genCodeHandle(VelocityEngine velocityEngine, VelocityContext velocityContext, String templatePath, String outPath) {
+        Template template = velocityEngine.getTemplate(templatePath, StandardCharsets.UTF_8.name());
+        StringWriter stringWriter = new StringWriter();
+        template.merge(velocityContext, stringWriter);
+        String content = stringWriter.toString();
+        FileUtil.writeString(content, new File(outPath), StandardCharsets.UTF_8);
+    }
+
     /**
      * 生成填充基本表信息
      * @param codegenTable codegenTable
@@ -112,6 +208,7 @@ public class CodegenServiceImpl implements CodegenService{
         codegenTable.setScene(CodegenConstant.SCENE_ADMIN);
         codegenTable.setClassName(StrUtil.toCamelCase(codegenTable.getTableName()));
         codegenTable.setModuleName(CodegenConstant.DEFAULT_MODULE_NAME);
+        codegenTable.setFrontModuleName(StrUtil.toCamelCase(codegenTable.getTableName()));
         codegenTable.setClassComment(codegenTable.getTableComment());
         codegenTable.setParentMenuId(MenuConstant.ROOT_MENU_CODE);
     }

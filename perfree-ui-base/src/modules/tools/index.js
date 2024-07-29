@@ -5,11 +5,21 @@ export default module => {
             let router = [
                 {
                     path: '/admin/codegen/editConfig/:id',
-                    name: 'editConfig',
+                    name: 'codeGenEditConfig',
                     component: modules[`./view/CodegenEditConfig.vue`],
                     meta: {
                         moduleName: moduleName,
                         title: "修改代码生成配置",
+                        keepAlive: false
+                    }
+                },
+                {
+                    path: '/admin/codegen/preview/:id',
+                    name: 'codeGenPreview',
+                    component: modules[`./view/CodeGenPreview.vue`],
+                    meta: {
+                        moduleName: moduleName,
+                        title: "预览代码",
                         keepAlive: false
                     }
                 },
