@@ -18,7 +18,7 @@ public interface ${table.className}Service extends IService<${table.className}> 
      * @param pageVO pageVO
      * @return PageResult<${table.className}>
      */
-    PageResult<${table.className}> rolePage(${table.className}PageReqVO pageVO);
+    PageResult<${table.className}> ${table.lowerFirstClassName}Page(${table.className}PageReqVO pageVO);
 
     /**
      * 添加${table.comment}

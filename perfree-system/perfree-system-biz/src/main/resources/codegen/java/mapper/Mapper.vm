@@ -55,7 +55,7 @@ import java.util.List;
 @Mapper
 public interface ${table.className}Mapper extends BaseMapperX<${table.className}> {
 
-    default PageResult<${table.className}> selectPage(RolePageReqVO reqVO) {
+    default PageResult<${table.className}> selectPage(${table.className}PageReqVO reqVO) {
         return selectPage(pageVO, new LambdaQueryWrapper<${table.className}>()
             #listCondition()
             .orderByDesc(${table.className}::get${primaryJavaField}));

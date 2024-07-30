@@ -185,7 +185,7 @@ public class CodegenServiceImpl implements CodegenService{
      */
     private void genBaseTableInfo(CodegenTable codegenTable) {
         codegenTable.setScene(CodegenConstant.SCENE_ADMIN);
-        codegenTable.setClassName(StrUtil.toCamelCase(codegenTable.getTableName()));
+        codegenTable.setClassName(StrUtil.upperFirst(StrUtil.toCamelCase(codegenTable.getTableName())));
         codegenTable.setFrontModuleName(StrUtil.lowerFirst(StrUtil.toCamelCase(codegenTable.getTableName())));
         codegenTable.setClassComment(codegenTable.getTableComment());
         codegenTable.setParentMenuId(MenuConstant.ROOT_MENU_CODE);
