@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.perfree.commons.common.PageResult;
 import com.perfree.commons.utils.SortingFieldUtils;
 import ${table.packageName}.controller.auth.${table.lowerFirstClassName}.vo.*;
-import ${table.packageName}.convert.role.${table.className}Convert;
+import ${table.packageName}.convert.${table.lowerFirstClassName}.${table.className}Convert;
 import ${table.packageName}.mapper.${table.className}Mapper;
 import ${table.packageName}.model.${table.className};
 import jakarta.annotation.Resource;

@@ -3,7 +3,7 @@ package ${table.packageName}.mapper;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.perfree.commons.common.PageResult;
 import com.perfree.commons.mapper.BaseMapperX;
-import ${table.packageName}.controller.auth.role.vo.*;
+import ${table.packageName}.controller.auth.${table.lowerFirstClassName}.vo.*;
 import ${table.packageName}.model.${table.className};
 import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.annotations.*;
