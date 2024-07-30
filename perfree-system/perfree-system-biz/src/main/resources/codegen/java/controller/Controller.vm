@@ -1,0 +1,69 @@
+package ${table.packageName}.controller.auth.${table.lowerFirstClassName};
+
+
+import com.perfree.commons.common.CommonResult;
+import com.perfree.commons.common.PageResult;
+import ${table.packageName}.controller.auth.${table.lowerFirstClassName}.vo.*;
+import ${table.packageName}.convert.${table.lowerFirstClassName}.${table.className}Convert;
+import ${table.packageName}.model.${table.className};
+import ${table.packageName}.service.${table.lowerFirstClassName}.${table.className}Service;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.annotation.Resource;
+import jakarta.validation.Valid;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static com.perfree.commons.common.CommonResult.success;
+
+/**
+* @description ${table.comment} controller
+* @author ${table.author}
+**/
+@RestController
+@Tag(name = "${table.comment}相关接口}")
+@RequestMapping("api/auth/${table.lowerFirstClassName}")
+public class ${table.className}Controller {
+
+    @Resource
+    private ${table.className}Service ${table.lowerFirstClassName}Service;
+
+    @PostMapping("/page")
+    @Operation(summary = "${table.comment}分页列表")
+    @PreAuthorize("@ss.hasPermission('admin:${table.lowerFirstClassName}:page')")
+    public CommonResult<PageResult<${table.className}RespVO>> page(@RequestBody ${table.className}PageReqVO pageVO) {
+        PageResult<${table.className}> ${table.lowerFirstClassName}PageResult = ${table.lowerFirstClassName}Service.${table.lowerFirstClassName}Page(pageVO);
+        return success(${table.className}Convert.INSTANCE.convertPageResultVO(${table.lowerFirstClassName}PageResult));
+    }
+
+    @PostMapping("/add")
+    @Operation(summary = "添加${table.comment}")
+    @PreAuthorize("@ss.hasPermission('admin:${table.lowerFirstClassName}:create')")
+    public CommonResult<${table.className}RespVO> add(@RequestBody @Valid ${table.className}AddReqVO ${table.lowerFirstClassName}AddReqVO) {
+        return success(${table.className}Convert.INSTANCE.convertRespVO(${table.lowerFirstClassName}Service.add(${table.lowerFirstClassName}AddReqVO)));
+    }
+
+    @PostMapping("/update")
+    @Operation(summary = "更新${table.comment}")
+    @PreAuthorize("@ss.hasPermission('admin:${table.lowerFirstClassName}:update')")
+    public CommonResult<${table.className}RespVO> update(@RequestBody @Valid ${table.className}UpdateReqVO ${table.lowerFirstClassName}UpdateReqVO) {
+        return success(${table.className}Convert.INSTANCE.convertRespVO(${table.lowerFirstClassName}Service.update(${table.lowerFirstClassName}UpdateReqVO)));
+    }
+
+    @GetMapping("/get")
+    @Operation(summary = "根据${table.primaryColumn}获取${table.comment}")
+    @PreAuthorize("@ss.hasPermission('admin:${table.lowerFirstClassName}:get')")
+    public CommonResult<${table.className}RespVO> get(@RequestParam(value = "${table.primaryColumn}") ${table.primaryColumnType} ${table.primaryColumn}) {
+        return success(${table.className}Convert.INSTANCE.convertRespVO(${table.lowerFirstClassName}Service.get(${table.primaryColumn})));
+    }
+
+    @DeleteMapping("/del")
+    @Operation(summary = "根据${table.primaryColumn}删除${table.comment}")
+    @PreAuthorize("@ss.hasPermission('admin:${table.lowerFirstClassName}:delete')")
+    public CommonResult<Boolean> del(@RequestParam(value = "${table.primaryColumn}") ${table.primaryColumnType} ${table.primaryColumn}) {
+        return success(${table.lowerFirstClassName}Service.del(${table.primaryColumn}));
+    }
+}

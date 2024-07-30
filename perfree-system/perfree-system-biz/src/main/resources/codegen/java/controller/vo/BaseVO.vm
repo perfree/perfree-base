@@ -1,0 +1,43 @@
+package ${table.packageName}.controller.auth.${table.lowerFirstClassName}.vo;
+
+
+import io.swagger.v3.oas.annotations.media.Schema;
+import java.util.*;
+import javax.validation.constraints.*;
+import lombok.*;
+#foreach ($column in $columnList)
+#if (${column.insertOperation} && ${column.updateOperation} && ${column.listOperation})
+#if (${column.javaType} == "BigDecimal")
+import java.math.BigDecimal;
+#end
+#if (${column.javaType} == "LocalDateTime")
+import java.time.LocalDateTime;
+#end
+#end
+#end
+
+/**
+* @description ${table.comment} BaseVO
+* @author ${table.author}
+**/
+@Data
+public class ${table.className}BaseVO {
+
+#foreach ($column in $columnList)
+#if(${column.insertOperation} && ${column.updateOperation} && ${column.listOperation})
+
+    @Schema(description = "${column.columnComment}"#if (!${column.nullable}), requiredMode = Schema.RequiredMode.REQUIRED#end)
+    #if (!${column.nullable})
+    #if (${field.fieldType} == 'String')
+    @NotEmpty(message = "${column.columnComment}不能为空")
+    #else
+    @NotNull(message = "${column.columnComment}不能为空")
+    #end
+    #end
+    #if (${column.javaType} == "LocalDateTime")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    #end
+    private ${column.javaType} ${column.javaField};
+#end
+#end
+}

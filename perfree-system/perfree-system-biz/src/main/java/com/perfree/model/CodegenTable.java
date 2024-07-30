@@ -76,4 +76,6 @@ public class CodegenTable extends BaseModel implements Serializable {
      * 父菜单编号
      */
     private String parentMenuId;
+
+    private String packageName;
 }

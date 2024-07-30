@@ -1,0 +1,19 @@
+export function ${table.lowerFirstClassName}PageApi(data) {
+    return axios.post('/api/auth/${table.lowerFirstClassName}/page', data);
+}
+
+export function ${table.lowerFirstClassName}AddApi(data){
+    return axios.post('/api/auth/${table.lowerFirstClassName}/add', data);
+}
+
+export function ${table.lowerFirstClassName}UpdateApi(data){
+    return axios.post('/api/auth/${table.lowerFirstClassName}/update', data);
+}
+
+export function ${table.lowerFirstClassName}DelApi(${table.primaryColumn}) {
+    return axios.delete('/api/auth/${table.lowerFirstClassName}/del?${table.primaryColumn}=' + ${table.primaryColumn});
+}
+
+export function ${table.lowerFirstClassName}GetRoleApi(${table.primaryColumn}) {
+    return axios.get('/api/auth/${table.lowerFirstClassName}/get?${table.primaryColumn}=' + ${table.primaryColumn});
+}

@@ -1,0 +1,50 @@
+package ${table.packageName}.service.${table.lowerFirstClassName};
+
+import com.baomidou.mybatisplus.extension.service.IService;
+import com.perfree.commons.common.PageResult;
+import ${table.packageName}.controller.auth.${table.lowerFirstClassName}.vo.*;
+import ${table.packageName}.model.${table.className};
+
+import java.util.List;
+
+/**
+ * @description ${table.comment} Service
+ * @author ${table.author}
+ **/
+public interface ${table.className}Service extends IService<${table.className}> {
+
+    /**
+     * ${table.comment}分页
+     * @param pageVO pageVO
+     * @return PageResult<${table.className}>
+     */
+    PageResult<${table.className}> rolePage(${table.className}PageReqVO pageVO);
+
+    /**
+     * 添加${table.comment}
+     * @param addReqVO addReqVO
+     * @return ${table.className}
+     */
+    ${table.className} add(${table.className}AddReqVO addReqVO);
+
+    /**
+     * 更新${table.comment}
+     * @param updateReqVO updateReqVO
+     * @return ${table.className}
+     */
+    ${table.className} update(${table.className}UpdateReqVO updateReqVO);
+
+    /**
+     * 根据${table.primaryColumn}获取${table.comment}信息
+     * @param ${table.primaryColumn} ${table.primaryColumn}
+     * @return ${table.className}
+     */
+    ${table.className} get(${table.primaryColumnType} ${table.primaryColumn});
+
+    /**
+     * 根据${table.primaryColumn}删除${table.comment}
+     * @param ${table.primaryColumn} ${table.primaryColumn}
+     * @return Boolean
+     */
+    Boolean del(${table.primaryColumnType} ${table.primaryColumn});
+}

@@ -59,6 +59,9 @@ public class CodegenServiceImpl implements CodegenService{
     @Resource
     private CodegenColumnMapper codegenColumnMapper;
 
+    @Resource
+    private CodegenEngine codegenEngine;
+
     @Override
     public List<TableInfo> getTableList(CodegenTableListReqVO codegenTableListReqVO) {
         List<TableInfo> tableInfoList = getTableInfoListHandle(codegenTableListReqVO.getTableName());
@@ -81,7 +84,7 @@ public class CodegenServiceImpl implements CodegenService{
             for (TableField field : tableInfo.getFields()) {
                 CodegenColumn codegenColumn = CodegenConvert.INSTANCE.convertToCodegenColum(field);
                 codegenColumn.setTableId(codegenTable.getId());
-                genBaseColumnInfo(codegenColumn);
+                codegenEngine.genBaseColumnInfo(codegenColumn);
                 codegenColumnMapper.insert(codegenColumn);
             }
         }
@@ -123,7 +126,7 @@ public class CodegenServiceImpl implements CodegenService{
     public List<CodegenFileListRespVO> getCodeFileList(Integer tableId) {
         CodegenTable codegenTable = codegenTableMapper.selectById(tableId);
         List<CodegenColumn> codegenColumnList = codegenColumnMapper.selectByTableId(tableId);
-        File file = genCode(codegenTable, codegenColumnList);
+        File file = codegenEngine.genCode(codegenTable, codegenColumnList);
         List<CodegenFileListRespVO> result = new ArrayList<>();
         genCodeListFile(file, result, "-1");
         return result.stream()
@@ -176,30 +179,6 @@ public class CodegenServiceImpl implements CodegenService{
     }
 
 
-    private File genCode( CodegenTable codegenTable,List<CodegenColumn> codegenColumnList) {
-        VelocityEngine velocityEngine = new VelocityEngine();
-        velocityEngine.setProperty(RuntimeConstants.RESOURCE_LOADER, "classpath");
-        velocityEngine.setProperty("classpath.resource.loader.class", ClasspathResourceLoader.class.getName());
-        velocityEngine.init();
-        VelocityContext velocityContext = new VelocityContext();
-        velocityContext.put("table", codegenTable);
-        velocityContext.put("columnList", codegenColumnList);
-        File genDir = new File(SystemConstants.UPLOAD_TEMP_PATH + File.separator + codegenTable.getTableName());
-        genCodeHandle(velocityEngine, velocityContext, "codeGen/java/Controller.vm",
-                genDir.getAbsolutePath() + "/java/com/perfree/controller/XxController.java");
-        genCodeHandle(velocityEngine, velocityContext, "codeGen/java/Model.vm",
-                genDir.getAbsolutePath() + "/java/com/perfree/model/XxModel.java");
-        return genDir;
-    }
-
-    private void genCodeHandle(VelocityEngine velocityEngine, VelocityContext velocityContext, String templatePath, String outPath) {
-        Template template = velocityEngine.getTemplate(templatePath, StandardCharsets.UTF_8.name());
-        StringWriter stringWriter = new StringWriter();
-        template.merge(velocityContext, stringWriter);
-        String content = stringWriter.toString();
-        FileUtil.writeString(content, new File(outPath), StandardCharsets.UTF_8);
-    }
-
     /**
      * 生成填充基本表信息
      * @param codegenTable codegenTable
@@ -207,17 +186,15 @@ public class CodegenServiceImpl implements CodegenService{
     private void genBaseTableInfo(CodegenTable codegenTable) {
         codegenTable.setScene(CodegenConstant.SCENE_ADMIN);
         codegenTable.setClassName(StrUtil.toCamelCase(codegenTable.getTableName()));
-        codegenTable.setModuleName(CodegenConstant.DEFAULT_MODULE_NAME);
-        codegenTable.setFrontModuleName(StrUtil.toCamelCase(codegenTable.getTableName()));
+        codegenTable.setFrontModuleName(StrUtil.lowerFirst(StrUtil.toCamelCase(codegenTable.getTableName())));
         codegenTable.setClassComment(codegenTable.getTableComment());
         codegenTable.setParentMenuId(MenuConstant.ROOT_MENU_CODE);
-    }
-
-    /**
-     * 生成基础字段信息
-     * @param codegenColumn codegenColumn
-     */
-    private void genBaseColumnInfo(CodegenColumn codegenColumn) {
+        if (codegenTable.getScene().equals(CodegenConstant.SCENE_ADMIN)) {
+            codegenTable.setModuleName(CodegenConstant.DEFAULT_MODULE_NAME);
+        } else {
+            codegenTable.setModuleName(CodegenConstant.DEFAULT_PLUGIN_NAME);
+        }
+        codegenTable.setPackageName(CodegenConstant.DEFAULT_PACKAGE_NAME);
     }
 
     /**

@@ -1,0 +1,45 @@
+package ${table.packageName}.model;
+
+import com.baomidou.mybatisplus.annotation.*;
+import com.perfree.base.BaseModel;
+import lombok.*;
+import java.util.*;
+#foreach ($column in $columnList)
+#if (!${baseModelFields.contains(${column.javaField})})
+#if (${column.javaType} == "BigDecimal")
+import java.math.BigDecimal;
+#end
+#if (${column.javaType} == "LocalDateTime")
+import java.time.LocalDateTime;
+#end
+#end
+#end
+
+import java.io.Serial;
+import java.io.Serializable;
+
+/**
+* @description ${table.comment}
+* @author ${table.author}
+*/
+@Getter
+@Setter
+@TableName("${table.tableName}")
+public class ${table.className} extends BaseModel implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 1L;
+
+#foreach ($column in $columnList)
+#if (!${baseModelFields.contains(${column.javaField})})
+
+    /**
+    * ${column.columnComment}
+    */
+    #if (${column.primaryKey})
+    @TableId#if (${column.javaType} == 'String')(type = IdType.INPUT) #else(type = IdType.AUTO)#end
+    #end
+    private ${column.javaType} ${column.javaField};
+#end
+#end
+}

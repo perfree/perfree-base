@@ -1,0 +1,36 @@
+package ${table.packageName}.controller.auth.${table.lowerFirstClassName}.vo;
+
+import io.swagger.v3.oas.annotations.media.Schema;
+import java.util.*;
+import javax.validation.constraints.*;
+import lombok.*;
+#foreach ($column in $columnList)
+#if(${column.insertOperation} && (!${column.updateOperation} || !${column.listOperation}))
+#if (${column.javaType} == "BigDecimal")
+import java.math.BigDecimal;
+#end
+#if (${column.javaType} == "LocalDateTime")
+import java.time.LocalDateTime;
+#end
+#end
+#end
+
+/**
+* @description ${table.comment} AddReqVO
+* @author ${table.author}
+**/
+@Schema(description = "${table.comment}AddReqVO")
+@Data
+@EqualsAndHashCode(callSuper = true)
+public class ${table.className}AddReqVO extends ${table.className}BaseVO{
+#foreach ($column in $columnList)
+    #if(${column.insertOperation} && (!${column.updateOperation} || !${column.listOperation}))
+
+    @Schema(description = "${column.columnComment}"#if (!${column.nullable}), requiredMode = Schema.RequiredMode.REQUIRED#end)
+    #if (${column.javaType} == "LocalDateTime")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    #end
+    private ${column.javaType} ${column.javaField};
+    #end
+#end
+}

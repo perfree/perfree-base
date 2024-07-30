@@ -37,6 +37,16 @@
               </el-form-item>
             </el-col>
             <el-col :span="12">
+              <el-form-item label="包名称" prop="packageName">
+                <el-input v-model="baseForm.packageName" placeholder="请输入包名称"/>
+              </el-form-item>
+            </el-col>
+            <el-col :span="12">
+              <el-form-item label="类注释" prop="classComment">
+                <el-input v-model="baseForm.classComment" placeholder="请输入类注释"/>
+              </el-form-item>
+            </el-col>
+            <el-col :span="12">
               <el-form-item label="前端模块名称" prop="moduleName">
                 <el-input v-model="baseForm.frontModuleName" placeholder="请输入模块名称"/>
               </el-form-item>
@@ -83,9 +93,14 @@
               <el-input v-model="scope.row.javaField" placeholder="java字段名"/>
             </template>
           </el-table-column>
-          <el-table-column prop="formOperation" label="表单" min-width="50">
+          <el-table-column prop="insertOperation" label="插入" min-width="50">
             <template v-slot="scope">
-              <el-checkbox v-model="scope.row.formOperation"/>
+              <el-checkbox v-model="scope.row.insertOperation"/>
+            </template>
+          </el-table-column>
+          <el-table-column prop="updateOperation" label="编辑" min-width="50">
+            <template v-slot="scope">
+              <el-checkbox v-model="scope.row.updateOperation"/>
             </template>
           </el-table-column>
           <el-table-column prop="listOperation" label="列表" min-width="50">
@@ -103,28 +118,30 @@
               <el-checkbox v-model="scope.row.nullable"/>
             </template>
           </el-table-column>
-          <el-table-column prop="formType" label="表单类型" min-width="100">
+          <el-table-column prop="formType" label="表单类型" min-width="120">
             <template v-slot="scope">
-              <el-select v-model="scope.row.formType" placeholder="表单类型" style="width: 100px">
+              <el-select v-model="scope.row.formType" placeholder="表单类型" style="width: 120px">
                 <el-option :key="0" :label="'文本框'" :value="0" />
                 <el-option :key="1" :label="'文本域'" :value="1" />
                 <el-option :key="2" :label="'单选框'" :value="2" />
                 <el-option :key="3" :label="'下拉框'" :value="3" />
                 <el-option :key="4" :label="'日期框'" :value="4" />
+                <el-option :key="5" :label="'数字输入框'" :value="5" />
               </el-select>
             </template>
           </el-table-column>
 
-          <el-table-column prop="queryType" label="查询方式" min-width="100">
+          <el-table-column prop="queryType" label="查询方式" min-width="120">
             <template v-slot="scope">
-              <el-select v-model="scope.row.queryType" placeholder="查询方式" style="width: 100px">
+              <el-select v-model="scope.row.queryType" placeholder="查询方式" style="width: 120px">
                 <el-option :key="0" :label="'='" :value="0" />
                 <el-option :key="1" :label="'!='" :value="1" />
-                <el-option :key="2" :label="'>='" :value="2" />
-                <el-option :key="3" :label="'<='" :value="3" />
-                <el-option :key="4" :label="'like'" :value="4" />
-                <el-option :key="5" :label="'NotNull'" :value="5" />
-                <el-option :key="6" :label="'BetWeen'" :value="6" />
+                <el-option :key="2" :label="'>'" :value="2" />
+                <el-option :key="3" :label="'>='" :value="3" />
+                <el-option :key="4" :label="'<'" :value="4" />
+                <el-option :key="5" :label="'<='" :value="5" />
+                <el-option :key="6" :label="'Like'" :value="6" />
+                <el-option :key="7" :label="'Between'" :value="7" />
               </el-select>
             </template>
           </el-table-column>
@@ -159,10 +176,14 @@ const baseForm = ref({
   classComment: '',
   author: '',
   parentMenuId: '-1',
+  packageName: ''
 });
 const baseRule = reactive({
-  name: [{required: true, message: '请输入角色名称', trigger: 'blur'}],
-  code: [{required: true, message: '请输入角色编码', trigger: 'blur'}],
+  scene: [{required: true, message: '请选择生成场景', trigger: 'blur'}],
+  moduleName: [{required: true, message: '请输入模块/插件名称', trigger: 'blur'}],
+  frontModuleName: [{required: true, message: '请输入前端模块名称', trigger: 'blur'}],
+  className: [{required: true, message: '请输入类名称', trigger: 'blur'}],
+  packageName: [{required: true, message: '请输入包名称', trigger: 'blur'}],
 });
 const baseFormRef = ref();
 let tableData = ref([])
@@ -192,16 +213,20 @@ function initInfo() {
 }
 
 function submitConfig() {
-  let param = {
-    codegenTable: baseForm.value,
-    codegenColumnList: tableData.value
-  }
-  saveConfig(param).then(res => {
-    if (res.code === 200) {
-      ElMessage.success('配置成功');
-      back();
+  baseFormRef.value.validate(valid => {
+    if (valid) {
+      let param = {
+        codegenTable: baseForm.value,
+        codegenColumnList: tableData.value
+      }
+      saveConfig(param).then(res => {
+        if (res.code === 200) {
+          ElMessage.success('配置成功');
+          back();
+        }
+      })
     }
-  })
+  });
 }
 
 function back() {

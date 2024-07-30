@@ -1,0 +1,344 @@
+<template>
+  <div class="page">
+    <div class="search-box">
+      <el-form :inline="true" :model="searchForm" class="demo-form-inline" ref="searchFormRef">
+      #foreach ($column in $columnList)
+      #if(${column.listQueryOperation})
+      #if(${column.formType} == "0")
+        <el-form-item label="${column.columnComment}">
+          <el-input v-model="searchForm.${column.javaField}" placeholder="请输入${column.columnComment}" clearable/>
+        </el-form-item>
+      #end
+      #if(${column.formType} == "1")
+        <el-form-item label="${column.columnComment}">
+          <el-input v-model="searchForm.${column.javaField}" placeholder="请输入${column.columnComment}" :rows="2" type="textarea" clearable/>
+        </el-form-item>
+      #end
+      #if(${column.formType} == "2")
+        <el-form-item label="${column.columnComment}">
+          <el-radio-group v-model="searchForm.${column.javaField}">
+            <el-radio value="1" size="large">示例值1(具体请修改代码)</el-radio>
+            <el-radio value="2" size="large">示例值2(具体请修改代码)</el-radio>
+          </el-radio-group>
+        </el-form-item>
+      #end
+      #if(${column.formType} == "3")
+        <el-form-item label="${column.columnComment}">
+          <el-select v-model="searchForm.${column.javaField}" placeholder="请选择${column.columnComment}" clearable  style="width: 200px">
+            <el-option :key="0" :label="'示例值1(具体请修改代码)'" :value="0" />
+            <el-option :key="1" :label="'示例值2(具体请修改代码)'" :value="1" />
+          </el-select>
+        </el-form-item>
+      #end
+      #if(${column.formType} == "4")
+      #if (${column.queryType} == "7")
+        <el-form-item label="${column.columnComment}">
+          <el-date-picker
+                  v-model="searchForm.${column.javaField}"
+                  type="datetimerange"
+                  start-placeholder="请选择开始时间"
+                  end-placeholder="请选择结束时间"
+                  :default-time="[new Date('1 00:00:00'), new Date('1 23:59:59')]"
+          />
+        </el-form-item>
+      #else
+        <el-form-item label="${column.columnComment}">
+          <el-date-picker
+                  v-model="searchForm.${column.javaField}"
+                  type="date"
+                  format="YYYY-MM-DD"
+                  placeholder="请选择${column.columnComment}"
+          />
+        </el-form-item>
+      #end
+      #end
+      #if(${column.formType} == "5")
+        <el-form-item label="${column.columnComment}">
+          <el-input-number v-model="addForm.${column.javaField}"  placeholder="请输入${column.columnComment}" />
+        </el-form-item>
+      #end
+      #end
+      #end
+        <el-form-item>
+          <el-button type="primary" @click="initList" :icon="Search">查询</el-button>
+          <el-button :icon="Refresh" @click="resetSearchForm">重置</el-button>
+        </el-form-item>
+      </el-form>
+    </div>
+
+    <el-row :gutter="10" class="mb8">
+      <el-col :span="1.5">
+        <el-button :icon="Plus" type="primary" plain @click="handleAdd" v-hasPermission="['admin:${table.lowerFirstClassName}:create']">新增</el-button>
+      </el-col>
+      <div class="right-tool">
+        <el-button :icon="Refresh" circle @click="initList"/>
+      </div>
+    </el-row>
+
+    <div class="table-box">
+
+      <el-table :data="tableData" style="width: 100%;height:100%;" row-key="${table.primaryColumn}" v-loading="loading" >
+        #foreach ($column in $columnList)
+        #if(${column.listOperation})
+        #if (${column.javaType} == "LocalDateTime")
+        <el-table-column prop="${column.javaField}" label="${column.columnComment}" min-width="120">
+          <template v-slot="scope">
+            <span>{{ parseTime(scope.row.${column.javaField}) }}</span>
+          </template>
+        </el-table-column>
+        #else
+        <el-table-column prop="${column.javaField}" label="${column.columnComment}" min-width="150"/>
+        #end
+        #end
+        #end
+        <el-table-column label="操作" width="240" fixed="right">
+          <template v-slot="scope">
+            <el-button size="small" type="primary" link :icon="Edit" @click="handleUpdate(scope.row)" v-hasPermission="['admin:${table.lowerFirstClassName}:update']">修改</el-button>
+            <el-button size="small" type="primary" link :icon="Delete" @click="handleDelete(scope.row)" v-hasPermission="['admin:${table.lowerFirstClassName}:delete']">删除</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+
+      <el-pagination
+          v-model:current-page="searchForm.pageNo"
+          v-model:page-size="searchForm.pageSize"
+          :page-sizes="[10, 20, 30, 50]"
+          layout="total,sizes,prev, pager, next, jumper"
+          background
+          small
+          @change="initList"
+          :total="searchForm.total"
+      />
+    </div>
+
+    <el-dialog v-model="open" :title="title" width="600px" draggable>
+      <el-form
+          ref="addFormRef"
+          :model="addForm"
+          label-width="80px"
+          status-icon
+          :rules="addRule"
+      >
+        #foreach ($column in $columnList)
+        #if((${column.updateOperation} || ${column.insertOperation}) && !${column.primaryKey})
+        #if(${column.formType} == "0")
+        <el-form-item label="${column.columnComment}" prop="${column.javaField}">
+          <el-input v-model="addForm.${column.javaField}" placeholder="请输入${column.columnComment}"/>
+        </el-form-item>
+        #end
+        #if(${column.formType} == "1")
+        <el-form-item label="${column.columnComment}" prop="${column.javaField}">
+          <el-input v-model="addForm.${column.javaField}" placeholder="请输入${column.columnComment}" :autosize="{ minRows: 3, maxRows: 6 }" type="textarea"/>
+        </el-form-item>
+        #end
+        #if(${column.formType} == "2")
+        <el-form-item label="${column.columnComment}" prop="${column.javaField}">
+          <el-radio-group v-model="addForm.${column.javaField}">
+            <el-radio value="1" size="large">示例值1(具体请修改代码)</el-radio>
+            <el-radio value="2" size="large">示例值2(具体请修改代码)</el-radio>
+          </el-radio-group>
+        </el-form-item>
+        #end
+        #if(${column.formType} == "3")
+        <el-form-item label="${column.columnComment}" prop="${column.javaField}">
+          <el-select v-model="addForm.${column.javaField}" placeholder="请选择${column.columnComment}" clearable  style="width: 200px">
+            <el-option :key="0" :label="'示例值1(具体请修改代码)'" :value="0" />
+            <el-option :key="1" :label="'示例值2(具体请修改代码)'" :value="1" />
+          </el-select>
+        </el-form-item>
+        #end
+        #if(${column.formType} == "4")
+        <el-form-item label="${column.columnComment}" prop="${column.javaField}">
+          <el-date-picker
+                  v-model="addForm.${column.javaField}"
+                  type="date"
+                  format="YYYY-MM-DD"
+                  placeholder="请选择${column.columnComment}"
+          />
+        </el-form-item>
+        #end
+        #if(${column.formType} == "5")
+        <el-form-item label="${column.columnComment}" prop="${column.javaField}">
+          <el-input-number v-model="addForm.${column.javaField}"  placeholder="请输入${column.columnComment}" />
+        </el-form-item>
+        #end
+        #end
+        #end
+      </el-form>
+
+      <template #footer>
+        <span class="dialog-footer">
+              <el-button type="primary" @click="submitAddForm">确 定</el-button>
+              <el-button @click="open = false; resetAddForm()">取 消</el-button>
+        </span>
+      </template>
+    </el-dialog>
+  </div>
+</template>
+<script setup>
+  import {ElMessage, ElMessageBox} from "element-plus";
+  import {handleTree, parseTime} from "@/core/utils/perfree.js";
+  import {${table.lowerFirstClassName}AddApi, ${table.lowerFirstClassName}DelApi, ${table.lowerFirstClassName}GetRoleApi, ${table.lowerFirstClassName}PageApi, ${table.lowerFirstClassName}UpdateApi} from "../api/${table.lowerFirstClassName}.js";
+  import {Delete, Edit, Filter, Plus, Refresh, Search} from "@element-plus/icons-vue";
+  import {reactive, ref} from "vue";
+
+  const searchForm = ref({
+    pageNo: 1,
+    pageSize: 10,
+    total: 0,
+    #foreach ($column in $columnList)
+    #if(${column.listQueryOperation})
+    ${column.javaField}: #if (${column.queryType} == "7") [] #else null #end,
+    #end
+    #end
+  })
+  const addForm = ref({
+    #foreach ($column in $columnList)
+    #if(${column.updateOperation} || ${column.insertOperation})
+    ${column.javaField}: null,
+    #end
+    #end
+  });
+  const addRule = reactive({
+    #foreach ($column in $columnList)
+    #if((${column.updateOperation} || ${column.insertOperation}) && !${column.nullable} && !${column.primaryKey})
+    ${column.javaField}: [{required: true, message: '${column.columnComment}不能为空', trigger: 'blur'}],
+    #end
+    #end
+  });
+
+  const searchFormRef = ref();
+  const addFormRef = ref();
+  let open = ref(false);
+  let title = ref('');
+  let tableData = ref([]);
+  let loading = ref(false);
+
+  /**
+   * 添加提交
+   */
+  function submitAddForm() {
+    addFormRef.value.validate(valid => {
+      if (valid) {
+        if (addForm.value.id) {
+          ${table.lowerFirstClassName}UpdateApi(addForm.value).then((res) => {
+            if (res.code === 200) {
+              ElMessage.success('操作成功');
+              open.value = false;
+              resetAddForm();
+              initList();
+            } else {
+              ElMessage.error(res.msg);
+            }
+          })
+        } else {
+          ${table.lowerFirstClassName}AddApi(addForm.value).then((res) => {
+            if (res.code === 200) {
+              ElMessage.success('操作成功');
+              open.value = false;
+              resetAddForm();
+              initList();
+            } else {
+              ElMessage.error(res.msg);
+            }
+          })
+        }
+      }
+    })
+  }
+
+  /**
+   * 新增
+   */
+  function handleAdd() {
+    resetAddForm();
+    title.value = '添加${table.comment}';
+    open.value = true;
+  }
+
+  /**
+   * 修改
+   */
+  function handleUpdate(row) {
+    resetAddForm();
+    title.value = '修改${table.comment}';
+    open.value = true;
+    ${table.lowerFirstClassName}GetRoleApi(row.id).then((res) => {
+      addForm.value = res.data;
+    })
+  }
+
+  /**
+   * 删除
+   * @param row
+   */
+  function handleDelete(row) {
+    let keys = Object.keys(row);
+    let firstKey = keys[0];
+    ElMessageBox.confirm('确定要删除[' + firstKey + ']吗？', '提示', {
+      confirmButtonText: '确认',
+      cancelButtonText: '取消',
+      type: 'warning',
+    }).then(() => {
+      ${table.lowerFirstClassName}DelApi(row.id).then((res) => {
+        if (res.code === 200 && res.data) {
+          ElMessage.success('删除成功');
+          initList();
+        } else {
+          ElMessage.error(res.msg);
+        }
+      });
+    }).catch(() => {
+    })
+  }
+
+  /**
+   * 加载列表
+   */
+  function initList() {
+    loading.value = true;
+    ${table.lowerFirstClassName}PageApi(searchForm.value).then((res) => {
+      tableData.value = res.data.list;
+      searchForm.value.total = res.data.total;
+      loading.value = false;
+    })
+  }
+
+  /**
+   * 重置搜索表单
+   */
+  function resetSearchForm() {
+    searchForm.value = {
+      pageNo: 1,
+      pageSize: 10,
+      total: 0,
+      #foreach ($column in $columnList)
+      #if(${column.listQueryOperation})
+      ${column.javaField}:  #if (${column.queryType} == "7") [] #else null #end,
+      #end
+      #end
+    }
+    searchFormRef.value.resetFields();
+    initList();
+  }
+
+  /**
+   * 重置添加表单
+   */
+  function resetAddForm() {
+    addForm.value = {
+      #foreach ($column in $columnList)
+      #if(${column.updateOperation} || ${column.insertOperation})
+      ${column.javaField}: null,
+      #end
+      #end
+    }
+    if (addFormRef.value) {
+      addFormRef.value.resetFields();
+    }
+  }
+
+
+  initList();
+</script>
+<style scoped></style>

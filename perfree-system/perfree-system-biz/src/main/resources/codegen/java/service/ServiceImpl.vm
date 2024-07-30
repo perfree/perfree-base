@@ -1,0 +1,61 @@
+package ${table.packageName}.service.${table.lowerFirstClassName};
+
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.perfree.commons.common.PageResult;
+import com.perfree.commons.utils.SortingFieldUtils;
+import ${table.packageName}.controller.auth.${table.lowerFirstClassName}.vo.*;
+import ${table.packageName}.convert.role.${table.className}Convert;
+import ${table.packageName}.mapper.${table.className}Mapper;
+import ${table.packageName}.model.${table.className};
+import jakarta.annotation.Resource;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * @description ${table.comment} ServiceImpl
+ * @author ${table.author}
+ **/
+@Service
+public class ${table.className}ServiceImpl extends ServiceImpl<${table.className}Mapper, ${table.className}> implements ${table.className}Service {
+
+    @Resource
+    private ${table.className}Mapper ${table.lowerFirstClassName}Mapper;
+
+
+    @Override
+    public PageResult<${table.className}> ${table.lowerFirstClassName}Page(${table.className}PageReqVO pageVO) {
+        SortingFieldUtils.handleDefaultSortingField(pageVO);
+        return ${table.lowerFirstClassName}Mapper.selectPage(pageVO);
+    }
+
+    @Override
+    @Transactional
+    public ${table.className} add(${table.className}AddReqVO ${table.lowerFirstClassName}AddReqVO) {
+        ${table.className} ${table.lowerFirstClassName} = ${table.className}Convert.INSTANCE.convertAddReqVO(${table.lowerFirstClassName}AddReqVO);
+        roleMapper.insert(${table.lowerFirstClassName});
+        return ${table.lowerFirstClassName};
+    }
+
+    @Override
+    @Transactional
+    public ${table.className} update(${table.className}UpdateReqVO ${table.lowerFirstClassName}UpdateReqVO) {
+        ${table.className} ${table.lowerFirstClassName} = ${table.className}Convert.INSTANCE.convertUpdateReqVO(${table.lowerFirstClassName}UpdateReqVO);
+        roleMapper.updateById(${table.lowerFirstClassName});
+        return ${table.lowerFirstClassName};
+    }
+
+    @Override
+    public ${table.className} get(${table.primaryColumnType} ${table.primaryColumn}) {
+        return ${table.lowerFirstClassName}Mapper.selectById(${table.primaryColumn});
+    }
+
+    @Override
+    @Transactional
+    public Boolean del(${table.primaryColumnType} ${table.primaryColumn}) {
+        ${table.lowerFirstClassName}Mapper.deleteById(${table.primaryColumn});
+        return true;
+    }
+}

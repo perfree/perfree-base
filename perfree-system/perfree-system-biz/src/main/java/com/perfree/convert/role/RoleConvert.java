@@ -17,6 +17,11 @@ public interface RoleConvert {
 
     RoleRespVO convertRespVO(Role role);
 
+    /**
+     *
+     * @param rolePageResult rolePageResult
+     * @return PageResult
+     */
     PageResult<RoleRespVO> convertPageResultVO(PageResult<Role> rolePageResult);
 
     List<RoleRespVO> convertRespListVO(List<Role> list);

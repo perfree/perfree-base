@@ -1,0 +1,64 @@
+package ${table.packageName}.mapper;
+
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.perfree.commons.common.PageResult;
+import com.perfree.commons.mapper.BaseMapperX;
+import ${table.packageName}.controller.auth.role.vo.*;
+import ${table.packageName}.model.${table.className};
+import org.apache.commons.lang3.StringUtils;
+import org.apache.ibatis.annotations.*;
+
+import java.util.List;
+
+#if(${table.primaryColumn})
+    #set ($primaryJavaField = $table.primaryColumn.substring(0,1).toUpperCase() + ${table.primaryColumn.substring(1)})
+#end
+
+
+## 字段模板
+#macro(listCondition)
+#foreach ($column in $columnList)
+    #if (${column.listQueryOperation})
+        #set ($JavaField = $column.javaField.substring(0,1).toUpperCase() + ${column.javaField.substring(1)})
+        #if (${column.queryType} == "0")
+            .eqIfPresent(${table.className}::get${JavaField}, reqVO.get${JavaField}())
+        #end
+        #if (${column.queryType} == "1")
+            .neIfPresent(${table.className}::get${JavaField}, reqVO.get${JavaField}())
+        #end
+        #if (${column.queryType} == "2")
+            .gtIfPresent(${table.className}::get${JavaField}, reqVO.get${JavaField}())
+        #end
+        #if (${column.queryType} == "3")
+            .geIfPresent(${table.className}::get${JavaField}, reqVO.get${JavaField}())
+        #end
+        #if (${column.queryType} == "4")
+            .ltIfPresent(${table.className}::get${JavaField}, reqVO.get${JavaField}())
+        #end
+        #if (${column.queryType} == "5")
+            .leIfPresent(${table.className}::get${JavaField}, reqVO.get${JavaField}())
+        #end
+        #if (${column.queryType} == "6")
+            .likeIfPresent(${table.className}::get${JavaField}, reqVO.get${JavaField}())
+        #end
+        #if (${column.queryType} == "7")
+            .betweenIfPresent(${table.className}::get${JavaField}, reqVO.get${JavaField}())
+        #end
+    #end
+#end
+#end
+
+/**
+* @description ${table.comment}
+* @author ${table.author}
+*/
+@Mapper
+public interface ${table.className}Mapper extends BaseMapperX<${table.className}> {
+
+    default PageResult<${table.className}> selectPage(RolePageReqVO reqVO) {
+        return selectPage(pageVO, new LambdaQueryWrapper<${table.className}>()
+            #listCondition()
+            .orderByDesc(${table.className}::get${primaryJavaField}));
+        );
+    }
+}

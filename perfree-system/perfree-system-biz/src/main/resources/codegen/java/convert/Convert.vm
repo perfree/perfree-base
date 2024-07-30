@@ -1,0 +1,45 @@
+package ${table.packageName}.convert.${table.lowerFirstClassName};
+
+import com.perfree.commons.common.PageResult;
+import ${table.packageName}.controller.auth.${table.lowerFirstClassName}.vo.*;
+import ${table.packageName}.model.${table.className};
+import org.mapstruct.Mapper;
+import org.mapstruct.factory.Mappers;
+import java.util.List;
+
+/**
+ * @description ${table.comment} Convert
+ * @author ${table.author}
+ **/
+@Mapper(componentModel = "spring")
+public interface ${table.className}Convert {
+    ${table.className}Convert INSTANCE = Mappers.getMapper(${table.className}Convert.class);
+
+    /**
+     * model转RespVO
+     * @param ${table.lowerFirstClassName} ${table.lowerFirstClassName}
+     * @return ${table.className}RespVO
+     */
+    ${table.className}RespVO convertRespVO(${table.className} ${table.lowerFirstClassName});
+
+    /**
+     * model PageResult转RespVO PageResult
+     * @param ${table.lowerFirstClassName}PageResult ${table.lowerFirstClassName}PageResult
+     * @return PageResult
+     */
+    PageResult<${table.className}RespVO> convertPageResultVO(PageResult<${table.className}> ${table.lowerFirstClassName}PageResult);
+
+    /**
+     * AddReqVO转model
+     * @param ${table.lowerFirstClassName}AddReqVO ${table.lowerFirstClassName}AddReqVO
+     * @return ${table.className}
+     */
+    ${table.className} convertAddReqVO(${table.className}AddReqVO ${table.lowerFirstClassName}AddReqVO);
+
+    /**
+     * UpdateReqVO转model
+     * @param ${table.lowerFirstClassName}UpdateReqVO ${table.lowerFirstClassName}UpdateReqVO
+     * @return ${table.className}
+     */
+    ${table.className} convertUpdateReqVO(${table.className}UpdateReqVO ${table.lowerFirstClassName}UpdateReqVO);
+}

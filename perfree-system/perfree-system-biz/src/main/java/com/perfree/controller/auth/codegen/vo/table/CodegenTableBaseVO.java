@@ -44,4 +44,8 @@ public class CodegenTableBaseVO {
     @Schema(description = "父菜单编号")
     private String parentMenuId;
 
+    @Schema(description = "包名称", requiredMode = Schema.RequiredMode.REQUIRED)
+    @NotNull(message = "包名称不能为空")
+    private String packageName;
+
 }

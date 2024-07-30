@@ -1,7 +1,7 @@
 <template>
   <div class="page">
     <el-row :gutter="20">
-      <el-col :span="4">
+      <el-col :span="5">
         <el-tree
             style="width: 100%;max-height: 700px;overflow: auto;"
             :data="fileList"
@@ -9,6 +9,7 @@
             @node-click="handleNodeClick"
             node-key="id"
             :default-checked-keys="activeFileId"
+            default-expand-all
             ref="treeRef"
         >
           <template #default="{ node, data }">
@@ -26,7 +27,7 @@
           </template>
         </el-tree>
       </el-col>
-      <el-col :span="20">
+      <el-col :span="19">
         <codemirror
             v-model="code"
             placeholder="请选择左侧要编辑的文件..."
@@ -67,7 +68,7 @@ const treeRef = ref();
 // 编辑器
 const code = ref(``)
 const extensions = [javascript(), oneDark]
-const supportEditFileType = ['java', 'js', 'css', 'html', 'json', 'yaml', 'less', 'scss', 'txt', 'md']
+const supportEditFileType = ['java', 'js', 'css', 'html', 'json', 'yaml', 'less', 'scss', 'txt', 'md','vue']
 function initFileList() {
   loading.value = true;
   getCodeFileList(route.params.id).then(res => {
