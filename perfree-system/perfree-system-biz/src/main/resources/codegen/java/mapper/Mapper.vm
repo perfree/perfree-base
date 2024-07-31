@@ -22,29 +22,33 @@ import java.util.Objects;
     #if (${column.listQueryOperation})
         #set ($JavaField = $column.javaField.substring(0,1).toUpperCase() + ${column.javaField.substring(1)})
         #if (${column.queryType} == "0")
-            .eq(null != reqVO.get${JavaField}(), ${table.className}::get${JavaField}, reqVO.get${JavaField}())
+        lambdaQueryWrapper.eq(null != reqVO.get${JavaField}(), ${table.className}::get${JavaField}, reqVO.get${JavaField}());
         #end
         #if (${column.queryType} == "1")
-            .ne(null != reqVO.get${JavaField}(), ${table.className}::get${JavaField}, reqVO.get${JavaField}())
+        lambdaQueryWrapper.ne(null != reqVO.get${JavaField}(), ${table.className}::get${JavaField}, reqVO.get${JavaField}());
         #end
         #if (${column.queryType} == "2")
-            .gt(null != reqVO.get${JavaField}(), ${table.className}::get${JavaField}, reqVO.get${JavaField}())
+        lambdaQueryWrapper.gt(null != reqVO.get${JavaField}(), ${table.className}::get${JavaField}, reqVO.get${JavaField}());
         #end
         #if (${column.queryType} == "3")
-            .ge(null != reqVO.get${JavaField}(), ${table.className}::get${JavaField}, reqVO.get${JavaField}())
+        lambdaQueryWrapper.ge(null != reqVO.get${JavaField}(), ${table.className}::get${JavaField}, reqVO.get${JavaField}());
         #end
         #if (${column.queryType} == "4")
-            .lt(null != reqVO.get${JavaField}(), ${table.className}::get${JavaField}, reqVO.get${JavaField}())
+        lambdaQueryWrapper.lt(null != reqVO.get${JavaField}(), ${table.className}::get${JavaField}, reqVO.get${JavaField}());
         #end
         #if (${column.queryType} == "5")
-            .le(null != reqVO.get${JavaField}(), ${table.className}::get${JavaField}, reqVO.get${JavaField}())
+        lambdaQueryWrapper.le(null != reqVO.get${JavaField}(), ${table.className}::get${JavaField}, reqVO.get${JavaField}());
         #end
         #if (${column.queryType} == "6")
-            .like(StringUtils.isNotBlank(reqVO.get${JavaField}()), ${table.className}::get${JavaField}, reqVO.get${JavaField}())
+        lambdaQueryWrapper.like(StringUtils.isNotBlank(reqVO.get${JavaField}()), ${table.className}::get${JavaField}, reqVO.get${JavaField}());
         #end
         #if (${column.queryType} == "7")
-            .ge(reqVO.get${JavaField}() != null && reqVO.get${JavaField}().length != 0 && reqVO.get${JavaField}()[0] != null, ${table.className}::get${JavaField}, Objects.requireNonNull(reqVO.get${JavaField}())[0])
-            .le(reqVO.get${JavaField}() != null && reqVO.get${JavaField}().length != 0 && reqVO.get${JavaField}()[1] != null, ${table.className}::get${JavaField}, Objects.requireNonNull(reqVO.get${JavaField}())[1])
+        if (reqVO.get${JavaField}() != null && reqVO.get${JavaField}().length > 0 && reqVO.get${JavaField}()[0] != null) {
+            lambdaQueryWrapper.ge(${table.className}::get${JavaField}, reqVO.get${JavaField}()[0]);
+        }
+        if (reqVO.get${JavaField}() != null && reqVO.get${JavaField}().length > 1 && reqVO.get${JavaField}()[1] != null) {
+            lambdaQueryWrapper.le(${table.className}::get${JavaField}, reqVO.get${JavaField}()[1]);
+        }
         #end
     #end
 #end
@@ -58,8 +62,8 @@ import java.util.Objects;
 public interface ${table.className}Mapper extends BaseMapperX<${table.className}> {
 
     default PageResult<${table.className}> selectPage(${table.className}PageReqVO reqVO) {
-        return selectPage(reqVO, new LambdaQueryWrapper<${table.className}>()
-            #listCondition()
-        );
+        LambdaQueryWrapper<${table.className}> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+        #listCondition()
+        return selectPage(reqVO, lambdaQueryWrapper);
     }
 }
