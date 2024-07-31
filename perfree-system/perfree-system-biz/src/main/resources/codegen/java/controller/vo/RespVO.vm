@@ -5,7 +5,7 @@ import java.util.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
 #foreach ($column in $columnList)
-#if(${column.listOperation} && (!${column.updateOperation} || !${column.insertOperation}))
+#if((${column.listOperation} && (!${column.updateOperation} || !${column.insertOperation})) || (${column.updateOperation} && (!${column.listOperation} || !${column.insertOperation})) || (${column.insertOperation} && (!${column.listOperation} || !${column.updateOperation})))
 #if (${column.javaType} == "BigDecimal")
 import java.math.BigDecimal;
 #end
@@ -25,7 +25,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 @EqualsAndHashCode(callSuper = true)
 public class ${table.className}RespVO extends ${table.className}BaseVO{
 #foreach ($column in $columnList)
-#if(${column.listOperation} && (!${column.updateOperation} || !${column.insertOperation}))
+#if((${column.listOperation} && (!${column.updateOperation} || !${column.insertOperation})) || (${column.updateOperation} && (!${column.listOperation} || !${column.insertOperation})) || (${column.insertOperation} && (!${column.listOperation} || !${column.updateOperation})))
 
     @Schema(description = "${column.columnComment}"#if (!${column.nullable}), requiredMode = Schema.RequiredMode.REQUIRED#end)
     #if (${column.javaType} == "LocalDateTime")
