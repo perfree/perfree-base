@@ -47,4 +47,10 @@ public interface ${table.className}Service extends IService<${table.className}> 
      * @return Boolean
      */
     Boolean del(${table.primaryColumnType} ${table.primaryColumn});
+
+    /**
+     * 获取所有${table.comment}
+     * @return List<${table.className}>
+     */
+    List<${table.className}> listAll();
 }

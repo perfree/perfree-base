@@ -42,4 +42,11 @@ public interface ${table.className}Convert {
      * @return ${table.className}
      */
     ${table.className} convertUpdateReqVO(${table.className}UpdateReqVO ${table.lowerFirstClassName}UpdateReqVO);
+
+    /**
+     * model List转RespVO List
+     * @param list list
+     * @return List<${table.className}RespVO>
+     */
+    List<${table.className}RespVO> convertListRespVO(List<${table.className}> list);
 }

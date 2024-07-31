@@ -66,4 +66,11 @@ public class ${table.className}Controller {
     public CommonResult<Boolean> del(@RequestParam(value = "${table.primaryColumn}") ${table.primaryColumnType} ${table.primaryColumn}) {
         return success(${table.lowerFirstClassName}Service.del(${table.primaryColumn}));
     }
+
+    @GetMapping("/listAll")
+    @Operation(summary = "获取所有${table.comment}")
+    @PreAuthorize("@ss.hasPermission('admin:${table.lowerFirstClassName}:listAll')")
+    public CommonResult<List<${table.className}RespVO>> listAll() {
+        return success(${table.className}Convert.INSTANCE.convertListRespVO(${table.lowerFirstClassName}Service.listAll()));
+    }
 }

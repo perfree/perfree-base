@@ -74,4 +74,11 @@ public interface ${table.className}Mapper extends BaseMapperX<${table.className}
         #listCondition()
         return selectPage(reqVO, lambdaQueryWrapper);
     }
+
+    default List<${table.className}> listAll() {
+        return selectList(new LambdaQueryWrapper<${table.className}>()
+            .orderByDesc(${table.className}::get${table.upperFirstPrimaryColumn})
+        );
+    }
+
 }

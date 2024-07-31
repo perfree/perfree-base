@@ -58,4 +58,9 @@ public class ${table.className}ServiceImpl extends ServiceImpl<${table.className
         ${table.lowerFirstClassName}Mapper.deleteById(${table.primaryColumn});
         return true;
     }
+
+    @Override
+    public List<${table.className}> listAll() {
+        return ${table.lowerFirstClassName}Mapper.listAll();
+    }
 }

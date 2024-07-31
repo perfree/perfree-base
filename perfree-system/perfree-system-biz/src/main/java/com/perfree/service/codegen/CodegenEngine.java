@@ -100,13 +100,16 @@ public class CodegenEngine {
         result.put("lowerFirstClassName", StrUtil.lowerFirst(codegenTable.getClassName()));
         String primaryColumn = "id";
         String primaryColumnType = "Integer";
+        String upperFirstPrimaryColumn = "Id";
         CodegenColumn codegenColumn = codegenColumnList.stream().filter(CodegenColumn::getPrimaryKey).findFirst().orElse(null);
         if (null != codegenColumn) {
             primaryColumn = codegenColumn.getJavaField();
             primaryColumnType = codegenColumn.getJavaType();
+            upperFirstPrimaryColumn = StrUtil.upperFirst(codegenColumn.getJavaField());
         }
         result.put("primaryColumn", primaryColumn);
         result.put("primaryColumnType", primaryColumnType);
+        result.put("upperFirstPrimaryColumn", upperFirstPrimaryColumn);
         return result;
     }
 
