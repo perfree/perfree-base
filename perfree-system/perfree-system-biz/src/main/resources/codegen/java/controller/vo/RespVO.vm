@@ -2,7 +2,7 @@ package ${table.packageName}.controller.auth.${table.lowerFirstClassName}.vo;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.*;
-import javax.validation.constraints.*;
+import jakarta.validation.constraints.*;
 import lombok.*;
 #foreach ($column in $columnList)
 #if(${column.listOperation} && (!${column.updateOperation} || !${column.insertOperation}))
