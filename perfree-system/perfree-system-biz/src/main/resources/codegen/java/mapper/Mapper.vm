@@ -7,6 +7,7 @@ import ${table.packageName}.controller.auth.${table.lowerFirstClassName}.vo.*;
 import ${table.packageName}.model.${table.className};
 import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.annotations.*;
+import com.perfree.commons.utils.DateTimeUtils;
 
 import java.util.List;
 import java.util.Objects;
@@ -22,7 +23,14 @@ import java.util.Objects;
     #if (${column.listQueryOperation})
         #set ($JavaField = $column.javaField.substring(0,1).toUpperCase() + ${column.javaField.substring(1)})
         #if (${column.queryType} == "0")
+        #if (${column.javaType} == "LocalDateTime")
+        if (null != reqVO.get${JavaField}()) {
+            lambdaQueryWrapper.ge(${table.className}::get${JavaField}, DateTimeUtils.genStartTime(reqVO.get${JavaField}()));
+            lambdaQueryWrapper.le(${table.className}::get${JavaField}, DateTimeUtils.genEndTime(reqVO.get${JavaField}()));
+        }
+        #else
         lambdaQueryWrapper.eq(null != reqVO.get${JavaField}(), ${table.className}::get${JavaField}, reqVO.get${JavaField}());
+        #end
         #end
         #if (${column.queryType} == "1")
         lambdaQueryWrapper.ne(null != reqVO.get${JavaField}(), ${table.className}::get${JavaField}, reqVO.get${JavaField}());

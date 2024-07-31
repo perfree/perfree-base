@@ -12,6 +12,8 @@ import java.math.BigDecimal;
 #end
 #if (${column.javaType} == "LocalDateTime")
 import java.time.LocalDateTime;
+import java.time.LocalDate;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.format.annotation.DateTimeFormat;
 #end
 #end
@@ -30,17 +32,19 @@ public class ${table.className}PageReqVO extends PageParam {
 #if(${column.listQueryOperation})
 
     @Schema(description = "${column.columnComment}")
-    #if (${column.queryType} == "7")
+#if (${column.queryType} == "7")
     #if (${column.javaType} == "LocalDateTime")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     #end
     private ${column.javaType}[] ${column.javaField};
-    #else
+#else
     #if (${column.javaType} == "LocalDateTime")
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    #end
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private LocalDate ${column.javaField};
+    #else
     private ${column.javaType} ${column.javaField};
     #end
+#end
 #end
 #end
 }
