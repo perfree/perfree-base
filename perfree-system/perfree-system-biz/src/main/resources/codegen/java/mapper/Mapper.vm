@@ -9,6 +9,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
+import java.util.Objects;
 
 #if(${table.primaryColumn})
     #set ($primaryJavaField = $table.primaryColumn.substring(0,1).toUpperCase() + ${table.primaryColumn.substring(1)})
