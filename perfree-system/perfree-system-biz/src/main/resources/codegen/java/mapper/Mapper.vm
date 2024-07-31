@@ -42,8 +42,8 @@ import java.util.List;
             .like(StringUtils.isNotBlank(reqVO.get${JavaField}()), ${table.className}::get${JavaField}, reqVO.get${JavaField}())
         #end
         #if (${column.queryType} == "7")
-            .ge(reqVO.get${JavaField}() != null && reqVO.get${JavaField}().length != 0 && reqVO.get${JavaField}()[0] != null, ${table.className}::get${JavaField}, reqVO.get${JavaField}())
-            .le(reqVO.get${JavaField}() != null && reqVO.get${JavaField}().length != 0 && reqVO.get${JavaField}()[1] != null, ${table.className}::get${JavaField}, reqVO.get${JavaField}())
+            .ge(reqVO.get${JavaField}() != null && reqVO.get${JavaField}().length != 0 && reqVO.get${JavaField}()[0] != null, ${table.className}::get${JavaField}, Objects.requireNonNull(reqVO.get${JavaField}())[0])
+            .le(reqVO.get${JavaField}() != null && reqVO.get${JavaField}().length != 0 && reqVO.get${JavaField}()[1] != null, ${table.className}::get${JavaField}, Objects.requireNonNull(reqVO.get${JavaField}())[1])
         #end
     #end
 #end
