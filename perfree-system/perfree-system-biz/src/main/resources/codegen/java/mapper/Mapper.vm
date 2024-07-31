@@ -21,28 +21,29 @@ import java.util.List;
     #if (${column.listQueryOperation})
         #set ($JavaField = $column.javaField.substring(0,1).toUpperCase() + ${column.javaField.substring(1)})
         #if (${column.queryType} == "0")
-            .eqIfPresent(${table.className}::get${JavaField}, reqVO.get${JavaField}())
+            .eq(null != reqVO.get${JavaField}(), ${table.className}::get${JavaField}, reqVO.get${JavaField}())
         #end
         #if (${column.queryType} == "1")
-            .neIfPresent(${table.className}::get${JavaField}, reqVO.get${JavaField}())
+            .ne(null != reqVO.get${JavaField}(), ${table.className}::get${JavaField}, reqVO.get${JavaField}())
         #end
         #if (${column.queryType} == "2")
-            .gtIfPresent(${table.className}::get${JavaField}, reqVO.get${JavaField}())
+            .gt(null != reqVO.get${JavaField}(), ${table.className}::get${JavaField}, reqVO.get${JavaField}())
         #end
         #if (${column.queryType} == "3")
-            .geIfPresent(${table.className}::get${JavaField}, reqVO.get${JavaField}())
+            .ge(null != reqVO.get${JavaField}(), ${table.className}::get${JavaField}, reqVO.get${JavaField}())
         #end
         #if (${column.queryType} == "4")
-            .ltIfPresent(${table.className}::get${JavaField}, reqVO.get${JavaField}())
+            .lt(null != reqVO.get${JavaField}(), ${table.className}::get${JavaField}, reqVO.get${JavaField}())
         #end
         #if (${column.queryType} == "5")
-            .leIfPresent(${table.className}::get${JavaField}, reqVO.get${JavaField}())
+            .le(null != reqVO.get${JavaField}(), ${table.className}::get${JavaField}, reqVO.get${JavaField}())
         #end
         #if (${column.queryType} == "6")
-            .likeIfPresent(${table.className}::get${JavaField}, reqVO.get${JavaField}())
+            .like(StringUtils.isNotBlank(reqVO.get${JavaField}()), ${table.className}::get${JavaField}, reqVO.get${JavaField}())
         #end
         #if (${column.queryType} == "7")
-            .betweenIfPresent(${table.className}::get${JavaField}, reqVO.get${JavaField}())
+            .ge(reqVO.get${JavaField}() != null && reqVO.get${JavaField}().length != 0 && reqVO.get${JavaField}()[0] != null, ${table.className}::get${JavaField}, reqVO.get${JavaField}())
+            .le(reqVO.get${JavaField}() != null && reqVO.get${JavaField}().length != 0 && reqVO.get${JavaField}()[1] != null, ${table.className}::get${JavaField}, reqVO.get${JavaField}())
         #end
     #end
 #end
@@ -56,9 +57,8 @@ import java.util.List;
 public interface ${table.className}Mapper extends BaseMapperX<${table.className}> {
 
     default PageResult<${table.className}> selectPage(${table.className}PageReqVO reqVO) {
-        return selectPage(pageVO, new LambdaQueryWrapper<${table.className}>()
+        return selectPage(reqVO, new LambdaQueryWrapper<${table.className}>()
             #listCondition()
-            .orderByDesc(${table.className}::get${primaryJavaField}));
         );
     }
 }

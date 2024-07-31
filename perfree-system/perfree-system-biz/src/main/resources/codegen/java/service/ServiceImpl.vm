@@ -35,7 +35,7 @@ public class ${table.className}ServiceImpl extends ServiceImpl<${table.className
     @Transactional
     public ${table.className} add(${table.className}AddReqVO ${table.lowerFirstClassName}AddReqVO) {
         ${table.className} ${table.lowerFirstClassName} = ${table.className}Convert.INSTANCE.convertAddReqVO(${table.lowerFirstClassName}AddReqVO);
-        roleMapper.insert(${table.lowerFirstClassName});
+        ${table.lowerFirstClassName}Mapper.insert(${table.lowerFirstClassName});
         return ${table.lowerFirstClassName};
     }
 
@@ -43,7 +43,7 @@ public class ${table.className}ServiceImpl extends ServiceImpl<${table.className
     @Transactional
     public ${table.className} update(${table.className}UpdateReqVO ${table.lowerFirstClassName}UpdateReqVO) {
         ${table.className} ${table.lowerFirstClassName} = ${table.className}Convert.INSTANCE.convertUpdateReqVO(${table.lowerFirstClassName}UpdateReqVO);
-        roleMapper.updateById(${table.lowerFirstClassName});
+        ${table.lowerFirstClassName}Mapper.updateById(${table.lowerFirstClassName});
         return ${table.lowerFirstClassName};
     }
 
