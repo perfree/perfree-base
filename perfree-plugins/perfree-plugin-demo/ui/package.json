@@ -1,0 +1,25 @@
+{
+  "name": "perfree-plugin-demo02",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "node build.js",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@element-plus/icons-vue": "^2.3.1",
+    "element-plus": "^2.7.7",
+    "js-yaml": "^4.1.0",
+    "vue": "^3.4.29",
+    "vue-router": "^4.3.3"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^5.0.5",
+    "vite": "^5.3.1",
+    "vite-plugin-css-injected-by-js": "^3.5.1",
+    "vite-plugin-externals": "^0.6.2",
+    "vite-plugin-progress": "^0.0.7"
+  }
+}

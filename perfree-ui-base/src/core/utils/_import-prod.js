@@ -8,8 +8,7 @@
 export default (moduleInfo, name) => {
     if (moduleInfo.pluginId && moduleInfo.pluginIsDev) {
         return import(/* @vite-ignore */`${moduleInfo.pluginFrontDevAddress}/plugin/${moduleInfo.pluginId}/src/modules/${name}/index.js`)
-    }
-    if (moduleInfo.pluginId) {
+    } else if (moduleInfo.pluginId) {
         return import(/* @vite-ignore */`/plugin-static/${moduleInfo.pluginId}/modules/${name}/index.js`)
     }
     return  import(/* @vite-ignore */`/modules/${name}/index.js`)

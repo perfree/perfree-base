@@ -12,6 +12,9 @@
     <groupId>com.perfree</groupId>
     <artifactId>perfree-plugins</artifactId>
     <name>${project.artifactId}</name>
+    <modules>
+        <module>perfree-plugin-demo</module>
+    </modules>
     <packaging>pom</packaging>
     <description>插件包</description>
 
