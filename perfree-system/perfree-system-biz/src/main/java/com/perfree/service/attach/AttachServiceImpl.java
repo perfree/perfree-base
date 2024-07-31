@@ -56,7 +56,6 @@ public class AttachServiceImpl extends ServiceImpl<AttachMapper, Attach> impleme
 
     @Override
     public PageResult<Attach> attachPage(AttachPageReqVO pageVO) {
-        SortingFieldUtils.handleDefaultSortingField(pageVO);
         return attachMapper.selectPage(pageVO);
     }
 

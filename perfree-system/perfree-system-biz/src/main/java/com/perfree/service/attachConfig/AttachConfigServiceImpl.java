@@ -83,7 +83,6 @@ public class AttachConfigServiceImpl extends ServiceImpl<AttachConfigMapper, Att
 
     @Override
     public PageResult<AttachConfig> attachConfigPage(AttachConfigPageReqVO pageVO) {
-        SortingFieldUtils.handleDefaultSortingField(pageVO);
         return attachConfigMapper.attachConfigPage(pageVO);
     }
 

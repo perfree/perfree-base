@@ -27,6 +27,7 @@ public interface ExtraMapper extends BaseMapperX<Extra> {
     default PageResult<Extra> selectExtraPage(ExtraPageReqVO pageVO){
         return selectPage(pageVO, new LambdaQueryWrapper<Extra>()
                 .like(StringUtils.isNotBlank(pageVO.getExtraName()), Extra::getExtraName, pageVO.getExtraName())
+                .orderByDesc(Extra::getId)
         );
     }
 

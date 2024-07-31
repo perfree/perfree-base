@@ -25,6 +25,7 @@ public interface RoleMapper extends BaseMapperX<Role> {
     default PageResult<Role> selectPage(RolePageReqVO pageVO) {
         return selectPage(pageVO, new LambdaQueryWrapper<Role>()
                 .like(StringUtils.isNotBlank(pageVO.getName()), Role::getName, pageVO.getName())
+                .orderByDesc(Role::getId)
         );
     }
 

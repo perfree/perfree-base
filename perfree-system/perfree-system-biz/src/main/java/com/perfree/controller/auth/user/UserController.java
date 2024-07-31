@@ -2,6 +2,7 @@ package com.perfree.controller.auth.user;
 
 import com.perfree.commons.common.CommonResult;
 import com.perfree.commons.common.PageResult;
+import com.perfree.commons.utils.WebUtils;
 import com.perfree.controller.auth.user.vo.*;
 import com.perfree.convert.user.UserConvert;
 import com.perfree.model.User;
@@ -9,16 +10,19 @@ import com.perfree.service.user.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 import static com.perfree.commons.common.CommonResult.success;
 
 /**
- * @description 用户
  * @author Perfree
  * @version 1.0.0
+ * @description 用户
  **/
 @RestController
 @Tag(name = "用户相关接口")
@@ -85,4 +89,11 @@ public class UserController {
         return success(userService.resetPassword(resetPasswordReqVO));
     }
 
+    @PostMapping("/export")
+    @Operation(summary = "导出用户")
+    @PreAuthorize("@ss.hasPermission('admin:user:export')")
+    public void export(@RequestBody UserExportReqVO exportReqVO, HttpServletResponse response) {
+        List<User> userList = userService.queryExportData(exportReqVO);
+        WebUtils.renderExcel(response, UserConvert.INSTANCE.convertToExcelVOList(userList), UserExcelVO.class, "用户数据","用户数据.xlsx");
+    }
 }

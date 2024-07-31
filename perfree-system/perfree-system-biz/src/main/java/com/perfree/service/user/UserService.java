@@ -8,9 +8,11 @@ import com.perfree.controller.common.system.vo.LoginUserReqVO;
 import com.perfree.controller.common.system.vo.LoginUserRespVO;
 import com.perfree.model.User;
 
+import java.util.List;
+
 /**
  * <p>
- *  服务类
+ * 服务类
  * </p>
  *
  * @author perfree
@@ -19,31 +21,33 @@ import com.perfree.model.User;
 public interface UserService extends IService<User> {
 
     /**
+     * @param loginUserVO LoginUserReqVO
+     * @return com.perfree.vo.LoginUserRespVO
      * @author Perfree
      * @description 账号密码登录
      * @date 15:42 2023/9/28
-     * @param loginUserVO LoginUserReqVO
-     * @return com.perfree.vo.LoginUserRespVO
      */
     LoginUserRespVO login(LoginUserReqVO loginUserVO);
 
     /**
+     * @param account 账号
+     * @return com.perfree.model.User
      * @author Perfree
      * @description 根据账号查询用户信息
      * @date 15:42 2023/9/28
-     * @param account 账号
-     * @return com.perfree.model.User
      */
-   User findByAccount(String account);
+    User findByAccount(String account);
 
     /**
      * 获取当前登录的用户信息
+     *
      * @return LoginUserInfoRespVO
      */
     LoginUserInfoRespVO userInfo();
 
     /**
      * 用户分页列表
+     *
      * @param pageVO pageVO
      * @return PageResult<User>
      */
@@ -51,6 +55,7 @@ public interface UserService extends IService<User> {
 
     /**
      * 获取用户
+     *
      * @param id id
      * @return User
      */
@@ -58,6 +63,7 @@ public interface UserService extends IService<User> {
 
     /**
      * 删除用户
+     *
      * @param id id
      * @return Boolean
      */
@@ -65,6 +71,7 @@ public interface UserService extends IService<User> {
 
     /**
      * 添加用户
+     *
      * @param userAddReqVO userAddReqVO
      * @return User
      */
@@ -72,6 +79,7 @@ public interface UserService extends IService<User> {
 
     /**
      * 更新用户
+     *
      * @param userUpdateReqVO userUpdateReqVO
      * @return User
      */
@@ -79,6 +87,7 @@ public interface UserService extends IService<User> {
 
     /**
      * 获取用户角色id集合
+     *
      * @param id id
      * @return UserRoleRespVO
      */
@@ -86,6 +95,7 @@ public interface UserService extends IService<User> {
 
     /**
      * 设置用户角色
+     *
      * @param userRoleReqVO userRoleReqVO
      * @return Boolean
      */
@@ -93,9 +103,18 @@ public interface UserService extends IService<User> {
 
     /**
      * 重置密码
+     *
      * @param resetPasswordReqVO resetPasswordReqVO
      * @return Boolean
      */
     Boolean resetPassword(UserResetPasswordReqVO resetPasswordReqVO);
+
+    /**
+     * 查询要导出的数据
+     *
+     * @param exportReqVO exportReqVO
+     * @return List<User>
+     */
+    List<User> queryExportData(UserExportReqVO exportReqVO);
 
 }

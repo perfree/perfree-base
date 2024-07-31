@@ -93,7 +93,6 @@ public class CodegenServiceImpl implements CodegenService{
 
     @Override
     public PageResult<CodegenTable> codegenTablePage(CodegenTablePageReqVO pageVO) {
-        SortingFieldUtils.handleDefaultSortingField(pageVO);
         return codegenTableMapper.codegenTablePage(pageVO);
     }
 

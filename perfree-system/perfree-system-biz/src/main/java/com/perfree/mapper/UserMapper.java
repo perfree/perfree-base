@@ -3,10 +3,13 @@ package com.perfree.mapper;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.perfree.commons.common.PageResult;
 import com.perfree.commons.mapper.BaseMapperX;
+import com.perfree.controller.auth.user.vo.UserExportReqVO;
 import com.perfree.controller.auth.user.vo.UserPageReqVO;
 import com.perfree.model.User;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.annotations.Mapper;
+
+import java.util.List;
 
 /**
  * <p>
@@ -27,6 +30,16 @@ public interface UserMapper extends BaseMapperX<User> {
         return selectPage(pageVO, new LambdaQueryWrapper<User>()
                 .like(StringUtils.isNotBlank(pageVO.getUserName()), User::getUserName, pageVO.getUserName())
                 .like(StringUtils.isNotBlank(pageVO.getAccount()), User::getAccount, pageVO.getAccount())
+                .orderByDesc(User::getId)
         );
     }
+
+    default List<User> queryExportData(UserExportReqVO reqVO){
+        return selectList(new LambdaQueryWrapper<User>()
+                .like(StringUtils.isNotBlank(reqVO.getUserName()), User::getUserName, reqVO.getUserName())
+                .like(StringUtils.isNotBlank(reqVO.getAccount()), User::getAccount, reqVO.getAccount())
+                .orderByDesc(User::getId)
+        );
+    }
+
 }

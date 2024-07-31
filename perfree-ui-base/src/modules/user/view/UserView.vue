@@ -11,6 +11,7 @@
         <el-form-item>
           <el-button type="primary" @click="initList" :icon="Search">查询</el-button>
           <el-button :icon="Refresh" @click="resetSearchForm">重置</el-button>
+          <el-button :icon="Download" @click="exportExcel" v-hasPermission="['admin:user:export']">导出</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -148,7 +149,7 @@
 import {ElMessage, ElMessageBox} from "element-plus";
 import {
   addUserApi,
-  delUserApi,
+  delUserApi, exportExcelApi,
   getUserApi, getUserRoleApi,
   resetPasswordApi,
   updateUserApi,
@@ -156,7 +157,7 @@ import {
   userPageApi
 } from "../api/user.js";
 import {roleListAllApi} from "../api/role.js";
-import {Delete, Edit, Filter, Plus, Refresh, RefreshLeft, Search} from "@element-plus/icons-vue";
+import {Delete, Download, Edit, Filter, Plus, Refresh, RefreshLeft, Search} from "@element-plus/icons-vue";
 import {parseTime} from "@/core/utils/perfree.js";
 import {reactive, ref} from "vue";
 
@@ -408,6 +409,19 @@ function handleUserRole(row) {
   })
   title.value = '分配角色';
   userRoleOpen.value = true;
+}
+
+/**
+ * 导出excel
+ */
+function exportExcel() {
+  loading.value = true;
+  exportExcelApi(searchForm.value).then(res => {
+    loading.value = false;
+  }).catch(e => {
+    ElMessage.error('导出失败');
+    loading.value = false;
+  })
 }
 
 initList();

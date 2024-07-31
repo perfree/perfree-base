@@ -36,7 +36,6 @@ public class ExtraServiceImpl extends ServiceImpl<ExtraMapper, Extra> implements
 
     @Override
     public PageResult<Extra> extraPage(ExtraPageReqVO pageVO) {
-        SortingFieldUtils.handleDefaultSortingField(pageVO);
         return extraMapper.selectExtraPage(pageVO);
     }
 

@@ -32,6 +32,7 @@ public interface AttachConfigMapper extends BaseMapperX<AttachConfig> {
     default PageResult<AttachConfig> attachConfigPage(AttachConfigPageReqVO pageVO){
         return selectPage(pageVO, new LambdaQueryWrapper<AttachConfig>()
                 .like(StringUtils.isNotBlank(pageVO.getName()), AttachConfig::getName, pageVO.getName())
+                .orderByDesc(AttachConfig::getId)
         );
     }
 

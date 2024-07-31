@@ -21,7 +21,9 @@ public interface CodegenTableMapper extends BaseMapperX<CodegenTable> {
 
     default PageResult<CodegenTable> codegenTablePage(CodegenTablePageReqVO pageVO){
         return selectPage(pageVO,  new LambdaQueryWrapper<CodegenTable>()
-                .eq(StringUtils.isNotBlank(pageVO.getTableName()), CodegenTable::getTableName, pageVO.getTableName()));
+                .eq(StringUtils.isNotBlank(pageVO.getTableName()), CodegenTable::getTableName, pageVO.getTableName())
+                .orderByDesc(CodegenTable::getId)
+        );
     }
 
 }

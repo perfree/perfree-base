@@ -39,7 +39,6 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
 
     @Override
     public PageResult<Role> rolePage(RolePageReqVO pageVO) {
-        SortingFieldUtils.handleDefaultSortingField(pageVO);
         return roleMapper.selectPage(pageVO);
     }
 
