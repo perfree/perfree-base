@@ -47,6 +47,7 @@
                   v-model="searchForm.${column.javaField}"
                   type="date"
                   format="YYYY-MM-DD"
+                  value-format="YYYY-MM-DD"
                   placeholder="请选择${column.columnComment}"
           />
         </el-form-item>

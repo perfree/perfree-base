@@ -30,12 +30,15 @@ public class ${table.className}PageReqVO extends PageParam {
 #if(${column.listQueryOperation})
 
     @Schema(description = "${column.columnComment}")
+    #if (${column.queryType} == "7")
     #if (${column.javaType} == "LocalDateTime")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     #end
-    #if (${column.queryType} == "7")
     private ${column.javaType}[] ${column.javaField};
     #else
+    #if (${column.javaType} == "LocalDateTime")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    #end
     private ${column.javaType} ${column.javaField};
     #end
 #end
