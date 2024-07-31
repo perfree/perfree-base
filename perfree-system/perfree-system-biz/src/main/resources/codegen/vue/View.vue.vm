@@ -274,8 +274,7 @@
    */
   function handleDelete(row) {
     let keys = Object.keys(row);
-    let firstKey = keys[0];
-    ElMessageBox.confirm('确定要删除[' + firstKey + ']吗？', '提示', {
+    ElMessageBox.confirm('确定要删除[' + row[keys[0]] + ']吗？', '提示', {
       confirmButtonText: '确认',
       cancelButtonText: '取消',
       type: 'warning',
