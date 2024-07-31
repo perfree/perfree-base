@@ -1,6 +1,7 @@
 package com.perfree.commons.utils;
 
 import com.alibaba.excel.EasyExcel;
+import com.alibaba.excel.write.style.column.LongestMatchColumnWidthStyleStrategy;
 import jakarta.servlet.http.HttpServletResponse;
 import org.apache.poi.ss.formula.functions.T;
 
@@ -54,7 +55,10 @@ public class WebUtils {
             // 对文件名进行 URL 编码
             String encodedFileName = URLEncoder.encode(fileName, StandardCharsets.UTF_8).replaceAll("\\+", "%20");
             response.setHeader("Content-Disposition", "attachment; filename*=UTF-8''" + encodedFileName);
-            EasyExcel.write(response.getOutputStream(), dataClass).sheet(sheetName).doWrite(data);
+            EasyExcel.write(response.getOutputStream(), dataClass)
+                    .autoCloseStream(false)
+                    .registerWriteHandler(new LongestMatchColumnWidthStyleStrategy())
+                    .sheet(sheetName).doWrite(data);
         } catch (Exception e) {
             // 处理异常，例如记录日志
             throw new RuntimeException("Excel 文件生成失败", e);

@@ -174,7 +174,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         String hexPassword = DigestUtil.md5Hex(user.getSalt() + userAddReqVO.getPassword());
         user.setPassword(hexPassword);
         userMapper.insert(user);
-        return null;
+        return user;
     }
 
     @Override

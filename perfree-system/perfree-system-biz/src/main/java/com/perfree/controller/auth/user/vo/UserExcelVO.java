@@ -2,6 +2,7 @@ package com.perfree.controller.auth.user.vo;
 
 import com.alibaba.excel.annotation.ExcelProperty;
 import com.alibaba.excel.annotation.format.DateTimeFormat;
+import com.perfree.controller.auth.user.excelConvert.UserStatusExcelConvert;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
@@ -17,7 +18,7 @@ public class UserExcelVO {
     @ExcelProperty("账号")
     private String account;
 
-    @ExcelProperty("状态")
+    @ExcelProperty(value = "状态", converter = UserStatusExcelConvert.class)
     private Integer status;
 
     @ExcelProperty("邮箱")
