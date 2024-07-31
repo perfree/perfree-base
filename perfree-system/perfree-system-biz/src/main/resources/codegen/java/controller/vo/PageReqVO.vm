@@ -12,6 +12,7 @@ import java.math.BigDecimal;
 #end
 #if (${column.javaType} == "LocalDateTime")
 import java.time.LocalDateTime;
+import org.springframework.format.annotation.DateTimeFormat;
 #end
 #end
 #end
