@@ -18,6 +18,8 @@ logging:
     root: info
 
 spring:
+  jackson:
+    time-zone: GMT+8
   aop:
     proxy-target-class: true
   servlet:

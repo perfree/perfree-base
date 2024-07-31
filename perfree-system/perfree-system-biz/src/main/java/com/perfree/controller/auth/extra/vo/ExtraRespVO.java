@@ -4,7 +4,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Schema(description = "附加数据RespVO")
 @Data
@@ -15,8 +15,8 @@ public class ExtraRespVO extends ExtraBaseVO {
     private Integer id;
 
     @Schema(description = "创建时间")
-    private Date createTime;
+    private LocalDateTime createTime;
 
     @Schema(description = "更新时间")
-    private Date updateTime;
+    private LocalDateTime updateTime;
 }

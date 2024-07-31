@@ -83,8 +83,7 @@
                 <el-option :key="3" :label="'Double'" :value="'Double'" />
                 <el-option :key="4" :label="'BigDecimal'" :value="'BigDecimal'" />
                 <el-option :key="5" :label="'LocalDateTime'" :value="'LocalDateTime'" />
-                <el-option :key="6" :label="'Date'" :value="'Date'" />
-                <el-option :key="7" :label="'Boolean'" :value="'Boolean'" />
+                <el-option :key="6" :label="'Boolean'" :value="'Boolean'" />
               </el-select>
             </template>
           </el-table-column>

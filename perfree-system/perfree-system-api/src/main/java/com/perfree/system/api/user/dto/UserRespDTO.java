@@ -3,7 +3,8 @@ package com.perfree.system.api.user.dto;
 
 import lombok.Data;
 
-import java.util.Date;
+import java.time.LocalDateTime;
+
 
 /**
  * 用户 Response DTO
@@ -58,8 +59,8 @@ public class UserRespDTO {
      */
     private String website;
 
-    private Date createTime;
+    private LocalDateTime createTime;
 
-    private Date updateTime;
+    private LocalDateTime updateTime;
 
 }

@@ -6,7 +6,7 @@ import com.perfree.security.vo.LoginUserVO;
 import org.apache.ibatis.reflection.MetaObject;
 import org.springframework.stereotype.Component;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 /**
@@ -20,7 +20,7 @@ public class DefaultDBFieldHandler implements MetaObjectHandler {
         if (hasCreateTime) {
             Object createTime = getFieldValByName("createTime", metaObject);
             if (Objects.isNull(createTime)) {
-                setFieldValByName("createTime", new Date(), metaObject);
+                setFieldValByName("createTime", LocalDateTime.now(), metaObject);
             }
         }
 
@@ -40,7 +40,7 @@ public class DefaultDBFieldHandler implements MetaObjectHandler {
         if (hasUpdateTime) {
             Object updateTime = getFieldValByName("updateTime", metaObject);
             if (Objects.isNull(updateTime)) {
-                setFieldValByName("updateTime", new Date(), metaObject);
+                setFieldValByName("updateTime", LocalDateTime.now(), metaObject);
             }
         }
 
