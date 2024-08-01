@@ -92,8 +92,10 @@ public class AttachConfigServiceImpl extends ServiceImpl<AttachConfigMapper, Att
         attachConfigMapper.updateMaster(attachConfigUpdateMasterVO.getId());
 
         AttachConfigCacheDTO masterAttachConfig = attachConfigCacheService.getMasterAttachConfig();
-        masterAttachConfig.setMaster(false);
-        attachConfigCacheService.putAttachConfig(masterAttachConfig.getId(), masterAttachConfig);
+        if (null != masterAttachConfig) {
+            masterAttachConfig.setMaster(false);
+            attachConfigCacheService.putAttachConfig(masterAttachConfig.getId(), masterAttachConfig);
+        }
 
         AttachConfigCacheDTO attachConfig = attachConfigCacheService.getAttachConfig(attachConfigUpdateMasterVO.getId());
         attachConfig.setMaster(true);

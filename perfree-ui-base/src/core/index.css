@@ -85,8 +85,11 @@ body,
     color: var(--el-text-color-primary);
 }
 
-
 .page{
+    padding: 15px;
+    background-color: var(--el-bg-color);
+    border-radius: 5px;
+    min-height: calc(100% - 30px);
     .right-tool{
         margin-left: auto;
     }

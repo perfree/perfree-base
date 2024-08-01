@@ -38,21 +38,19 @@
                 <font-awesome-icon icon="fa-solid fa-angle-right "/>
               </span>
             </div>
-            <div class="p-page">
-              <RouterView v-slot="{ Component, route }" v-if="!appStore.refreshRouteflag">
-                <transition
-                    name="fade"
-                    mode="out-in"
-                    :enter-active-class="'animate__animated ' + appStore.routeAnimation"
-                >
-                  <keep-alive :include="cachedViews" >
-                    <div :key="route.fullPath" class="p-route-page">
-                      <component :is="Component" :key="route.fullPath"/>
-                    </div>
-                  </keep-alive>
-                </transition>
-              </RouterView>
-            </div>
+            <RouterView v-slot="{ Component, route }" v-if="!appStore.refreshRouteflag">
+              <transition
+                  name="fade"
+                  mode="out-in"
+                  :enter-active-class="'animate__animated ' + appStore.routeAnimation"
+              >
+                <keep-alive :include="cachedViews" >
+                  <div :key="route.fullPath" class="p-route-page">
+                    <component :is="Component" :key="route.fullPath"/>
+                  </div>
+                </keep-alive>
+              </transition>
+            </RouterView>
           </el-main>
           <el-footer class="footer">
             <span>Copyright © 2018-2024  All Rights Reserved. </span>
@@ -272,18 +270,12 @@ initTabs()
   margin: 0;
 }
 
-.p-page {
-  height: calc(100% - 40px);
-  overflow: auto;
-  background-color: var(--el-bg-color);
-}
 .p-route-page{
-  height: calc(100% - 30px);
-  padding: 15px;
-  background-color: var(--el-bg-color);
+  height: calc(100% - 60px);
   overflow: auto;
+  padding: 10px;
+  background-color: var(--el-bg-color-page);
 }
-
 .p-route-page::-webkit-scrollbar {
   width: 8px;
 }

@@ -25,7 +25,11 @@ public enum ErrorCode {
     PLUGIN_IS_RUN(100000027,"该插件已启用,正在运行,请禁用后再卸载!"),
     PLUGIN_NOT_FOUND(100000028,"未查询到插件信息!"),
     ACCESS_VIOLATION(100000030, "违规访问!"),
-    EXTRA_KEY_EXIST(100000031, "key已存在!");
+    EXTRA_KEY_EXIST(100000031, "key已存在!"),
+    DICT_TYPE_EXIST(100000032, "字典类型已存在!"),
+    NO_DEL_EXIST_DICT_DATA(100000033, "存在字典数据,不能删除!"),
+    DICT_DATA_EXIST(100000034, "字典类型已存在!"),
+    ;
 
     private final Integer code;
 
