@@ -4,7 +4,7 @@
       <el-col :xs="24" :sm="24" :md="8" :lg="6" :xl="6" class="elCol">
         <div class="dictTypeBox">
           <div class="dictTypeHead">
-            <el-button type="primary" style="width: 100%" @click="clickAddDictType">添加字典分类</el-button>
+            <el-button type="primary" style="width: 100%" @click="clickAddDictType" v-hasPermission="['admin:dict:create']">添加字典分类</el-button>
             <el-input v-model="searchDictTypeValue" placeholder="请输入字典类型或名称" class="searchDictTypeInput" clearable >
               <template #append>
                 <el-button :icon="Search" @click="initDictTypeList" />
@@ -16,8 +16,8 @@
               <li v-for="dictType in dictTypeDataList" :key="dictType.id" @click="clickDictType(dictType)" :class="{active: dictType.id === activeDictType.id}">
                 <div class="dictTypeName">{{dictType.dictName}}</div>
                 <div class="dictTypeOpt">
-                  <el-button type="primary" link @click.stop="clickUpdateDictType(dictType)"><el-icon><Edit /></el-icon></el-button>
-                  <el-button type="danger" link @click.stop="clickDelDictType(dictType)"><el-icon><Delete /></el-icon></el-button>
+                  <el-button type="primary" link @click.stop="clickUpdateDictType(dictType)" v-hasPermission="['admin:dict:update']"><el-icon><Edit /></el-icon></el-button>
+                  <el-button type="danger" link @click.stop="clickDelDictType(dictType)" v-hasPermission="['admin:dict:delete']"><el-icon><Delete /></el-icon></el-button>
                 </div>
               </li>
             </ul>
@@ -43,7 +43,7 @@
 
           <el-row :gutter="10" class="mb8">
             <el-col :span="1.5">
-              <el-button :icon="Plus" type="primary" plain @click="clickAddDictData" v-hasPermission="['admin:role:create']">新增字典值</el-button>
+              <el-button :icon="Plus" type="primary" plain @click="clickAddDictData" v-hasPermission="['admin:dictData:create']">新增字典值</el-button>
             </el-col>
             <div class="right-tool">
               <el-button :icon="Refresh" circle @click="initDictDataPage"/>
@@ -66,8 +66,8 @@
               </el-table-column>
               <el-table-column label="操作" width="140" fixed="right">
                 <template v-slot="scope">
-                  <el-button size="small" type="primary" link :icon="Edit" @click="clickUpdateDictData(scope.row)" v-hasPermission="['admin:role:update']">修改</el-button>
-                  <el-button size="small" type="primary" link :icon="Delete" @click="clickDelDictData(scope.row)" v-hasPermission="['admin:role:delete']">删除</el-button>
+                  <el-button size="small" type="primary" link :icon="Edit" @click="clickUpdateDictData(scope.row)" v-hasPermission="['admin:dictData:update']">修改</el-button>
+                  <el-button size="small" type="primary" link :icon="Delete" @click="clickDelDictData(scope.row)" v-hasPermission="['admin:dictData:delete']">删除</el-button>
                 </template>
               </el-table-column>
             </el-table>
@@ -234,6 +234,22 @@ const addDictDataRule = reactive({
   status: [{required: true, message: '状态不能为空', trigger: 'blur'}],
 });
 const addDictDataFormRef = ref();
+
+/**
+ * 重置数据值搜索表单
+ */
+function resetDictDataSearchForm() {
+  dictDataSearchForm.value = {
+    pageNo: 1,
+    pageSize: 10,
+    total: 0,
+    dictLabel: '',
+    dictType: '',
+    parentDictType: activeDictType.value.dictType
+  }
+  dictDataSearchFormRef.value.resetFields();
+  initDictDataPage();
+}
 
 /**
  * 删除数据值事件
