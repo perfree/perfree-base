@@ -11,6 +11,7 @@ import com.perfree.enums.ErrorCode;
 import com.perfree.enums.OptionEnum;
 import com.perfree.mapper.OptionMapper;
 import com.perfree.model.Option;
+import com.perfree.system.api.option.dto.OptionDTO;
 import jakarta.annotation.Resource;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
@@ -72,5 +73,14 @@ public class OptionServiceImpl extends ServiceImpl<OptionMapper, Option> impleme
     @Override
     public List<Option> getOptionByIdentification(String identification) {
         return optionMapper.getSettingValueByIdentification(identification);
+    }
+
+    @Override
+    public void initOptionCache() {
+        List<Option> optionList = optionMapper.selectList();
+        List<OptionDTO> options = OptionConvert.INSTANCE.convertCacheDTO(optionList);
+        for (OptionDTO option : options) {
+            optionCacheService.putOption(option.getKey(), option);
+        }
     }
 }

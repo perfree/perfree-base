@@ -44,4 +44,9 @@ public interface OptionService extends IService<Option> {
      */
     List<Option> getOptionByIdentification(String identification);
 
+    /**
+     * 初始化配置缓存
+     */
+    void initOptionCache();
+
 }

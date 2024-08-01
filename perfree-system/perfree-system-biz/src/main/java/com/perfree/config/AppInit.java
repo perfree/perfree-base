@@ -4,19 +4,23 @@ import com.perfree.cache.AttachConfigCacheService;
 import com.perfree.cache.OptionCacheService;
 import com.perfree.commons.utils.SpringBeanUtil;
 import com.perfree.convert.attachConfig.AttachConfigConvert;
+import com.perfree.convert.dictData.DictDataConvert;
 import com.perfree.convert.option.OptionConvert;
 import com.perfree.file.FileHandleStorageHolder;
 import com.perfree.file.handle.local.FileLocalHandleImpl;
 import com.perfree.file.handle.s3.FileS3HandleImpl;
 import com.perfree.mapper.AttachConfigMapper;
 import com.perfree.model.AttachConfig;
+import com.perfree.model.DictData;
 import com.perfree.model.Option;
 import com.perfree.plugin.PluginInfo;
 import com.perfree.plugin.PluginInfoHolder;
 import com.perfree.service.attachConfig.AttachConfigService;
+import com.perfree.service.dictData.DictDataService;
 import com.perfree.service.option.OptionService;
 import com.perfree.service.plugins.PluginsService;
 import com.perfree.system.api.attachConfig.dto.AttachConfigCacheDTO;
+import com.perfree.system.api.dictData.dto.DictDataDTO;
 import com.perfree.system.api.option.dto.OptionDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,33 +47,40 @@ public class AppInit implements ApplicationRunner {
 
     private final PluginsService pluginsService;
 
-    private final AttachConfigMapper attachConfigMapper;
-
     private final OptionService optionService;
-
-    private final OptionCacheService optionCacheService;
-
-    private final AttachConfigCacheService attachConfigCacheService;
 
     private final AttachConfigService attachConfigService;
 
-    public AppInit(OptionService optionService, OptionCacheService optionCacheService,
-                   AttachConfigMapper attachConfigMapper, AttachConfigCacheService attachConfigCacheService,
-                   AttachConfigService attachConfigService, PluginsService pluginsService) {
+    private final DictDataService dictDataService;
+
+    public AppInit(OptionService optionService,  AttachConfigService attachConfigService,
+                   PluginsService pluginsService, DictDataService dictDataService) {
         this.optionService = optionService;
-        this.optionCacheService = optionCacheService;
-        this.attachConfigMapper = attachConfigMapper;
-        this.attachConfigCacheService = attachConfigCacheService;
         this.attachConfigService = attachConfigService;
         this.pluginsService = pluginsService;
+        this.dictDataService = dictDataService;
     }
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
-        initFileHandle();
-        initOptions();
-        initAttachConfig();
+        LOGGER.info("-> 初始化存储策略配置缓存....");
+        initFileHandleCache();
+        attachConfigService.initAttachConfigCache();
+        LOGGER.info("-> 初始化存储策略配置缓存完成");
+
+        LOGGER.info("-> 初始化配置缓存....");
+        optionService.initOptionCache();
+        LOGGER.info("-> 初始化配置缓存完成");
+
+        LOGGER.info("-> 初始化数据字典缓存....");
+        dictDataService.initDictDataCache();
+        LOGGER.info("-> 初始化数据字典缓存完成");
+
+        LOGGER.info("-> 初始化静态资源映射规则....");
         attachConfigService.initLocalResourcesPatterns();
+        LOGGER.info("-> 初始化静态资源映射规则完成");
+
+        LOGGER.info("-> 初始化插件....");
         pluginsService.watchMonitorDevPlugins();
         pluginsService.initPlugins();
         List<PluginInfo> pluginInfoList = PluginInfoHolder.getAllPluginInfo();
@@ -97,32 +108,8 @@ public class AppInit implements ApplicationRunner {
     /**
      * 初始化文件上传处理类
      */
-    private void initFileHandle() {
+    private void initFileHandleCache() {
         FileHandleStorageHolder.putFileHandleStorage(0, new FileLocalHandleImpl());
         FileHandleStorageHolder.putFileHandleStorage(1, new FileS3HandleImpl());
-    }
-
-    /**
-     * 初始化附件配置
-     */
-    private void initAttachConfig() throws Exception {
-        List<AttachConfig> all = attachConfigMapper.getAll();
-        List<AttachConfigCacheDTO> attachConfigCacheDTOS = AttachConfigConvert.INSTANCE.convertCacheListDTO(all);
-        for (AttachConfigCacheDTO attachConfig : attachConfigCacheDTOS) {
-            attachConfigCacheService.putAttachConfig(attachConfig.getId(), attachConfig);
-        }
-    }
-
-    /**
-     * 初始化配置
-     */
-    private void initOptions() {
-        LOGGER.info("start init option cache");
-        List<Option> optionList = optionService.getAllOption();
-        List<OptionDTO> options = OptionConvert.INSTANCE.convertCacheDTO(optionList);
-        for (OptionDTO option : options) {
-            optionCacheService.putOption(option.getKey(), option);
-        }
-        LOGGER.info("init option cache success");
     }
 }

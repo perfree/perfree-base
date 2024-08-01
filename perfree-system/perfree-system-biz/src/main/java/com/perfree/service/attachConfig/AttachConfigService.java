@@ -67,4 +67,8 @@ public interface AttachConfigService extends IService<AttachConfig> {
      */
     void initLocalResourcesPatterns();
 
+    /**
+     * 初始化附件配置缓存
+     */
+    void initAttachConfigCache();
 }

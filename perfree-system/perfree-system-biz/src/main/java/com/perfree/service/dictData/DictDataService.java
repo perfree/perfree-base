@@ -53,4 +53,9 @@ public interface DictDataService extends IService<DictData> {
      * @return List<DictData>
      */
     List<DictData> listAll();
+
+    /**
+     * 初始化字典缓存
+     */
+    void initDictDataCache();
 }

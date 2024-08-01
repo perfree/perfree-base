@@ -126,4 +126,13 @@ public class AttachConfigServiceImpl extends ServiceImpl<AttachConfigMapper, Att
             throw new BeanInitializationException("Failed to init ResourceHttpRequestHandler", ex);
         }
     }
+
+    @Override
+    public void initAttachConfigCache() {
+        List<AttachConfig> all = attachConfigMapper.getAll();
+        List<AttachConfigCacheDTO> attachConfigCacheDTOS = AttachConfigConvert.INSTANCE.convertCacheListDTO(all);
+        for (AttachConfigCacheDTO attachConfig : attachConfigCacheDTOS) {
+            attachConfigCacheService.putAttachConfig(attachConfig.getId(), attachConfig);
+        }
+    }
 }

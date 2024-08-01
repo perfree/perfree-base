@@ -3,6 +3,7 @@ package com.perfree.convert.dictData;
 import com.perfree.commons.common.PageResult;
 import com.perfree.controller.auth.dictData.vo.*;
 import com.perfree.model.DictData;
+import com.perfree.system.api.dictData.dto.DictDataDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 import java.util.List;
@@ -49,4 +50,9 @@ public interface DictDataConvert {
      * @return List<DictDataRespVO>
      */
     List<DictDataRespVO> convertListRespVO(List<DictData> list);
+
+    List<DictDataDTO> convertToDTOList(List<DictData> dictDataList);
+
+    DictDataDTO convertToDTO(DictData dictData);
+
 }

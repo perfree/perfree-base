@@ -1,6 +1,7 @@
 package com.perfree.service.dictData;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.perfree.cache.DictDataCacheService;
 import com.perfree.commons.common.PageResult;
 import com.perfree.commons.exception.ServiceException;
 import com.perfree.commons.utils.SortingFieldUtils;
@@ -9,6 +10,7 @@ import com.perfree.convert.dictData.DictDataConvert;
 import com.perfree.enums.ErrorCode;
 import com.perfree.mapper.DictDataMapper;
 import com.perfree.model.DictData;
+import com.perfree.system.api.dictData.dto.DictDataDTO;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,6 +28,9 @@ public class DictDataServiceImpl extends ServiceImpl<DictDataMapper, DictData> i
     @Resource
     private DictDataMapper dictDataMapper;
 
+    @Resource
+    private DictDataCacheService dictDataCacheService;
+
 
     @Override
     public PageResult<DictData> dictDataPage(DictDataPageReqVO pageVO) {
@@ -41,6 +46,7 @@ public class DictDataServiceImpl extends ServiceImpl<DictDataMapper, DictData> i
         }
         DictData dictData = DictDataConvert.INSTANCE.convertAddReqVO(dictDataAddReqVO);
         dictDataMapper.insert(dictData);
+        dictDataCacheService.putDictData(dictData.getDictType(),  DictDataConvert.INSTANCE.convertToDTO(dictData));
         return dictData;
     }
 
@@ -53,6 +59,7 @@ public class DictDataServiceImpl extends ServiceImpl<DictDataMapper, DictData> i
         }
         DictData dictData = DictDataConvert.INSTANCE.convertUpdateReqVO(dictDataUpdateReqVO);
         dictDataMapper.updateById(dictData);
+        dictDataCacheService.putDictData(dictData.getDictType(),  DictDataConvert.INSTANCE.convertToDTO(dictData));
         return dictData;
     }
 
@@ -64,12 +71,23 @@ public class DictDataServiceImpl extends ServiceImpl<DictDataMapper, DictData> i
     @Override
     @Transactional
     public Boolean del(Integer id) {
+        DictData dictData = dictDataMapper.selectById(id);
         dictDataMapper.deleteById(id);
+        dictDataCacheService.removeDictData(dictData.getDictType());
         return true;
     }
 
     @Override
     public List<DictData> listAll() {
         return dictDataMapper.listAll();
+    }
+
+    @Override
+    public void initDictDataCache() {
+        List<DictData> dictDataList = dictDataMapper.listAll();
+        List<DictDataDTO> dictDataDTOList =  DictDataConvert.INSTANCE.convertToDTOList(dictDataList);
+        for (DictDataDTO dictDataDTO : dictDataDTOList) {
+            dictDataCacheService.putDictData(dictDataDTO.getDictType(), dictDataDTO);
+        }
     }
 }
