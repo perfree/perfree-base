@@ -55,4 +55,6 @@ public interface DictDataConvert {
 
     DictDataDTO convertToDTO(DictData dictData);
 
+    List<DictDataRespVO> convertDTOListToRespVOList(List<DictDataDTO> allDictData);
+
 }

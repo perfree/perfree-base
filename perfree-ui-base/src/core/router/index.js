@@ -11,6 +11,8 @@ import _import from "@/core/utils/_import.js";
 import {getAllRouter, initMenu} from "@/core/utils/perfree.js";
 import RegisterView from "@/core/views/register/RegisterView.vue";
 import {userInfo} from "@/core/api/system.js";
+import {listAllCacheApi} from "@/core/api/dictData.js";
+import {useDictStore} from "@/core/stores/dictStore.js";
 
 const router = createRouter({
     history: createWebHistory(),
@@ -67,7 +69,7 @@ router.beforeEach((to, from, next) => {
     initMenu().then(() => {
         let allRouter = [];
         getAllRouter(commonStore.menuList, allRouter);
-        Promise.all([genRoute(allRouter)], initUserInfo()).then(([r, s]) => {
+        Promise.all([genRoute(allRouter)], initUserInfo(), initDict()).then(([r, s, d]) => {
             router.addRoute(  {
                 path: '/:pathMatch(.*)*',
                 name: 'NotFound',
@@ -78,6 +80,16 @@ router.beforeEach((to, from, next) => {
         })
     });
 });
+
+function initDict() {
+    const  useDict = useDictStore()
+    return new Promise( (resolve, reject) => {
+        listAllCacheApi().then(res => {
+            useDict.setDictList(res.data);
+            resolve();
+        });
+    });
+}
 
 function initUserInfo() {
     return new Promise( (resolve, reject) => {

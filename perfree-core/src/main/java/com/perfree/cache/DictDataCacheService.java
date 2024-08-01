@@ -5,6 +5,9 @@ import com.google.common.cache.CacheBuilder;
 import com.perfree.system.api.dictData.dto.DictDataDTO;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author Perfree
  * @description 数据字典缓存相关
@@ -48,6 +51,19 @@ public class DictDataCacheService {
             }
         }
         return null;
+    }
+
+    /**
+     * 获取所有值
+     * @return DictDataDTO
+     */
+    public List<DictDataDTO> getAllDictData() {
+        List<DictDataDTO> result = new ArrayList<>();
+        for (String dictType : dictDataCache.asMap().keySet()) {
+            DictDataDTO dictDataDTO = dictDataCache.getIfPresent(dictType);
+            result.add(dictDataDTO);
+        }
+        return result;
     }
 
     /**
