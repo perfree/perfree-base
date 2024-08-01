@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.perfree.mapper.DictDataMapper">
+
+    <select id="listByStatus" resultType="com.perfree.model.DictData">
+        select t1.* FROM p_dict_data t1 LEFT JOIN p_dict t2 ON t1.parentDictType = t2.dictType
+        where t1.status = #{status} and t2.status = #{status} ORDER BY t1.seq asc
+    </select>
+</mapper>

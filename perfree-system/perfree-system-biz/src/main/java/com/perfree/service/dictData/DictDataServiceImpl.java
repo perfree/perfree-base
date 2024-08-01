@@ -5,6 +5,7 @@ import com.perfree.cache.DictDataCacheService;
 import com.perfree.commons.common.PageResult;
 import com.perfree.commons.exception.ServiceException;
 import com.perfree.commons.utils.SortingFieldUtils;
+import com.perfree.constant.DictConstant;
 import com.perfree.controller.auth.dictData.vo.*;
 import com.perfree.convert.dictData.DictDataConvert;
 import com.perfree.enums.ErrorCode;
@@ -84,7 +85,7 @@ public class DictDataServiceImpl extends ServiceImpl<DictDataMapper, DictData> i
 
     @Override
     public void initDictDataCache() {
-        List<DictData> dictDataList = dictDataMapper.listAll();
+        List<DictData> dictDataList = dictDataMapper.listByStatus(DictConstant.DICT_STATUS_ENABLE);
         List<DictDataDTO> dictDataDTOList =  DictDataConvert.INSTANCE.convertToDTOList(dictDataList);
         for (DictDataDTO dictDataDTO : dictDataDTOList) {
             dictDataCacheService.putDictData(dictDataDTO.getDictType(), dictDataDTO);

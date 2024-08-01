@@ -8,31 +8,36 @@ export const useDictStore = defineStore('dictList',{
         getDictList() {
             return this.dictList
         },
-        getValueByType() {
+        getByType() {
             return (dictType) => {
                 let index = this.dictList.findIndex((dict) => dict.dictType === dictType);
                 if (index >= 0) {
-                    return this.dictList[index].dictValue;
+                    return this.dictList[index];
                 }
                 return '';
             };
         },
-        getValueByLabel() {
+        getByLabel() {
             return (dictLabel) => {
                 let index = this.dictList.findIndex((dict) => dict.dictLabel === dictLabel);
                 if (index >= 0) {
-                    return this.dictList[index].dictValue;
+                    return this.dictList[index];
                 }
                 return '';
             };
         },
-        getLabelByValue() {
+        getByValue() {
             return (dictValue) => {
                 let index = this.dictList.findIndex((dict) => dict.dictValue === dictValue);
                 if (index >= 0) {
-                    return this.dictList[index].dictLabel;
+                    return this.dictList[index];
                 }
                 return '';
+            };
+        },
+        getByParentDictType() {
+            return (parentDictType) => {
+                return this.dictList.filter(item => item.parentDictType === parentDictType);
             };
         }
 

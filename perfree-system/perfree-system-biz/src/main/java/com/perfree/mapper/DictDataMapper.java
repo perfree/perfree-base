@@ -3,6 +3,7 @@ package com.perfree.mapper;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.perfree.commons.common.PageResult;
 import com.perfree.commons.mapper.BaseMapperX;
+import com.perfree.constant.DictConstant;
 import com.perfree.controller.auth.dictData.vo.*;
 import com.perfree.model.DictData;
 import org.apache.commons.lang3.StringUtils;
@@ -47,4 +48,6 @@ public interface DictDataMapper extends BaseMapperX<DictData> {
     default DictData queryByDictType(String dictType){
         return selectOne(new LambdaQueryWrapper<DictData>().eq(DictData::getDictType, dictType));
     }
+
+    List<DictData> listByStatus(@Param("status") Integer status);
 }
