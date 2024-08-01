@@ -66,7 +66,7 @@
               <el-table-column prop="dictLabel" label="字典展示值" min-width="120"/>
               <el-table-column prop="dictValue" label="字典值" min-width="120"/>
               <el-table-column prop="dictExtendValue" label="扩展值" min-width="120"/>
-              <el-table-column prop="status" label="状态" min-width="100">
+              <el-table-column prop="status" label="状态" min-width="80">
                 <template #default="scope">
                   <el-tag class="ml-2" type="success" v-if="scope.row.status === 0">启用</el-tag>
                   <el-tag class="ml-2" type="danger" v-else>禁用</el-tag>
