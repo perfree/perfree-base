@@ -1,0 +1,37 @@
+package com.perfree.controller.auth.user.vo;
+
+import com.alibaba.excel.annotation.*;
+import com.perfree.commons.excel.*;
+import com.perfree.constant.UserConstant;
+import lombok.*;
+
+#foreach ($column in $columnList)
+#if (${column.listOperation})
+#if (${column.javaType} == "BigDecimal")
+import java.math.BigDecimal;
+#end
+#if (${column.javaType} == "LocalDateTime")
+import java.time.LocalDateTime;
+#end
+#end
+#end
+
+@Data
+public class ${table.className}ExcelVO {
+#foreach ($column in $columnList)
+    #if(${column.listOperation})
+
+    #if ("$!column.dictType" != "")
+    @ExcelProperty("${column.columnComment}", converter = DictConvert.class)
+    @DictFormat("${column.dictType}")
+    private ${column.javaType} ${column.javaField};
+    #else
+    @ExcelProperty("${column.columnComment}")
+    #if (${column.javaType} == "LocalDateTime")
+    @DateTimeFormat("yyyy-MM-dd HH:mm:ss")
+    #end
+    private ${column.javaType} ${column.javaField};
+    #end
+    #end
+#end
+}

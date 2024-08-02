@@ -50,4 +50,6 @@ public class CodegenColumn extends BaseModel implements Serializable {
 
     private Integer queryType;
 
+    private String dictType;
+
 }

@@ -53,4 +53,11 @@ public interface ${table.className}Service extends IService<${table.className}> 
      * @return List<${table.className}>
      */
     List<${table.className}> listAll();
+
+    /**
+     * 查询要导出的数据
+     * @param exportReqVO exportReqVO
+     * @return List<${table.className}>
+     */
+    List<${table.className}> queryExportData(${table.className}ExportReqVO exportReqVO);
 }

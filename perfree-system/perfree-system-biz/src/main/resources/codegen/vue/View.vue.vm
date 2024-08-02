@@ -23,12 +23,20 @@
         </el-form-item>
       #end
       #if(${column.formType} == "3")
+      #if ("$!column.dictType" != "")
+        <el-form-item label="${column.columnComment}">
+          <el-select v-model="searchForm.${column.javaField}" placeholder="请选择${column.columnComment}" clearable  style="width: 200px">
+            <el-option :key="dict.dictValue" :label="dict.dictLabel" :value="dict.dictValue" v-for="dict in getDictByParentDictType('${column.dictType}')" />
+          </el-select>
+        </el-form-item>
+      #else
         <el-form-item label="${column.columnComment}">
           <el-select v-model="searchForm.${column.javaField}" placeholder="请选择${column.columnComment}" clearable  style="width: 200px">
             <el-option :key="0" :label="'示例值1(具体请修改代码)'" :value="0" />
             <el-option :key="1" :label="'示例值2(具体请修改代码)'" :value="1" />
           </el-select>
         </el-form-item>
+      #end
       #end
       #if(${column.formType} == "4")
       #if (${column.queryType} == "7")
@@ -63,6 +71,7 @@
         <el-form-item>
           <el-button type="primary" @click="initList" :icon="Search">查询</el-button>
           <el-button :icon="Refresh" @click="resetSearchForm">重置</el-button>
+          <el-button :icon="Download" @click="exportExcel" v-hasPermission="['admin:${table.lowerFirstClassName}:export']">导出</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -88,7 +97,15 @@
           </template>
         </el-table-column>
         #else
+        #if ("$!column.dictType" != "")
+        <el-table-column prop="${column.javaField}" label="${column.columnComment}" min-width="80">
+          <template v-slot="scope">
+            {{getDictByParentDictTypeAndValue('${column.dictType}', scope.row.${column.javaField})?.dictLabel}}
+          </template>
+        </el-table-column>
+        #else
         <el-table-column prop="${column.javaField}" label="${column.columnComment}" min-width="150"/>
+        #end
         #end
         #end
         #end
@@ -141,12 +158,20 @@
         </el-form-item>
         #end
         #if(${column.formType} == "3")
-        <el-form-item label="${column.columnComment}" prop="${column.javaField}">
-          <el-select v-model="addForm.${column.javaField}" placeholder="请选择${column.columnComment}" clearable  style="width: 200px">
-            <el-option :key="0" :label="'示例值1(具体请修改代码)'" :value="0" />
-            <el-option :key="1" :label="'示例值2(具体请修改代码)'" :value="1" />
-          </el-select>
-        </el-form-item>
+        #if ("$!column.dictType" != "")
+          <el-form-item label="${column.columnComment}" prop="${column.javaField}">
+            <el-select v-model="addForm.${column.javaField}" placeholder="请选择${column.columnComment}" clearable  style="width: 200px">
+              <el-option :key="dict.dictValue" :label="dict.dictLabel" :value="dict.dictValue" v-for="dict in getDictByParentDictType('${column.dictType}')" />
+            </el-select>
+          </el-form-item>
+        #else
+          <el-form-item label="${column.columnComment}" prop="${column.javaField}">
+            <el-select v-model="addForm.${column.javaField}" placeholder="请选择${column.columnComment}" clearable  style="width: 200px">
+              <el-option :key="0" :label="'示例值1(具体请修改代码)'" :value="0" />
+              <el-option :key="1" :label="'示例值2(具体请修改代码)'" :value="1" />
+            </el-select>
+          </el-form-item>
+        #end
         #end
         #if(${column.formType} == "4")
         <el-form-item label="${column.columnComment}" prop="${column.javaField}">
@@ -177,168 +202,181 @@
   </div>
 </template>
 <script setup>
-  import {ElMessage, ElMessageBox} from "element-plus";
-  import {handleTree, parseTime} from "@/core/utils/perfree.js";
-  import {${table.lowerFirstClassName}AddApi, ${table.lowerFirstClassName}DelApi, ${table.lowerFirstClassName}GetRoleApi, ${table.lowerFirstClassName}PageApi, ${table.lowerFirstClassName}UpdateApi} from "../api/${table.lowerFirstClassName}.js";
-  import {Delete, Edit, Filter, Plus, Refresh, Search} from "@element-plus/icons-vue";
-  import {reactive, ref} from "vue";
+import {ElMessage, ElMessageBox} from "element-plus";
+import {handleTree, parseTime} from "@/core/utils/perfree.js";
+import {${table.lowerFirstClassName}AddApi, ${table.lowerFirstClassName}DelApi, ${table.lowerFirstClassName}GetRoleApi, ${table.lowerFirstClassName}PageApi, ${table.lowerFirstClassName}UpdateApi, ${table.lowerFirstClassName}ExportExcelApi} from "../api/${table.lowerFirstClassName}.js";
+import {Delete, Edit, Filter, Plus, Refresh, Search, Download} from "@element-plus/icons-vue";
+import {reactive, ref} from "vue";
+import {getDictByParentDictType, getDictByParentDictTypeAndValue} from "@/core/utils/dictUtils.js";
 
-  const searchForm = ref({
+const searchForm = ref({
+  pageNo: 1,
+  pageSize: 10,
+  total: 0,
+  #foreach ($column in $columnList)
+  #if(${column.listQueryOperation})
+  ${column.javaField}: #if (${column.queryType} == "7") [] #else null #end,
+  #end
+  #end
+})
+const addForm = ref({
+  #foreach ($column in $columnList)
+  #if(${column.updateOperation} || ${column.insertOperation})
+  ${column.javaField}: null,
+  #end
+  #end
+});
+const addRule = reactive({
+  #foreach ($column in $columnList)
+  #if((${column.updateOperation} || ${column.insertOperation}) && !${column.nullable} && !${column.primaryKey})
+  ${column.javaField}: [{required: true, message: '${column.columnComment}不能为空', trigger: 'blur'}],
+  #end
+  #end
+});
+
+const searchFormRef = ref();
+const addFormRef = ref();
+let open = ref(false);
+let title = ref('');
+let tableData = ref([]);
+let loading = ref(false);
+
+/**
+ * 添加提交
+ */
+function submitAddForm() {
+  addFormRef.value.validate(valid => {
+    if (valid) {
+      if (addForm.value.id) {
+        ${table.lowerFirstClassName}UpdateApi(addForm.value).then((res) => {
+          if (res.code === 200) {
+            ElMessage.success('操作成功');
+            open.value = false;
+            resetAddForm();
+            initList();
+          } else {
+            ElMessage.error(res.msg);
+          }
+        })
+      } else {
+        ${table.lowerFirstClassName}AddApi(addForm.value).then((res) => {
+          if (res.code === 200) {
+            ElMessage.success('操作成功');
+            open.value = false;
+            resetAddForm();
+            initList();
+          } else {
+            ElMessage.error(res.msg);
+          }
+        })
+      }
+    }
+  })
+}
+
+/**
+ * 新增
+ */
+function handleAdd() {
+  resetAddForm();
+  title.value = '添加${table.comment}';
+  open.value = true;
+}
+
+/**
+ * 修改
+ */
+function handleUpdate(row) {
+  resetAddForm();
+  title.value = '修改${table.comment}';
+  open.value = true;
+  ${table.lowerFirstClassName}GetRoleApi(row.id).then((res) => {
+    addForm.value = res.data;
+  })
+}
+
+/**
+ * 删除
+ * @param row
+ */
+function handleDelete(row) {
+  let keys = Object.keys(row);
+  ElMessageBox.confirm('确定要删除[' + row[keys[0]] + ']吗？', '提示', {
+    confirmButtonText: '确认',
+    cancelButtonText: '取消',
+    type: 'warning',
+  }).then(() => {
+    ${table.lowerFirstClassName}DelApi(row.id).then((res) => {
+      if (res.code === 200 && res.data) {
+        ElMessage.success('删除成功');
+        initList();
+      } else {
+        ElMessage.error(res.msg);
+      }
+    });
+  }).catch(() => {
+  })
+}
+
+/**
+ * 加载列表
+ */
+function initList() {
+  loading.value = true;
+  ${table.lowerFirstClassName}PageApi(searchForm.value).then((res) => {
+    tableData.value = res.data.list;
+    searchForm.value.total = res.data.total;
+    loading.value = false;
+  })
+}
+
+/**
+ * 重置搜索表单
+ */
+function resetSearchForm() {
+  searchForm.value = {
     pageNo: 1,
     pageSize: 10,
     total: 0,
     #foreach ($column in $columnList)
     #if(${column.listQueryOperation})
-    ${column.javaField}: #if (${column.queryType} == "7") [] #else null #end,
+    ${column.javaField}:  #if (${column.queryType} == "7") [] #else null #end,
     #end
     #end
-  })
-  const addForm = ref({
+  }
+  searchFormRef.value.resetFields();
+  initList();
+}
+
+/**
+ * 重置添加表单
+ */
+function resetAddForm() {
+  addForm.value = {
     #foreach ($column in $columnList)
     #if(${column.updateOperation} || ${column.insertOperation})
     ${column.javaField}: null,
     #end
     #end
-  });
-  const addRule = reactive({
-    #foreach ($column in $columnList)
-    #if((${column.updateOperation} || ${column.insertOperation}) && !${column.nullable} && !${column.primaryKey})
-    ${column.javaField}: [{required: true, message: '${column.columnComment}不能为空', trigger: 'blur'}],
-    #end
-    #end
-  });
-
-  const searchFormRef = ref();
-  const addFormRef = ref();
-  let open = ref(false);
-  let title = ref('');
-  let tableData = ref([]);
-  let loading = ref(false);
-
-  /**
-   * 添加提交
-   */
-  function submitAddForm() {
-    addFormRef.value.validate(valid => {
-      if (valid) {
-        if (addForm.value.id) {
-          ${table.lowerFirstClassName}UpdateApi(addForm.value).then((res) => {
-            if (res.code === 200) {
-              ElMessage.success('操作成功');
-              open.value = false;
-              resetAddForm();
-              initList();
-            } else {
-              ElMessage.error(res.msg);
-            }
-          })
-        } else {
-          ${table.lowerFirstClassName}AddApi(addForm.value).then((res) => {
-            if (res.code === 200) {
-              ElMessage.success('操作成功');
-              open.value = false;
-              resetAddForm();
-              initList();
-            } else {
-              ElMessage.error(res.msg);
-            }
-          })
-        }
-      }
-    })
   }
-
-  /**
-   * 新增
-   */
-  function handleAdd() {
-    resetAddForm();
-    title.value = '添加${table.comment}';
-    open.value = true;
+  if (addFormRef.value) {
+    addFormRef.value.resetFields();
   }
+}
 
-  /**
-   * 修改
-   */
-  function handleUpdate(row) {
-    resetAddForm();
-    title.value = '修改${table.comment}';
-    open.value = true;
-    ${table.lowerFirstClassName}GetRoleApi(row.id).then((res) => {
-      addForm.value = res.data;
-    })
-  }
+/**
+ * 导出excel
+ */
+function exportExcel() {
+  loading.value = true;
+  ${table.lowerFirstClassName}ExportExcelApi(searchForm.value).then(res => {
+    loading.value = false;
+  }).catch(e => {
+    ElMessage.error('导出失败');
+    loading.value = false;
+  })
+}
 
-  /**
-   * 删除
-   * @param row
-   */
-  function handleDelete(row) {
-    let keys = Object.keys(row);
-    ElMessageBox.confirm('确定要删除[' + row[keys[0]] + ']吗？', '提示', {
-      confirmButtonText: '确认',
-      cancelButtonText: '取消',
-      type: 'warning',
-    }).then(() => {
-      ${table.lowerFirstClassName}DelApi(row.id).then((res) => {
-        if (res.code === 200 && res.data) {
-          ElMessage.success('删除成功');
-          initList();
-        } else {
-          ElMessage.error(res.msg);
-        }
-      });
-    }).catch(() => {
-    })
-  }
-
-  /**
-   * 加载列表
-   */
-  function initList() {
-    loading.value = true;
-    ${table.lowerFirstClassName}PageApi(searchForm.value).then((res) => {
-      tableData.value = res.data.list;
-      searchForm.value.total = res.data.total;
-      loading.value = false;
-    })
-  }
-
-  /**
-   * 重置搜索表单
-   */
-  function resetSearchForm() {
-    searchForm.value = {
-      pageNo: 1,
-      pageSize: 10,
-      total: 0,
-      #foreach ($column in $columnList)
-      #if(${column.listQueryOperation})
-      ${column.javaField}:  #if (${column.queryType} == "7") [] #else null #end,
-      #end
-      #end
-    }
-    searchFormRef.value.resetFields();
-    initList();
-  }
-
-  /**
-   * 重置添加表单
-   */
-  function resetAddForm() {
-    addForm.value = {
-      #foreach ($column in $columnList)
-      #if(${column.updateOperation} || ${column.insertOperation})
-      ${column.javaField}: null,
-      #end
-      #end
-    }
-    if (addFormRef.value) {
-      addFormRef.value.resetFields();
-    }
-  }
-
-
-  initList();
+initList();
 </script>
 <style scoped></style>

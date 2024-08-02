@@ -69,7 +69,6 @@ public class DictDataController {
 
     @GetMapping("/listAll")
     @Operation(summary = "获取所有数据字典值")
-    @PreAuthorize("@ss.hasPermission('admin:dictData:listAll')")
     public CommonResult<List<DictDataRespVO>> listAll() {
         return success(DictDataConvert.INSTANCE.convertListRespVO(dictDataService.listAll()));
     }

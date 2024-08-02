@@ -24,27 +24,31 @@ public class CodegenEngine {
 
     private static final Map<String, String> BASE_SERVER_TEMPLATES = MapUtil.<String, String>builder(new LinkedHashMap<>())
             // controller
-            .put("codegen/java/controller/Controller.vm", "${baseDir}/${moduleName}-biz/${packagePath}/controller/auth/${lowerFirstClassName}/${className}Controller.java")
+            .put("codegen/java/controller/Controller.vm", "${baseDir}/${moduleName}-biz/src/main/java/${packagePath}/controller/auth/${lowerFirstClassName}/${className}Controller.java")
 
             // model
-            .put("codegen/java/model/Model.vm", "${baseDir}/${moduleName}-biz/${packagePath}/model/${className}.java")
+            .put("codegen/java/model/Model.vm", "${baseDir}/${moduleName}-biz/src/main/java/${packagePath}/model/${className}.java")
 
             // mapper
-            .put("codegen/java/mapper/Mapper.vm", "${baseDir}/${moduleName}-biz/${packagePath}/mapper/${className}Mapper.java")
+            .put("codegen/java/mapper/Mapper.vm", "${baseDir}/${moduleName}-biz/src/main/java/${packagePath}/mapper/${className}Mapper.java")
 
             // service
-            .put("codegen/java/service/Service.vm", "${baseDir}/${moduleName}-biz/${packagePath}/service/${lowerFirstClassName}/${className}Service.java")
-            .put("codegen/java/service/ServiceImpl.vm", "${baseDir}/${moduleName}-biz/${packagePath}/service/${lowerFirstClassName}/${className}ServiceImpl.java")
+            .put("codegen/java/service/Service.vm", "${baseDir}/${moduleName}-biz/src/main/java/${packagePath}/service/${lowerFirstClassName}/${className}Service.java")
+            .put("codegen/java/service/ServiceImpl.vm", "${baseDir}/${moduleName}-biz/src/main/java/${packagePath}/service/${lowerFirstClassName}/${className}ServiceImpl.java")
 
             // VO
-            .put("codegen/java/controller/vo/BaseVO.vm", "${baseDir}/${moduleName}-biz/${packagePath}/controller/auth/${lowerFirstClassName}/vo/${className}BaseVO.java")
-            .put("codegen/java/controller/vo/RespVO.vm", "${baseDir}/${moduleName}-biz/${packagePath}/controller/auth/${lowerFirstClassName}/vo/${className}RespVO.java")
-            .put("codegen/java/controller/vo/PageReqVO.vm", "${baseDir}/${moduleName}-biz/${packagePath}/controller/auth/${lowerFirstClassName}/vo/${className}PageReqVO.java")
-            .put("codegen/java/controller/vo/AddReqVO.vm", "${baseDir}/${moduleName}-biz/${packagePath}/controller/auth/${lowerFirstClassName}/vo/${className}AddReqVO.java")
-            .put("codegen/java/controller/vo/UpdateReqVO.vm", "${baseDir}/${moduleName}-biz/${packagePath}/controller/auth/${lowerFirstClassName}/vo/${className}UpdateReqVO.java")
+            .put("codegen/java/controller/vo/BaseVO.vm", "${baseDir}/${moduleName}-biz/src/main/java/${packagePath}/controller/auth/${lowerFirstClassName}/vo/${className}BaseVO.java")
+            .put("codegen/java/controller/vo/RespVO.vm", "${baseDir}/${moduleName}-biz/src/main/java/${packagePath}/controller/auth/${lowerFirstClassName}/vo/${className}RespVO.java")
+            .put("codegen/java/controller/vo/PageReqVO.vm", "${baseDir}/${moduleName}-biz/src/main/java/${packagePath}/controller/auth/${lowerFirstClassName}/vo/${className}PageReqVO.java")
+            .put("codegen/java/controller/vo/AddReqVO.vm", "${baseDir}/${moduleName}-biz/src/main/java/${packagePath}/controller/auth/${lowerFirstClassName}/vo/${className}AddReqVO.java")
+            .put("codegen/java/controller/vo/UpdateReqVO.vm", "${baseDir}/${moduleName}-biz/src/main/java/${packagePath}/controller/auth/${lowerFirstClassName}/vo/${className}UpdateReqVO.java")
+            .put("codegen/java/controller/vo/ExcelVO.vm", "${baseDir}/${moduleName}-biz/src/main/java/${packagePath}/controller/auth/${lowerFirstClassName}/vo/${className}ExcelVO.java")
 
             // convert
-            .put("codegen/java/convert/Convert.vm", "${baseDir}/${moduleName}-biz/${packagePath}/convert/${lowerFirstClassName}/${className}Convert.java")
+            .put("codegen/java/convert/Convert.vm", "${baseDir}/${moduleName}-biz/src/main/java/${packagePath}/convert/${lowerFirstClassName}/${className}Convert.java")
+
+            // mapper xml
+            .put("codegen/java/mapper/MapperXml.vm", "${baseDir}/${moduleName}-biz/src/main/resources/mapper/${className}Mapper.xml")
             .build();
     private static final Map<String, String> BASE_VUE_TEMPLATES = MapUtil.<String, String>builder(new LinkedHashMap<>())
             .put("codegen/vue/index.js.vm", "${baseDir}/perfree-ui-base/src/modules/${frontModuleName}/index.js")

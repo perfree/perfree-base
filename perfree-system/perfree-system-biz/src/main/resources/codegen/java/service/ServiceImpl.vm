@@ -27,7 +27,6 @@ public class ${table.className}ServiceImpl extends ServiceImpl<${table.className
 
     @Override
     public PageResult<${table.className}> ${table.lowerFirstClassName}Page(${table.className}PageReqVO pageVO) {
-        SortingFieldUtils.handleDefaultSortingField(pageVO);
         return ${table.lowerFirstClassName}Mapper.selectPage(pageVO);
     }
 
@@ -62,5 +61,10 @@ public class ${table.className}ServiceImpl extends ServiceImpl<${table.className
     @Override
     public List<${table.className}> listAll() {
         return ${table.lowerFirstClassName}Mapper.listAll();
+    }
+
+    @Override
+    public List<${table.className}> queryExportData(${table.className}ExportReqVO exportReqVO) {
+        return ${table.lowerFirstClassName}Mapper.queryExportData(exportReqVO);
     }
 }

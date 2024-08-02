@@ -28,6 +28,11 @@ public class ${table.className}UpdateReqVO extends ${table.className}BaseVO{
     #if(${column.updateOperation} && (!${column.insertOperation} || !${column.listOperation}))
 
     @Schema(description = "${column.columnComment}"#if (!${column.nullable}), requiredMode = Schema.RequiredMode.REQUIRED#end)
+    #if (${column.javaType} == "String")
+    @NotEmpty(message = "${column.columnComment}不能为空")
+    #else
+    @NotNull(message = "${column.columnComment}不能为空")
+    #end
     #if (${column.javaType} == "LocalDateTime")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     #end

@@ -145,6 +145,14 @@
             </template>
           </el-table-column>
 
+          <el-table-column prop="dictType" label="数据字典" min-width="120">
+            <template v-slot="scope">
+              <el-select v-model="scope.row.dictType" placeholder="数据字典" style="width: 120px">
+                <el-option :key="dict.id" :label="dict.dictName" :value="dict.dictType" v-for="dict in dictList" />
+              </el-select>
+            </template>
+          </el-table-column>
+
         </el-table>
       </el-tab-pane>
 
@@ -163,6 +171,7 @@ import {closeTab, toPage} from "@/core/utils/tabs.js";
 import {ElMessage} from "element-plus";
 import {reactive, ref} from "vue";
 import {useRoute} from "vue-router";
+import {dictListAllApi} from "../api/dict.js";
 
 let activeTab = ref('base');
 const route = useRoute();
@@ -177,6 +186,7 @@ const baseForm = ref({
   parentMenuId: '-1',
   packageName: ''
 });
+
 const baseRule = reactive({
   scene: [{required: true, message: '请选择生成场景', trigger: 'blur'}],
   moduleName: [{required: true, message: '请输入模块/插件名称', trigger: 'blur'}],
@@ -184,10 +194,13 @@ const baseRule = reactive({
   className: [{required: true, message: '请输入类名称', trigger: 'blur'}],
   packageName: [{required: true, message: '请输入包名称', trigger: 'blur'}],
 });
+
 const baseFormRef = ref();
 let tableData = ref([])
 let treeData = ref([]);
 let loading = ref(false)
+let dictList = ref([])
+
 const treeSelectProps = reactive({
   children: 'children',
   label: 'name',
@@ -228,11 +241,18 @@ function submitConfig() {
   });
 }
 
+function initDictList() {
+  dictListAllApi().then(res => {
+    dictList.value = res.data;
+  })
+}
+
 function back() {
   closeTab(route.fullPath)
   toPage('', '/admin/codegen', '')
 }
 
+initDictList();
 initMenuTree();
 initInfo();
 </script>

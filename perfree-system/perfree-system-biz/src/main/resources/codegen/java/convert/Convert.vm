@@ -49,4 +49,11 @@ public interface ${table.className}Convert {
      * @return List<${table.className}RespVO>
      */
     List<${table.className}RespVO> convertListRespVO(List<${table.className}> list);
+
+    /**
+     * model List转ExcelVO List
+     * @param list list
+     * @return List<${table.className}ExcelVO>
+     */
+    List<${table.className}ExcelVO> convertToExcelVOList(List<${table.className}> list);
 }

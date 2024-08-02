@@ -14,6 +14,25 @@ export function ${table.lowerFirstClassName}DelApi(${table.primaryColumn}) {
     return axios.delete('/api/auth/${table.lowerFirstClassName}/del?${table.primaryColumn}=' + ${table.primaryColumn});
 }
 
-export function ${table.lowerFirstClassName}GetRoleApi(${table.primaryColumn}) {
+export function ${table.lowerFirstClassName}GetApi(${table.primaryColumn}) {
     return axios.get('/api/auth/${table.lowerFirstClassName}/get?${table.primaryColumn}=' + ${table.primaryColumn});
+}
+
+export function ${table.lowerFirstClassName}ListAllApi() {
+    return axios.get('/api/auth/${table.lowerFirstClassName}/listAll');
+}
+
+export async function ${table.lowerFirstClassName}ExportExcelApi(data) {
+    try {
+        const response = await axios.post('/api/auth/${table.lowerFirstClassName}/export', data, {responseType: 'blob'});
+        const url = window.URL.createObjectURL(new Blob([response]));
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', '${table.comment}数据.xlsx');
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+    } catch (error) {
+        console.error('下载 Excel 文件失败', error);
+    }
 }

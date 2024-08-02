@@ -29,7 +29,7 @@ public class ${table.className}BaseVO {
 
     @Schema(description = "${column.columnComment}"#if (!${column.nullable}), requiredMode = Schema.RequiredMode.REQUIRED#end)
     #if (!${column.nullable})
-    #if (${field.fieldType} == 'String')
+    #if (${column.javaType} == "String")
     @NotEmpty(message = "${column.columnComment}不能为空")
     #else
     @NotNull(message = "${column.columnComment}不能为空")

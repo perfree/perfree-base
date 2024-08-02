@@ -36,4 +36,6 @@ public class CodegenColumnBaseVO {
 
     private Integer queryType;
 
+    private String dictType;
+
 }

@@ -1,7 +1,7 @@
 <template>
   <div class="page">
     <el-row :gutter="20">
-      <el-col :span="5">
+      <el-col :span="6" v-loading="loading">
         <el-tree
             style="width: 100%;max-height: 700px;overflow: auto;"
             :data="fileList"
@@ -27,7 +27,7 @@
           </template>
         </el-tree>
       </el-col>
-      <el-col :span="19">
+      <el-col :span="18" v-loading="fileContentLoading">
         <codemirror
             v-model="code"
             placeholder="请选择左侧要编辑的文件..."
@@ -57,6 +57,7 @@ import {useRoute} from "vue-router";
 const route = useRoute();
 let fileList = ref([]);
 let loading = ref(true)
+let fileContentLoading = ref(true)
 const defaultProps = {
   children: 'children',
   label: 'fileName',
@@ -68,12 +69,20 @@ const treeRef = ref();
 // 编辑器
 const code = ref(``)
 const extensions = [javascript(), oneDark]
-const supportEditFileType = ['java', 'js', 'css', 'html', 'json', 'yaml', 'less', 'scss', 'txt', 'md','vue']
+const supportEditFileType = ['java', 'js', 'css', 'html', 'json', 'yaml', 'less', 'scss', 'txt', 'md','vue', 'xml']
 function initFileList() {
   loading.value = true;
   getCodeFileList(route.params.id).then(res => {
     if (res.code === 200) {
+      let defaultOpenFile = null;
+      res.data.forEach(r => {
+        if (r.fileType !== 'dir' && defaultOpenFile === null){
+          defaultOpenFile = r;
+          activeFileId.value = [r.id]
+        }
+      })
       fileList.value = handleTree(res.data, "id", "pid",'children', '-1');
+      handleNodeClick(defaultOpenFile);
     } else {
       ElMessage.error(res.msg);
     }
@@ -93,7 +102,7 @@ function handleNodeClick(data) {
     tableId: route.params.id,
     path:  data.filePath
   }
-  loading.value = true;
+  fileContentLoading.value = true;
   getCodeFileContent(param).then(res => {
     if (res.code === 200) {
       activeFileId.value = [data.id];
@@ -103,7 +112,7 @@ function handleNodeClick(data) {
     } else {
       ElMessage.error(res.msg);
     }
-    loading.value = false;
+    fileContentLoading.value = false;
   })
 }
 
