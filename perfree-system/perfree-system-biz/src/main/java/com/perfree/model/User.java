@@ -11,6 +11,7 @@ import lombok.Setter;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 /**
  * <p>
@@ -75,4 +76,29 @@ public class User extends BaseModel implements Serializable {
      * 网站
      */
     private String website;
+
+    /**
+     * 备注
+     */
+    private String remark;
+
+    /**
+     * 手机号
+     */
+    private String mobile;
+
+    /**
+     * 性别
+     */
+    private Byte sex;
+
+    /**
+     * 最后登录ip
+     */
+    private String loginIp;
+
+    /**
+     * 最后登录时间
+     */
+    private LocalDateTime loginDate;
 }

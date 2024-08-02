@@ -133,6 +133,9 @@ const handleLogin = () => {
           getCode();
         }
       }).catch(() => {
+        loginForm.value.code = "";
+        loading.value = false;
+        getCode();
       });
     }
   })

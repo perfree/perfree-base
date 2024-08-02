@@ -2,7 +2,7 @@ package com.perfree.controller.auth.user;
 
 import com.perfree.commons.common.CommonResult;
 import com.perfree.commons.common.PageResult;
-import com.perfree.commons.utils.WebUtils;
+import com.perfree.commons.excel.ExcelUtils;
 import com.perfree.controller.auth.user.vo.*;
 import com.perfree.convert.user.UserConvert;
 import com.perfree.model.User;
@@ -94,6 +94,6 @@ public class UserController {
     @PreAuthorize("@ss.hasPermission('admin:user:export')")
     public void export(@RequestBody UserExportReqVO exportReqVO, HttpServletResponse response) {
         List<User> userList = userService.queryExportData(exportReqVO);
-        WebUtils.renderExcel(response, UserConvert.INSTANCE.convertToExcelVOList(userList), UserExcelVO.class, "用户数据","用户数据.xlsx");
+        ExcelUtils.renderExcel(response, UserConvert.INSTANCE.convertToExcelVOList(userList), UserExcelVO.class, "用户数据","用户数据.xlsx");
     }
 }

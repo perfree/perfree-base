@@ -43,6 +43,7 @@ for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
 const pinia = createPinia()
 pinia.use(piniaPersist)
 app.use(pinia)
+window.pinia = pinia;
 
 //FontAwesomeIcon
 library.add(fas, far, fab)

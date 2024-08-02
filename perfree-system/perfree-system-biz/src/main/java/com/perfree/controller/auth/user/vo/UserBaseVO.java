@@ -7,6 +7,8 @@ import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 
+import java.time.LocalDateTime;
+
 @Data
 public class UserBaseVO {
 
@@ -33,4 +35,13 @@ public class UserBaseVO {
 
     @Schema(description = "网站")
     private String website;
+
+    @Schema(description = "备注")
+    private String remark;
+
+    @Schema(description = "手机号")
+    private String mobile;
+
+    @Schema(description = "性别")
+    private Byte sex;
 }

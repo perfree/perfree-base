@@ -18,4 +18,10 @@ public class UserRespVO extends UserBaseVO {
 
     @Schema(description = "更新时间")
     private LocalDateTime updateTime;
+
+    @Schema(description = "最后登录ip")
+    private String loginIp;
+
+    @Schema(description = "最后登录时间")
+    private LocalDateTime loginDate;
 }

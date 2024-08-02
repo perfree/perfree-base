@@ -2,11 +2,13 @@ package com.perfree.service.user;
 
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.crypto.digest.DigestUtil;
+import cn.hutool.extra.servlet.ServletUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.perfree.cache.CaptchaCacheService;
 import com.perfree.cache.OptionCacheService;
 import com.perfree.commons.common.PageResult;
 import com.perfree.commons.exception.ServiceException;
+import com.perfree.commons.utils.WebUtils;
 import com.perfree.constant.OptionConstant;
 import com.perfree.controller.auth.system.vo.LoginUserInfoRespVO;
 import com.perfree.controller.auth.user.vo.*;
@@ -35,6 +37,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
@@ -111,6 +114,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
         Authentication authentication = JwtUtil.getAuthentication(token);
         SecurityContextHolder.getContext().setAuthentication(authentication);
+        // 记录登录时间及IP
+        user.setLoginIp(WebUtils.getClientIP());
+        user.setLoginDate(LocalDateTime.now());
+        userMapper.updateById(user);
         return loginUserRespVO;
     }
 

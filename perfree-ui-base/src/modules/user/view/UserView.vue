@@ -28,17 +28,27 @@
     <div class="table-box">
 
       <el-table :data="tableData" style="width: 100%;height:100%;" row-key="id" v-loading="loading">
-        <el-table-column label="序号" min-width="80" type="index" />
-        <el-table-column prop="userName" label="用户名称" min-width="150" />
-        <el-table-column prop="account" label="账号" min-width="150" />
-        <el-table-column prop="status" label="状态" min-width="100">
+        <el-table-column prop="userName" label="用户名称" min-width="100" />
+        <el-table-column prop="account" label="账号" min-width="100" />
+        <el-table-column prop="status" label="状态" min-width="80">
           <template #default="scope">
             <el-tag class="ml-2" type="success" v-if="scope.row.status === 0">开启</el-tag>
             <el-tag class="ml-2" type="danger" v-else>关闭</el-tag>
           </template>
         </el-table-column>
-        <el-table-column prop="email" label="邮箱" min-width="150" />
+        <el-table-column prop="sex" label="性别" min-width="60">
+          <template v-slot="scope">
+            {{getDictByParentDictTypeAndValue(DICT_TYPE.SEX, scope.row.sex)?.dictLabel}}
+          </template>
+        </el-table-column>
+        <el-table-column prop="email" label="邮箱" min-width="120" />
         <el-table-column prop="website" label="网站" min-width="150" />
+        <el-table-column prop="loginIp" label="最后登录ip" min-width="120" />
+        <el-table-column prop="loginDate" label="最后登录时间" min-width="120" >
+          <template v-slot="scope">
+            <span>{{ parseTime(scope.row.loginDate) }}</span>
+          </template>
+        </el-table-column>
         <el-table-column prop="createTime" label="创建时间" min-width="120" >
           <template v-slot="scope">
             <span>{{ parseTime(scope.row.createTime) }}</span>
@@ -127,12 +137,26 @@
           <el-input v-model="addForm.password" type="password" show-password placeholder="请输入密码" />
         </el-form-item>
 
+        <el-form-item label="性别" prop="sex">
+          <el-select v-model="addForm.sex" placeholder="请选择性别" clearable  style="width: 200px">
+            <el-option :key="dict.dictValue" :label="dict.dictLabel" :value="dict.dictValue" v-for="dict in getDictByParentDictType(DICT_TYPE.SEX)" />
+          </el-select>
+        </el-form-item>
+
+        <el-form-item label="手机号" prop="mobile">
+          <el-input v-model="addForm.mobile" placeholder="请输入手机号" />
+        </el-form-item>
+
         <el-form-item label="邮箱" prop="email">
           <el-input v-model="addForm.email" placeholder="请输入邮箱地址" />
         </el-form-item>
 
         <el-form-item label="网站" prop="website">
           <el-input v-model="addForm.website" placeholder="请输入网站地址" />
+        </el-form-item>
+
+        <el-form-item label="备注" prop="remark">
+          <el-input v-model="addForm.remark" placeholder="请输入备注" :autosize="{ minRows: 3, maxRows: 5 }" type="textarea"/>
         </el-form-item>
       </el-form>
 
@@ -149,8 +173,10 @@
 import {ElMessage, ElMessageBox} from "element-plus";
 import {
   addUserApi,
-  delUserApi, exportExcelApi,
-  getUserApi, getUserRoleApi,
+  delUserApi,
+  exportExcelApi,
+  getUserApi,
+  getUserRoleApi,
   resetPasswordApi,
   updateUserApi,
   updateUserRoleApi,
@@ -160,6 +186,8 @@ import {roleListAllApi} from "../api/role.js";
 import {Delete, Download, Edit, Filter, Plus, Refresh, RefreshLeft, Search} from "@element-plus/icons-vue";
 import {parseTime} from "@/core/utils/perfree.js";
 import {reactive, ref} from "vue";
+import {DICT_TYPE} from "../script/DictConstant.js";
+import {getDictByParentDictType, getDictByParentDictTypeAndValue} from "@/core/utils/dictUtils.js";
 
 const searchForm = ref({
   pageNo: 1,
@@ -174,7 +202,10 @@ const addForm = ref({
   account: '',
   password: '',
   email: '',
-  website: ''
+  website: '',
+  sex: undefined,
+  remark: '',
+  mobile: ''
 });
 const userRoleForm = ref({
   id: '',
@@ -195,6 +226,13 @@ const addRule = reactive({
     { required: true, message: '请输入密码', trigger: 'blur' },
     { min: 5, max: 16, message: '密码必须在5-16字之间', trigger: 'blur' }
   ],
+  email: [{type: "email",message: "请输入正确的邮箱地址",trigger: ["blur", "change"]}],
+  mobile: [ {pattern: /^1[3|456789][0-9]\d{8}$/, message: "请输入正确的手机号码", trigger: "blur"}],
+  website: [{
+    pattern: /^(https?:\/\/)?((?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,6}|(?:\d{1,3}\.){3}\d{1,3})(:\d{1,5})?(\/[^\s]*)?$/,
+    message: "请输入正确的网址",
+    trigger: "blur"
+  }]
 });
 
 const searchFormRef = ref();
@@ -218,7 +256,7 @@ function handleRestPassword(row) {
     cancelButtonText: '取消',
     inputValidator: resetPasswordValidator,
     inputPlaceholder: '请输入新密码',
-    inputErrorMessage: '请输入新密码',
+    inputErrorMessage: '密码必须在5-16字之间',
   }).then(({ value }) => {
     resetPasswordApi({id: row.id, password: value}).then((d) => {
       if (d.code === 200) {
@@ -231,7 +269,14 @@ function handleRestPassword(row) {
 }
 
 function resetPasswordValidator( value) {
-  return value;
+  if (!value){
+    return false;
+  }
+  if (value.length < 4) {
+    return false;
+  }
+  return value.length <= 16;
+
 }
 
 
@@ -324,6 +369,7 @@ function handleUpdate(row) {
   isUpdate.value = true;
   getUserApi(row.id).then((res) => {
     addForm.value = res.data;
+    addForm.value.sex = addForm.value.sex.toString();
     addForm.value.password = '';
   })
 }
@@ -386,7 +432,10 @@ function resetAddForm() {
     account: '',
     password: '',
     email: '',
-    website: ''
+    website: '',
+    sex: undefined,
+    remark: '',
+    mobile: ''
   }
   if (addFormRef.value) {
     addFormRef.value.resetFields();
