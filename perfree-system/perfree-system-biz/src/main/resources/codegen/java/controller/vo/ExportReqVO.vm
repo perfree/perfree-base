@@ -1,0 +1,48 @@
+package ${table.packageName}.controller.auth.${table.lowerFirstClassName}.vo;
+
+import io.swagger.v3.oas.annotations.media.Schema;
+import java.util.*;
+import jakarta.validation.constraints.*;
+import lombok.*;
+#foreach ($column in $columnList)
+#if(${column.listQueryOperation})
+#if (${column.javaType} == "BigDecimal")
+import java.math.BigDecimal;
+#end
+#if (${column.javaType} == "LocalDateTime")
+import java.time.LocalDateTime;
+import java.time.LocalDate;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import org.springframework.format.annotation.DateTimeFormat;
+#end
+#end
+#end
+
+
+/**
+* @description ${table.comment} 导出ReqVO
+* @author ${table.author}
+**/
+@Schema(description = "${table.comment}导出ReqVO")
+@Data
+public class ${table.className}ExportReqVO {
+#foreach ($column in $columnList)
+#if(${column.listQueryOperation})
+
+    @Schema(description = "${column.columnComment}")
+    #if (${column.queryType} == "7")
+    #if (${column.javaType} == "LocalDateTime")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    #end
+    private ${column.javaType}[] ${column.javaField};
+    #else
+    #if (${column.javaType} == "LocalDateTime")
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private LocalDate ${column.javaField};
+    #else
+    private ${column.javaType} ${column.javaField};
+    #end
+    #end
+#end
+#end
+}

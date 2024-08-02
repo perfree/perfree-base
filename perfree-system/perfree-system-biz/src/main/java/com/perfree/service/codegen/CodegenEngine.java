@@ -43,6 +43,7 @@ public class CodegenEngine {
             .put("codegen/java/controller/vo/AddReqVO.vm", "${baseDir}/${moduleName}-biz/src/main/java/${packagePath}/controller/auth/${lowerFirstClassName}/vo/${className}AddReqVO.java")
             .put("codegen/java/controller/vo/UpdateReqVO.vm", "${baseDir}/${moduleName}-biz/src/main/java/${packagePath}/controller/auth/${lowerFirstClassName}/vo/${className}UpdateReqVO.java")
             .put("codegen/java/controller/vo/ExcelVO.vm", "${baseDir}/${moduleName}-biz/src/main/java/${packagePath}/controller/auth/${lowerFirstClassName}/vo/${className}ExcelVO.java")
+            .put("codegen/java/controller/vo/ExportReqVO.vm", "${baseDir}/${moduleName}-biz/src/main/java/${packagePath}/controller/auth/${lowerFirstClassName}/vo/${className}ExportReqVO.java")
 
             // convert
             .put("codegen/java/convert/Convert.vm", "${baseDir}/${moduleName}-biz/src/main/java/${packagePath}/convert/${lowerFirstClassName}/${className}Convert.java")
