@@ -23,7 +23,7 @@ public class ${table.className}ExcelVO {
     #if(${column.listOperation})
 
     #if ("$!column.dictType" != "")
-    @ExcelProperty("${column.columnComment}", converter = DictExcelConvert.class)
+    @ExcelProperty(value = "${column.columnComment}", converter = DictExcelConvert.class)
     @DictFormat("${column.dictType}")
     private ${column.javaType} ${column.javaField};
     #else
