@@ -204,7 +204,7 @@
 <script setup>
 import {ElMessage, ElMessageBox} from "element-plus";
 import {handleTree, parseTime} from "@/core/utils/perfree.js";
-import {${table.lowerFirstClassName}AddApi, ${table.lowerFirstClassName}DelApi, ${table.lowerFirstClassName}GetRoleApi, ${table.lowerFirstClassName}PageApi, ${table.lowerFirstClassName}UpdateApi, ${table.lowerFirstClassName}ExportExcelApi} from "../api/${table.lowerFirstClassName}.js";
+import {${table.lowerFirstClassName}AddApi, ${table.lowerFirstClassName}DelApi, ${table.lowerFirstClassName}GetApi, ${table.lowerFirstClassName}PageApi, ${table.lowerFirstClassName}UpdateApi, ${table.lowerFirstClassName}ExportExcelApi} from "../api/${table.lowerFirstClassName}.js";
 import {Delete, Edit, Filter, Plus, Refresh, Search, Download} from "@element-plus/icons-vue";
 import {reactive, ref} from "vue";
 import {getDictByParentDictType, getDictByParentDictTypeAndValue} from "@/core/utils/dictUtils.js";
@@ -290,7 +290,7 @@ function handleUpdate(row) {
   resetAddForm();
   title.value = '修改${table.comment}';
   open.value = true;
-  ${table.lowerFirstClassName}GetRoleApi(row.id).then((res) => {
+  ${table.lowerFirstClassName}GetApi(row.id).then((res) => {
     addForm.value = res.data;
   })
 }
