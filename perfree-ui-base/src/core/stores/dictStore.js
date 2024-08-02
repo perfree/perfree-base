@@ -8,31 +8,34 @@ export const useDictStore = defineStore('dictList',{
         getDictList() {
             return this.dictList
         },
-        getByType() {
+        getByParentDictTypeAndValue() {
+            return (parentDictType, dictValue) => {
+                let result = this.dictList.filter(item => item.parentDictType === parentDictType && item.dictValue === dictValue);
+                if (result.length > 0) {
+                    return result[0];
+                }
+                console.error('未查询到数据字典', parentDictType, dictValue);
+                return null;
+            };
+        },
+        getByParentDictTypeAndLabel() {
+            return (parentDictType, dictLabel) => {
+                let result = this.dictList.filter(item => item.parentDictType === parentDictType && item.dictLabel === dictLabel);
+                if (result.length > 0) {
+                    return result[0];
+                }
+                console.error('未查询到数据字典', parentDictType, dictLabel);
+                return null;
+            };
+        },
+        getByDictType() {
             return (dictType) => {
-                let index = this.dictList.findIndex((dict) => dict.dictType === dictType);
-                if (index >= 0) {
-                    return this.dictList[index];
+                let result = this.dictList.filter(item => item.dictType === dictType);
+                if (result.length > 0) {
+                    return result[0];
                 }
-                return '';
-            };
-        },
-        getByLabel() {
-            return (dictLabel) => {
-                let index = this.dictList.findIndex((dict) => dict.dictLabel === dictLabel);
-                if (index >= 0) {
-                    return this.dictList[index];
-                }
-                return '';
-            };
-        },
-        getByValue() {
-            return (dictValue) => {
-                let index = this.dictList.findIndex((dict) => dict.dictValue === dictValue);
-                if (index >= 0) {
-                    return this.dictList[index];
-                }
-                return '';
+                console.error('未查询到数据字典', dictType);
+                return null;
             };
         },
         getByParentDictType() {

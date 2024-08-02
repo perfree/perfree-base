@@ -34,19 +34,20 @@ public class DictDataCacheService {
      * @param dictType dictType
      * @return DictDataDTO
      */
-    public DictDataDTO getDictDataByDictType(String dictType) {
+    public DictDataDTO getByDictType(String dictType) {
         return dictDataCache.getIfPresent(dictType);
     }
 
     /**
-     * 根据值获取数据字典
+     * 根据值和父级数据字典类型获取数据字典
      * @param dictValue dictValue
+     * @param parentDictType parentDictType
      * @return DictDataDTO
      */
-    public DictDataDTO getDictDataByDictValue(String dictValue) {
+    public DictDataDTO getByDictValueAndParentDictType(String parentDictType, String dictValue) {
         for (String dictType : dictDataCache.asMap().keySet()) {
             DictDataDTO dictDataDTO = dictDataCache.getIfPresent(dictType);
-            if (null != dictDataDTO && dictDataDTO.getDictValue().equals(dictValue)) {
+            if (null != dictDataDTO && dictDataDTO.getDictValue().equals(dictValue) && dictDataDTO.getParentDictType().equals(parentDictType)) {
                 return dictDataDTO;
             }
         }
@@ -67,14 +68,29 @@ public class DictDataCacheService {
     }
 
     /**
+     * 根据父级数据字典类型获取所有数据字典值
+     * @return DictDataDTO
+     */
+    public List<DictDataDTO> getByParentDictType(String parentDictType) {
+        List<DictDataDTO> result = new ArrayList<>();
+        for (String dictType : dictDataCache.asMap().keySet()) {
+            DictDataDTO dictDataDTO = dictDataCache.getIfPresent(dictType);
+            if (null != dictDataDTO && dictDataDTO.getParentDictType().equals(parentDictType)) {
+                result.add(dictDataDTO);
+            }
+        }
+        return result;
+    }
+
+    /**
      * 根据展示值获取数据字典
      * @param dictLabel dictLabel
      * @return DictDataDTO
      */
-    public DictDataDTO getDictDataByDictLabel(String dictLabel) {
+    public DictDataDTO getByDictLabelAndParentDictType(String parentDictType, String dictLabel) {
         for (String dictType : dictDataCache.asMap().keySet()) {
             DictDataDTO dictDataDTO = dictDataCache.getIfPresent(dictType);
-            if (null != dictDataDTO && dictDataDTO.getDictLabel().equals(dictLabel)) {
+            if (null != dictDataDTO && dictDataDTO.getDictLabel().equals(dictLabel) && dictDataDTO.getParentDictType().equals(parentDictType)) {
                 return dictDataDTO;
             }
         }
@@ -86,10 +102,10 @@ public class DictDataCacheService {
      * @param dictExtendValue dictExtendValue
      * @return DictDataDTO
      */
-    public DictDataDTO getDictDataByDictExtendValue(String dictExtendValue) {
+    public DictDataDTO getByDictExtendValueAndParentDictType(String parentDictType, String dictExtendValue) {
         for (String dictType : dictDataCache.asMap().keySet()) {
             DictDataDTO dictDataDTO = dictDataCache.getIfPresent(dictType);
-            if (null != dictDataDTO && dictDataDTO.getDictExtendValue().equals(dictExtendValue)) {
+            if (null != dictDataDTO && dictDataDTO.getDictExtendValue().equals(dictExtendValue) && dictDataDTO.getParentDictType().equals(parentDictType)) {
                 return dictDataDTO;
             }
         }
