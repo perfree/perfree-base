@@ -45,3 +45,7 @@ export async function exportExcelApi(data) {
         console.error('下载 Excel 文件失败', error);
     }
 }
+
+export function updateStatusApi(data) {
+    return axios.post('/api/auth/user/updateStatus', data);
+}

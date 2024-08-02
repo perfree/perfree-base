@@ -239,4 +239,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     public List<User> queryExportData(UserExportReqVO exportReqVO) {
         return userMapper.queryExportData(exportReqVO);
     }
+
+    @Override
+    @Transactional
+    public Boolean updateStatus(UserStatusReqVO userStatusReqVO) {
+        User user = UserConvert.INSTANCE.convertByStatusReqVO(userStatusReqVO);
+        userMapper.updateById(user);
+        return true;
+    }
 }

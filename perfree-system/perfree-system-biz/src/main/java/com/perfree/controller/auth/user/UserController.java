@@ -96,4 +96,11 @@ public class UserController {
         List<User> userList = userService.queryExportData(exportReqVO);
         ExcelUtils.renderExcel(response, UserConvert.INSTANCE.convertToExcelVOList(userList), UserExcelVO.class, "用户数据","用户数据.xlsx");
     }
+
+    @PostMapping("/updateStatus")
+    @Operation(summary = "修改状态")
+    @PreAuthorize("@ss.hasPermission('admin:user:updateStatus')")
+    public CommonResult<Boolean> updateStatus(@RequestBody UserStatusReqVO userStatusReqVO) {
+        return success(userService.updateStatus(userStatusReqVO));
+    }
 }

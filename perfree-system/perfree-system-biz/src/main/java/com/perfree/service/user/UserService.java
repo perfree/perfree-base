@@ -117,4 +117,11 @@ public interface UserService extends IService<User> {
      */
     List<User> queryExportData(UserExportReqVO exportReqVO);
 
+    /**
+     * 修改用户状态
+     * @param userStatusReqVO userStatusReqVO
+     * @return Boolean
+     */
+    Boolean updateStatus(UserStatusReqVO userStatusReqVO);
+
 }

@@ -30,12 +30,6 @@
       <el-table :data="tableData" style="width: 100%;height:100%;" row-key="id" v-loading="loading">
         <el-table-column prop="userName" label="用户名称" min-width="100" />
         <el-table-column prop="account" label="账号" min-width="100" />
-        <el-table-column prop="status" label="状态" min-width="80">
-          <template #default="scope">
-            <el-tag class="ml-2" type="success" v-if="scope.row.status === 0">开启</el-tag>
-            <el-tag class="ml-2" type="danger" v-else>关闭</el-tag>
-          </template>
-        </el-table-column>
         <el-table-column prop="sex" label="性别" min-width="60">
           <template v-slot="scope">
             {{getDictByParentDictTypeAndValue(DICT_TYPE.SEX, scope.row.sex)?.dictLabel}}
@@ -47,6 +41,12 @@
         <el-table-column prop="loginDate" label="最后登录时间" min-width="120" >
           <template v-slot="scope">
             <span>{{ parseTime(scope.row.loginDate) }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column prop="status" label="状态" min-width="80">
+          <template v-slot="scope">
+            <el-switch v-model="scope.row.status"  :active-value="0" :inactive-value="1" inline-prompt active-text="启用" inactive-text="禁用"
+                       @click.native.prevent="changeStatus(scope.row)"/>
           </template>
         </el-table-column>
         <el-table-column prop="createTime" label="创建时间" min-width="120" >
@@ -177,7 +177,7 @@ import {
   exportExcelApi,
   getUserApi,
   getUserRoleApi,
-  resetPasswordApi,
+  resetPasswordApi, updateStatusApi,
   updateUserApi,
   updateUserRoleApi,
   userPageApi
@@ -185,7 +185,7 @@ import {
 import {roleListAllApi} from "../api/role.js";
 import {Delete, Download, Edit, Filter, Plus, Refresh, RefreshLeft, Search} from "@element-plus/icons-vue";
 import {parseTime} from "@/core/utils/perfree.js";
-import {reactive, ref} from "vue";
+import {h, reactive, ref} from "vue";
 import {DICT_TYPE} from "../script/DictConstant.js";
 import {getDictByParentDictType, getDictByParentDictTypeAndValue} from "@/core/utils/dictUtils.js";
 
@@ -246,6 +246,38 @@ let loading = ref(false);
 let isUpdate = ref(false);
 let roleList = ref([]);
 
+function changeStatus(row) {
+  let msg = row.status === 0 ? '启用': '禁用';
+  ElMessageBox({
+    title: '提示',
+    message: h('p', null, [
+      `确定要修改[${row.userName}]为`,
+      h('font', { style: 'color: var(--el-color-warning)' }, msg), '吗?'
+    ]),
+    showCancelButton: true,
+    confirmButtonText: '确定',
+    cancelButtonText: '取消',
+    type: 'warning',
+  }).then(() => {
+    let param = {
+      id: row.id,
+      status: row.status
+    }
+    updateStatusApi(param).then(res => {
+      if (res.code === 200) {
+        initList();
+        ElMessage.success("修改成功");
+      } else {
+        row.status = row.status === 0 ? 1 : 0
+        ElMessage.error("修改失败");
+      }
+    }).catch(() => {
+      row.status = row.status === 0 ? 1 : 0
+    });
+  }).catch(() => {
+    row.status = row.status === 0 ? 1 : 0
+  });
+}
 
 /**
  * 重置密码

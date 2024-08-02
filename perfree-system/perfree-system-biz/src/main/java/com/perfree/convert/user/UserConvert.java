@@ -2,10 +2,7 @@ package com.perfree.convert.user;
 
 import com.perfree.commons.common.PageResult;
 import com.perfree.controller.auth.system.vo.LoginUserInfoRespVO;
-import com.perfree.controller.auth.user.vo.UserAddReqVO;
-import com.perfree.controller.auth.user.vo.UserExcelVO;
-import com.perfree.controller.auth.user.vo.UserRespVO;
-import com.perfree.controller.auth.user.vo.UserUpdateReqVO;
+import com.perfree.controller.auth.user.vo.*;
 import com.perfree.controller.common.system.vo.LoginUserReqVO;
 import com.perfree.controller.common.system.vo.LoginUserRespVO;
 import com.perfree.model.User;
@@ -44,5 +41,7 @@ public interface UserConvert {
     User convertUpdateVO(UserUpdateReqVO userUpdateReqVO);
 
     List<UserExcelVO> convertToExcelVOList(List<User> userList);
+
+    User convertByStatusReqVO(UserStatusReqVO userStatusReqVO);
 
 }
