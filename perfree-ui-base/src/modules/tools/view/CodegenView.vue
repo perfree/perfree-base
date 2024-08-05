@@ -36,7 +36,7 @@
           <template v-slot="scope">
             <el-button size="small" type="primary" link :icon="Edit" @click="handlePreview(scope.row)">预览</el-button>
             <el-button size="small" type="primary" link :icon="Filter" @click="handleConfig(scope.row)">配置</el-button>
-            <el-button size="small" type="primary" link :icon="Filter" @click="handleRoleMenu(scope.row)">下载</el-button>
+            <el-button size="small" type="primary" link :icon="Filter" @click="handleDownload(scope.row)">下载</el-button>
             <el-button size="small" type="primary" link :icon="Delete" @click="handleDelete(scope.row)">删除</el-button>
 
           </template>
@@ -89,7 +89,7 @@
 <script setup>
 import {Delete, Edit, Filter, Refresh, Search, Upload} from "@element-plus/icons-vue";
 import {parseTime} from "@/core/utils/perfree.js";
-import {codegenGetTableList, codegenTablePage, createCodegenList, delCodegenList} from "../api/codegen.js";
+import {codegenGetTableList, codegenTablePage, createCodegenList, delCodegenList, downloadApi} from "../api/codegen.js";
 import {ElMessage, ElMessageBox} from "element-plus";
 import {toPage} from "@/core/utils/tabs.js";
 import {ref} from "vue";
@@ -209,6 +209,12 @@ function handleDelete(row) {
       }
     });
   }).catch(() => {
+  })
+}
+
+function handleDownload(row) {
+  downloadApi(row.id).then(res => {
+    window.download.zip(res, row.tableName + '.zip')
   })
 }
 

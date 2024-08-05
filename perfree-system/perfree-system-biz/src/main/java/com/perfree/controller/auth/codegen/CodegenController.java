@@ -1,6 +1,7 @@
 package com.perfree.controller.auth.codegen;
 
 
+import cn.hutool.http.server.HttpServerResponse;
 import com.baomidou.mybatisplus.generator.config.po.TableInfo;
 import com.perfree.commons.common.CommonResult;
 import com.perfree.commons.common.PageResult;
@@ -14,6 +15,7 @@ import com.perfree.service.codegen.CodegenService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
@@ -85,5 +87,12 @@ public class CodegenController {
     public CommonResult<Boolean> del(@RequestParam(value = "id") Integer id) {
         return success(codegenService.del(id));
     }
+
+    @GetMapping("/download")
+    @Operation(summary = "下载")
+    public void download(@RequestParam(value = "id") Integer id, HttpServletResponse response) {
+        codegenService.download(id, response);
+    }
+
 
 }

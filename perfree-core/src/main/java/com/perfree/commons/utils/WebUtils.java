@@ -1,13 +1,16 @@
 package com.perfree.commons.utils;
 
+import cn.hutool.core.io.IoUtil;
 import cn.hutool.extra.servlet.JakartaServletUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.http.MediaType;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import java.io.IOException;
+import java.net.URLEncoder;
 
 /**
  * @author Perfree
@@ -34,6 +37,14 @@ public class WebUtils {
         } catch (IOException e) {
             throw new RuntimeException("系统异常", e);
         }
+    }
+
+    public static void writeAttachment(HttpServletResponse response, String filename, byte[] content) throws IOException {
+        // 设置 header 和 contentType
+        response.setHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode(filename, "UTF-8"));
+        response.setContentType(MediaType.APPLICATION_OCTET_STREAM_VALUE);
+        // 输出附件
+        IoUtil.write(response.getOutputStream(), false, content);
     }
 
     public static HttpServletRequest getRequest() {

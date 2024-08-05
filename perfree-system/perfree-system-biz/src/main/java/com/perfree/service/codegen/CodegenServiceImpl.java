@@ -1,10 +1,13 @@
 package com.perfree.service.codegen;
 
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.io.file.FileReader;
 import cn.hutool.core.io.file.PathUtil;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.StrUtil;
+import cn.hutool.core.util.ZipUtil;
+import cn.hutool.http.server.HttpServerResponse;
 import com.baomidou.mybatisplus.generator.config.DataSourceConfig;
 import com.baomidou.mybatisplus.generator.config.GlobalConfig;
 import com.baomidou.mybatisplus.generator.config.StrategyConfig;
@@ -15,6 +18,7 @@ import com.baomidou.mybatisplus.generator.config.rules.DateType;
 import com.perfree.commons.common.PageResult;
 import com.perfree.commons.constant.SystemConstants;
 import com.perfree.commons.exception.ServiceException;
+import com.perfree.commons.utils.WebUtils;
 import com.perfree.constant.CodegenConstant;
 import com.perfree.constant.MenuConstant;
 import com.perfree.controller.auth.codegen.vo.*;
@@ -28,6 +32,7 @@ import com.perfree.mapper.CodegenTableMapper;
 import com.perfree.model.CodegenColumn;
 import com.perfree.model.CodegenTable;
 import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -148,6 +153,24 @@ public class CodegenServiceImpl implements CodegenService{
         codegenColumnMapper.delByTableId(id);
         codegenTableMapper.deleteById(id);
         return true;
+    }
+
+    @Override
+    public void download(Integer tableId, HttpServletResponse response) {
+        File zip = null;
+        try{
+            CodegenTable codegenTable = codegenTableMapper.selectById(tableId);
+            List<CodegenColumn> codegenColumnList = codegenColumnMapper.selectByTableId(tableId);
+            File file = codegenEngine.genCode(codegenTable, codegenColumnList);
+            zip = ZipUtil.zip(file);
+            WebUtils.writeAttachment(response, "",   FileUtil.readBytes(zip));
+        }catch (Exception e) {
+            throw new RuntimeException(e);
+        } finally {
+            if (null != zip) {
+                FileUtil.del(zip);
+            }
+        }
     }
 
     private void genCodeListFile(File dir, List<CodegenFileListRespVO> result, String pid) {

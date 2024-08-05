@@ -6,6 +6,7 @@ import com.perfree.controller.auth.codegen.vo.*;
 import com.perfree.controller.auth.codegen.vo.table.CodegenTableListReqVO;
 import com.perfree.controller.auth.codegen.vo.table.CodegenTablePageReqVO;
 import com.perfree.model.CodegenTable;
+import jakarta.servlet.http.HttpServletResponse;
 
 import java.util.List;
 
@@ -25,5 +26,7 @@ public interface CodegenService {
     String getCodeFileContent(CodeFileContentReqVO codeFileContentReqVO);
 
     Boolean del(Integer id);
+
+    void download(Integer tableId, HttpServletResponse response);
 
 }

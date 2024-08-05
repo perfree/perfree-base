@@ -31,19 +31,8 @@ export function resetPasswordApi(data) {
     return axios.post('/api/auth/user/resetPassword', data);
 }
 
-export async function exportExcelApi(data) {
-    try {
-        const response = await axios.post('/api/auth/user/export', data, {responseType: 'blob'});
-        const url = window.URL.createObjectURL(new Blob([response]));
-        const link = document.createElement('a');
-        link.href = url;
-        link.setAttribute('download', '用户数据.xlsx');
-        document.body.appendChild(link);
-        link.click();
-        link.remove();
-    } catch (error) {
-        console.error('下载 Excel 文件失败', error);
-    }
+export function exportExcelApi(data) {
+    return axios.post('/api/auth/user/export', data, {responseType: 'blob'});
 }
 
 export function updateStatusApi(data) {

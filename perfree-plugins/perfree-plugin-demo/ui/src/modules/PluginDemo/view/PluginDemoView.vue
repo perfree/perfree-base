@@ -82,11 +82,17 @@
 </template>
 <script setup>
 import {ElMessage, ElMessageBox} from "element-plus";
-import {handleTree, parseTime} from "@/core/utils/perfree.js";
-import {pluginDemoAddApi, pluginDemoDelApi, pluginDemoGetApi, pluginDemoPageApi, pluginDemoUpdateApi, pluginDemoExportExcelApi} from "../api/pluginDemo.js";
-import {Delete, Edit, Filter, Plus, Refresh, Search, Download} from "@element-plus/icons-vue";
+import {parseTime} from "@/core/utils/perfree.js";
+import {
+  pluginDemoAddApi,
+  pluginDemoDelApi,
+  pluginDemoExportExcelApi,
+  pluginDemoGetApi,
+  pluginDemoPageApi,
+  pluginDemoUpdateApi
+} from "../api/pluginDemo.js";
+import {Delete, Download, Edit, Plus, Refresh, Search} from "@element-plus/icons-vue";
 import {reactive, ref} from "vue";
-import {getDictByParentDictType, getDictByParentDictTypeAndValue} from "@/core/utils/dictUtils.js";
 
 const searchForm = ref({
   pageNo: 1,

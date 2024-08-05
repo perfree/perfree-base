@@ -29,3 +29,7 @@ export function getCodeFileContent(data) {
 export function delCodegenList(id) {
     return axios.delete('/api/auth/codegen/del?id=' + id);
 }
+
+export function downloadApi(id) {
+    return axios.get('/api/auth/codegen/download?id=' + id, {responseType: 'blob'});
+}

@@ -23,14 +23,13 @@ import formCreate from '@form-create/element-ui'
 import install from '@form-create/element-ui/auto-import'
 import {CONSTANTS} from "@/core/utils/constants.js";
 import {hasPermission} from "@/core/directive/permission/hasPermission.js";
+import download from "@/core/utils/download.js";
 
 const app = createApp(App);
 
 // custom directive
 app.directive('hasPermission', hasPermission)
 
-// router
-window.router = router;
 app.use(router)
 
 // ElementPlus
@@ -43,7 +42,7 @@ for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
 const pinia = createPinia()
 pinia.use(piniaPersist)
 app.use(pinia)
-window.pinia = pinia;
+
 
 //FontAwesomeIcon
 library.add(fas, far, fab)
@@ -52,8 +51,7 @@ app.component('font-awesome-icon', FontAwesomeIcon)
 // VueDOMPurifyHTML
 app.use(VueDOMPurifyHTML)
 
-// axios
-window.axios = axios;
+
 
 // form-create
 FcDesigner.component('AttachSelectInput', AttachSelectInput);
@@ -76,5 +74,12 @@ formCreate.fetch = (options) => {
 }
 app.use(formCreate)
 app.use(FcDesigner)
+
+// 定义全局
+window.router = router;
+window.axios = axios;
+window.pinia = pinia;
+window.download = download;
+
 
 app.mount('#app')

@@ -498,6 +498,7 @@ function handleUserRole(row) {
 function exportExcel() {
   loading.value = true;
   exportExcelApi(searchForm.value).then(res => {
+    window.download.excel(res, '用户数据.xlsx');
     loading.value = false;
   }).catch(e => {
     ElMessage.error('导出失败');

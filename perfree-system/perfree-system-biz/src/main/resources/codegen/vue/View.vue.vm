@@ -370,6 +370,7 @@ function resetAddForm() {
 function exportExcel() {
   loading.value = true;
   ${table.lowerFirstClassName}ExportExcelApi(searchForm.value).then(res => {
+    window.download.excel(res,  '${table.comment}数据.xlsx');
     loading.value = false;
   }).catch(e => {
     ElMessage.error('导出失败');
