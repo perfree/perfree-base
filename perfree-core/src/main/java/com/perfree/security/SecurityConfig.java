@@ -41,7 +41,7 @@ public class SecurityConfig {
     @Resource
     private final JwtAuthorizationFilter jwtAuthorizationFilter;
 
-    @Bean("ss") // 使用 Spring Security 的缩写，方便使用
+    @Bean("ss")
     public SecurityFrameworkService securityFrameworkService(PermissionApi permissionApi) {
         return new SecurityFrameworkServiceImpl(permissionApi);
     }

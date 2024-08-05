@@ -24,4 +24,6 @@ public interface CodegenService {
 
     String getCodeFileContent(CodeFileContentReqVO codeFileContentReqVO);
 
+    Boolean del(Integer id);
+
 }

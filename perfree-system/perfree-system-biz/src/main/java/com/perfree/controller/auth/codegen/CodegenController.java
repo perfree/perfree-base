@@ -80,4 +80,10 @@ public class CodegenController {
         return success(codegenService.getCodeFileContent(codeFileContentReqVO));
     }
 
+    @DeleteMapping("/del")
+    @Operation(summary = "删除生成的数据")
+    public CommonResult<Boolean> del(@RequestParam(value = "id") Integer id) {
+        return success(codegenService.del(id));
+    }
+
 }

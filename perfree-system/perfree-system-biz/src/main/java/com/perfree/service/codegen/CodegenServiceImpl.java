@@ -1,8 +1,6 @@
 package com.perfree.service.codegen;
 
 import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.io.FileUtil;
-import cn.hutool.core.io.IoUtil;
 import cn.hutool.core.io.file.FileReader;
 import cn.hutool.core.io.file.PathUtil;
 import cn.hutool.core.util.IdUtil;
@@ -17,7 +15,6 @@ import com.baomidou.mybatisplus.generator.config.rules.DateType;
 import com.perfree.commons.common.PageResult;
 import com.perfree.commons.constant.SystemConstants;
 import com.perfree.commons.exception.ServiceException;
-import com.perfree.commons.utils.SortingFieldUtils;
 import com.perfree.constant.CodegenConstant;
 import com.perfree.constant.MenuConstant;
 import com.perfree.controller.auth.codegen.vo.*;
@@ -31,18 +28,11 @@ import com.perfree.mapper.CodegenTableMapper;
 import com.perfree.model.CodegenColumn;
 import com.perfree.model.CodegenTable;
 import jakarta.annotation.Resource;
-import org.apache.velocity.Template;
-import org.apache.velocity.VelocityContext;
-import org.apache.velocity.app.VelocityEngine;
-import org.apache.velocity.runtime.RuntimeConstants;
-import org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.File;
-import java.io.StringWriter;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -150,6 +140,14 @@ public class CodegenServiceImpl implements CodegenService{
         }
         FileReader fileReader = new FileReader(findFile);
         return fileReader.readString();
+    }
+
+    @Override
+    @Transactional
+    public Boolean del(Integer id) {
+        codegenColumnMapper.delByTableId(id);
+        codegenTableMapper.deleteById(id);
+        return true;
     }
 
     private void genCodeListFile(File dir, List<CodegenFileListRespVO> result, String pid) {

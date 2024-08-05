@@ -25,4 +25,8 @@ public interface CodegenColumnMapper extends BaseMapperX<CodegenColumn> {
                 .orderByDesc(CodegenColumn::getCreateTime));
     }
 
+    default void delByTableId(Integer tableId){
+        delete(new LambdaQueryWrapper<CodegenColumn>().eq(CodegenColumn::getTableId, tableId));
+    }
+
 }

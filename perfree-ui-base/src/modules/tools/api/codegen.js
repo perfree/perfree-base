@@ -26,3 +26,6 @@ export function getCodeFileContent(data) {
     return axios.post('/api/auth/codegen/getCodeFileContent', data);
 }
 
+export function delCodegenList(id) {
+    return axios.delete('/api/auth/codegen/del?id=' + id);
+}

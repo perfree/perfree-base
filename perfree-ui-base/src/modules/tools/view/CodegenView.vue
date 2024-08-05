@@ -89,8 +89,8 @@
 <script setup>
 import {Delete, Edit, Filter, Refresh, Search, Upload} from "@element-plus/icons-vue";
 import {parseTime} from "@/core/utils/perfree.js";
-import {codegenGetTableList, codegenTablePage, createCodegenList} from "../api/codegen.js";
-import {ElMessage} from "element-plus";
+import {codegenGetTableList, codegenTablePage, createCodegenList, delCodegenList} from "../api/codegen.js";
+import {ElMessage, ElMessageBox} from "element-plus";
 import {toPage} from "@/core/utils/tabs.js";
 import {ref} from "vue";
 import {useRouter} from "vue-router";
@@ -188,6 +188,28 @@ function handleConfig(item) {
 
 function handlePreview(item) {
   toPage(`代码生成-预览[${item.tableName}]`, '/admin/codegen/preview/' + item.id, '')
+}
+
+/**
+ * 删除
+ * @param row
+ */
+function handleDelete(row) {
+  ElMessageBox.confirm('确定要删除[' + row.tableName + ']吗？', '提示', {
+    confirmButtonText: '确认',
+    cancelButtonText: '取消',
+    type: 'warning',
+  }).then(() => {
+    delCodegenList(row.id).then((res) => {
+      if (res.code === 200 && res.data) {
+        ElMessage.success('删除成功');
+        initList();
+      } else {
+        ElMessage.error(res.msg);
+      }
+    });
+  }).catch(() => {
+  })
 }
 
 initList();
