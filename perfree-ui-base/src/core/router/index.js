@@ -23,6 +23,15 @@ const router = createRouter({
             component: Layout,
             redirect: 'admin',
             children: [
+                {
+                    path: '/admin/user/profile',
+                    name: 'userProfile',
+                    component: () => import('../views/userProfile/UserProfile.vue'),
+                    meta: {
+                        title: '个人中心',
+                        keepAlive: true
+                    }
+                },
             ],
         },
         {
