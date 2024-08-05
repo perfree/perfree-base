@@ -35,6 +35,7 @@ public class AttachConfigController {
 
     @PostMapping("/page")
     @Operation(summary = "配置分页列表")
+    @PreAuthorize("@ss.hasPermission('admin:attachConfig:query')")
     public CommonResult<PageResult<AttachConfigRespVO>> page(@RequestBody AttachConfigPageReqVO pageVO) {
         PageResult<AttachConfig> attachPage = attachConfigService.attachConfigPage(pageVO);
         return success(AttachConfigConvert.INSTANCE.convertPageResultVO(attachPage));

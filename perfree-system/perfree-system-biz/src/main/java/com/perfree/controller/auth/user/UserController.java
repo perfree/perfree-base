@@ -34,6 +34,7 @@ public class UserController {
 
     @PostMapping("/page")
     @Operation(summary = "用户分页列表")
+    @PreAuthorize("@ss.hasPermission('admin:user:query')")
     public CommonResult<PageResult<UserRespVO>> page(@RequestBody UserPageReqVO pageVO) {
         PageResult<User> userPageResult = userService.userPage(pageVO);
         return success(UserConvert.INSTANCE.convertPageResultVO(userPageResult));

@@ -45,6 +45,7 @@ public class AttachController {
 
     @PostMapping("/page")
     @Operation(summary = "附件分页列表")
+    @PreAuthorize("@ss.hasPermission('admin:attach:query')")
     public CommonResult<PageResult<AttachRespVO>> page(@RequestBody AttachPageReqVO pageVO) {
         PageResult<Attach> rolePageResult = attachService.attachPage(pageVO);
         return success(AttachConvert.INSTANCE.convertPageResultVO(rolePageResult));

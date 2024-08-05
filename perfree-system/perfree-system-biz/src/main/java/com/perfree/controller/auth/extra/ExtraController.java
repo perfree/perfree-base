@@ -36,6 +36,7 @@ public class ExtraController {
 
     @PostMapping("/page")
     @Operation(summary = "附加数据分页列表")
+    @PreAuthorize("@ss.hasPermission('admin:extra:query')")
     public CommonResult<PageResult<ExtraRespVO>> page(@RequestBody ExtraPageReqVO pageVO) {
         PageResult<Extra> extraPageResult = extraService.extraPage(pageVO);
         return success(ExtraConvert.INSTANCE.convertPageResultVO(extraPageResult));

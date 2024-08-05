@@ -7,7 +7,7 @@
         </el-form-item>
 
         <el-form-item>
-          <el-button type="primary" @click="initList" :icon="Search">查询</el-button>
+          <el-button type="primary" @click="initList" :icon="Search" v-hasPermission="['admin:menu:query']">查询</el-button>
           <el-button :icon="Refresh" @click="resetSearchForm">重置</el-button>
         </el-form-item>
       </el-form>

@@ -22,17 +22,6 @@ export function pluginDemoListAllApi() {
     return axios.get('/api/auth/pluginDemo/listAll');
 }
 
-export async function pluginDemoExportExcelApi(data) {
-    try {
-        const response = await axios.post('/api/auth/pluginDemo/export', data, {responseType: 'blob'});
-        const url = window.URL.createObjectURL(new Blob([response]));
-        const link = document.createElement('a');
-        link.href = url;
-        link.setAttribute('download', '测试数据.xlsx');
-        document.body.appendChild(link);
-        link.click();
-        link.remove();
-    } catch (error) {
-        console.error('下载 Excel 文件失败', error);
-    }
+export function pluginDemoExportExcelApi(data) {
+    return axios.post('/api/auth/pluginDemo/export', data, {responseType: 'blob'});
 }

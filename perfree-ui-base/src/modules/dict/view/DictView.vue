@@ -44,7 +44,7 @@
                 <el-input v-model="dictDataSearchForm.dictType" placeholder="请输入字典类型" clearable/>
               </el-form-item>
               <el-form-item>
-                <el-button type="primary" @click="initDictDataPage" :icon="Search">查询</el-button>
+                <el-button type="primary" @click="initDictDataPage" :icon="Search"  v-hasPermission="['admin:dictData:query']">查询</el-button>
                 <el-button :icon="Refresh" @click="resetDictDataSearchForm">重置</el-button>
               </el-form-item>
             </el-form>

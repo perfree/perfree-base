@@ -6,7 +6,7 @@
           <el-input v-model="searchForm.extraName" placeholder="请输入附加数据名称" clearable/>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="initList" :icon="Search">查询</el-button>
+          <el-button type="primary" @click="initList" :icon="Search"   v-hasPermission="['admin:extra:query']">查询</el-button>
           <el-button :icon="Refresh" @click="resetSearchForm">重置</el-button>
         </el-form-item>
       </el-form>

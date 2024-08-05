@@ -33,6 +33,7 @@ public class DictController {
 
     @PostMapping("/page")
     @Operation(summary = "数据字典分页列表")
+    @PreAuthorize("@ss.hasPermission('admin:dict:query')")
     public CommonResult<PageResult<DictRespVO>> page(@RequestBody DictPageReqVO pageVO) {
         PageResult<Dict> dictPageResult = dictService.dictPage(pageVO);
         return success(DictConvert.INSTANCE.convertPageResultVO(dictPageResult));

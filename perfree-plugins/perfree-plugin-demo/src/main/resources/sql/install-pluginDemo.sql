@@ -4,18 +4,21 @@ INSERT INTO `p_menu` (
 `menuType`,`pluginId`,`component`,`componentName`,`moduleName`
 )
 VALUES(
-'a073e03a053e4428ab3184f1fd6abfc8','-1','测试管理','/admin/pluginDemo','fa-solid fa-feather-alt',
+'2cadaa1f51f042a3956f0d64e5cc7b76','-1','测试管理','/admin/pluginDemo','fa-solid fa-feather-alt',
 1,  'perfree-plugin-demo'  ,'/view/PluginDemoView','pluginDemo','PluginDemo'
 );
 
 INSERT INTO `p_menu` (`id`,`pid`,`name`,`menuType`,`pluginId`,`perms`)
-VALUES('111b90c2457c4409a9f499ac0fc9e454','a073e03a053e4428ab3184f1fd6abfc8','测试查询',2,  'perfree-plugin-demo'  ,'admin:pluginDemo:query');
+VALUES('b4aa631b172e4897b2d8c29e93760773','2cadaa1f51f042a3956f0d64e5cc7b76','测试查询',2,  'perfree-plugin-demo'  ,'admin:pluginDemo:query');
 
 INSERT INTO `p_menu` (`id`,`pid`,`name`,`menuType`,`pluginId`,`perms`)
-VALUES('fdf7a299496140aea09c3a64e9b94272','a073e03a053e4428ab3184f1fd6abfc8','测试创建',2,  'perfree-plugin-demo'  ,'admin:pluginDemo:create');
+VALUES('623d28f36bca40929c02568041b52583','2cadaa1f51f042a3956f0d64e5cc7b76','测试创建',2,  'perfree-plugin-demo'  ,'admin:pluginDemo:create');
 
 INSERT INTO `p_menu` (`id`,`pid`,`name`,`menuType`,`pluginId`,`perms`)
-VALUES('62dd55406c004830b83cc126298be9e5','a073e03a053e4428ab3184f1fd6abfc8','测试编辑',2,  'perfree-plugin-demo'  ,'admin:pluginDemo:update');
+VALUES('e95c31e9180f430eaed8f845494092a8','2cadaa1f51f042a3956f0d64e5cc7b76','测试编辑',2,  'perfree-plugin-demo'  ,'admin:pluginDemo:update');
 
 INSERT INTO `p_menu` (`id`,`pid`,`name`,`menuType`,`pluginId`,`perms`)
-VALUES('061cc872db60430a9f9d3e42f7c72c0c','a073e03a053e4428ab3184f1fd6abfc8','测试删除',2,  'perfree-plugin-demo'  ,'admin:pluginDemo:delete');
+VALUES('25626ff8dcb2441e9ae51fe49e6b8d09','2cadaa1f51f042a3956f0d64e5cc7b76','测试删除',2,  'perfree-plugin-demo'  ,'admin:pluginDemo:delete');
+
+INSERT INTO `p_menu` (`id`,`pid`,`name`,`menuType`,`pluginId`,`perms`)
+VALUES('4ce9d88d0e164a17bf49e8f002881f1b','2cadaa1f51f042a3956f0d64e5cc7b76','测试导出',2,  'perfree-plugin-demo'  ,'admin:pluginDemo:export');

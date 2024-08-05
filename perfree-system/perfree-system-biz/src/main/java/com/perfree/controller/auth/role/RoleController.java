@@ -36,6 +36,7 @@ public class RoleController {
 
     @PostMapping("/page")
     @Operation(summary = "角色分页列表")
+    @PreAuthorize("@ss.hasPermission('admin:role:query')")
     public CommonResult<PageResult<RoleRespVO>> page(@RequestBody RolePageReqVO pageVO) {
         PageResult<Role> rolePageResult = roleService.rolePage(pageVO);
         return success(RoleConvert.INSTANCE.convertPageResultVO(rolePageResult));

@@ -6,7 +6,7 @@
           <el-input v-model="searchForm.name" placeholder="请输入角色名称" clearable/>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="initList" :icon="Search">查询</el-button>
+          <el-button type="primary" @click="initList" :icon="Search" v-hasPermission="['admin:role:query']">查询</el-button>
           <el-button :icon="Refresh" @click="resetSearchForm">重置</el-button>
         </el-form-item>
       </el-form>
@@ -80,6 +80,7 @@
                 show-checkbox
                 ref="menuTree"
                 :check-strictly="true"
+                @check="handleCheckMenuChange"
                 v-loading="menuTreeLoading"
             />
           </div>
@@ -132,6 +133,7 @@ import {handleTree, parseTime} from "@/core/utils/perfree.js";
 import {roleAddApi, roleDelApi, roleGetRoleApi, rolePageApi, roleUpdateApi} from "../api/role.js";
 import {Delete, Edit, Filter, Plus, Refresh, Search} from "@element-plus/icons-vue";
 import {reactive, ref} from "vue";
+import {tabsData} from "@/core/utils/tabs.js";
 
 let menuData = ref([]);
 
@@ -174,6 +176,33 @@ let title = ref('');
 let tableData = ref([]);
 let loading = ref(false);
 let menuTreeLoading = ref(false);
+
+
+function handleCheckMenuChange(node, data) {
+  let index = data.checkedKeys.findIndex((d) => d === node.id);
+  let checked = false;
+  if (index >= 0) {
+    checked = true;
+  }
+  menuTree.value.setChecked(node.id, checked, false);
+  // 处理选择变化
+  if (checked) {
+    checkAllChildren(node, true);
+  } else {
+    checkAllChildren(node, false);
+  }
+}
+
+function checkAllChildren(node, checked) {
+  if(node.children && node.children.length > 0) {
+    node.children.forEach(c => {
+      menuTree.value.setChecked(c.id, checked, false);
+      if (c.children && c.children.length > 0) {
+        checkAllChildren(c, checked);
+      }
+    })
+  }
+}
 
 /**
  * 添加提交
