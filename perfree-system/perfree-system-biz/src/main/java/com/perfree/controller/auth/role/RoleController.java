@@ -36,7 +36,6 @@ public class RoleController {
 
     @PostMapping("/page")
     @Operation(summary = "角色分页列表")
-    @PreAuthorize("@ss.hasPermission('admin:role:page')")
     public CommonResult<PageResult<RoleRespVO>> page(@RequestBody RolePageReqVO pageVO) {
         PageResult<Role> rolePageResult = roleService.rolePage(pageVO);
         return success(RoleConvert.INSTANCE.convertPageResultVO(rolePageResult));
@@ -44,7 +43,6 @@ public class RoleController {
 
     @GetMapping("/getRoleMenus")
     @Operation(summary = "获取角色所拥有的菜单列表")
-    @PreAuthorize("@ss.hasPermission('admin:role:getRoleMenus')")
     public CommonResult<List<String>> getRoleMenus(@RequestParam(value = "id") Integer id) {
         List<RoleMenu> roleMenus = roleService.getRoleMenus(id);
         List<String> result = new ArrayList<>();
@@ -63,14 +61,12 @@ public class RoleController {
 
     @GetMapping("/get")
     @Operation(summary = "获取角色")
-    @PreAuthorize("@ss.hasPermission('admin:role:get')")
     public CommonResult<RoleRespVO> get(@RequestParam(value = "id") Integer id) {
         return success(RoleConvert.INSTANCE.convertRespVO(roleService.get(id)));
     }
 
     @GetMapping("/listAll")
     @Operation(summary = "获取所有角色")
-    @PreAuthorize("@ss.hasPermission('admin:role:listAll')")
     public CommonResult<List<RoleRespVO>> listAll() {
         return success(RoleConvert.INSTANCE.convertRespListVO(roleService.list()));
     }

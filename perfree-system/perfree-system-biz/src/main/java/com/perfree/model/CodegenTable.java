@@ -78,4 +78,6 @@ public class CodegenTable extends BaseModel implements Serializable {
     private String parentMenuId;
 
     private String packageName;
+
+    private String mapperLocation;
 }

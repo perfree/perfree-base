@@ -5,16 +5,20 @@
         <el-form-item label="名称">
           <el-input v-model="searchForm.name" placeholder="请输入名称" clearable/>
         </el-form-item>
+        <el-form-item label="信息">
+          <el-input v-model="searchForm.msg" placeholder="请输入信息" clearable/>
+        </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="initList" :icon="Search">查询</el-button>
+          <el-button type="primary" @click="initList" :icon="Search" v-hasPermission="['admin:pluginDemo:query']">查询</el-button>
           <el-button :icon="Refresh" @click="resetSearchForm">重置</el-button>
+          <el-button :icon="Download" @click="exportExcel" v-hasPermission="['admin:pluginDemo:export']">导出</el-button>
         </el-form-item>
       </el-form>
     </div>
 
     <el-row :gutter="10" class="mb8">
       <el-col :span="1.5">
-        <el-button :icon="Plus" type="primary" plain @click="handleAdd">新增</el-button>
+        <el-button :icon="Plus" type="primary" plain @click="handleAdd" v-hasPermission="['admin:pluginDemo:create']">新增</el-button>
       </el-col>
       <div class="right-tool">
         <el-button :icon="Refresh" circle @click="initList"/>
@@ -33,8 +37,8 @@
         </el-table-column>
         <el-table-column label="操作" width="240" fixed="right">
           <template v-slot="scope">
-            <el-button size="small" type="primary" link :icon="Edit" @click="handleUpdate(scope.row)">修改</el-button>
-            <el-button size="small" type="primary" link :icon="Delete" @click="handleDelete(scope.row)">删除</el-button>
+            <el-button size="small" type="primary" link :icon="Edit" @click="handleUpdate(scope.row)" v-hasPermission="['admin:pluginDemo:update']">修改</el-button>
+            <el-button size="small" type="primary" link :icon="Delete" @click="handleDelete(scope.row)" v-hasPermission="['admin:pluginDemo:delete']">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -51,21 +55,19 @@
       />
     </div>
 
-
     <el-dialog v-model="open" :title="title" width="600px" draggable>
       <el-form
           ref="addFormRef"
           :model="addForm"
-          label-width="60px"
+          label-width="80px"
           status-icon
           :rules="addRule"
       >
         <el-form-item label="名称" prop="name">
-          <el-input v-model="addForm.name" placeholder="请输入名称" />
+          <el-input v-model="addForm.name" placeholder="请输入名称"/>
         </el-form-item>
-
         <el-form-item label="信息" prop="msg">
-          <el-input v-model="addForm.msg" placeholder="请输入信息" />
+          <el-input v-model="addForm.msg" placeholder="请输入信息"/>
         </el-form-item>
       </el-form>
 
@@ -79,98 +81,34 @@
   </div>
 </template>
 <script setup>
-import {parseTime} from "@/utils/utils.js";
-import {Delete, Edit, Filter, Plus, Refresh, Search} from "@element-plus/icons-vue";
-import {reactive, ref} from "vue";
-import {addDemoApi, delDemoApi, demoPageApi, getDemoApi, updateDemoApi} from "@/modules/demo/api/demo.js";
 import {ElMessage, ElMessageBox} from "element-plus";
+import {handleTree, parseTime} from "@/core/utils/perfree.js";
+import {pluginDemoAddApi, pluginDemoDelApi, pluginDemoGetApi, pluginDemoPageApi, pluginDemoUpdateApi, pluginDemoExportExcelApi} from "../api/pluginDemo.js";
+import {Delete, Edit, Filter, Plus, Refresh, Search, Download} from "@element-plus/icons-vue";
+import {reactive, ref} from "vue";
+import {getDictByParentDictType, getDictByParentDictTypeAndValue} from "@/core/utils/dictUtils.js";
 
 const searchForm = ref({
   pageNo: 1,
-  pageSize: 20,
+  pageSize: 10,
   total: 0,
-  name: ''
+  name:  null ,
+  msg:  null ,
 })
+const addForm = ref({
+  id: null,
+  name: null,
+  msg: null,
+});
+const addRule = reactive({
+});
 
 const searchFormRef = ref();
-let tableData = ref([]);
-let loading = ref(false);
+const addFormRef = ref();
 let open = ref(false);
 let title = ref('');
-const addFormRef = ref();
-
-const addForm = ref({
-  id: '',
-  name: '',
-  msg: '',
-});
-
-const addRule = reactive({
-  name: [
-    { required: true, message: '请输入名称', trigger: 'blur' },
-    { min: 2, max: 20, message: '名称必须在2-20字之间', trigger: 'blur' }
-  ],
-});
-
-/**
- * 新增
- */
-function handleAdd() {
-  resetAddForm();
-  title.value = '添加';
-  open.value = true;
-}
-
-/**
- * 重置添加表单
- */
-function resetAddForm() {
-  addForm.value = {
-    id: '',
-    name: '',
-    msg: '',
-  }
-  if (addFormRef.value) {
-    addFormRef.value.resetFields();
-  }
-}
-
-
-
-/**
- * 加载列表
- */
-function initList() {
-  loading.value = true;
-  demoPageApi(searchForm.value).then((res) => {
-    tableData.value = res.data.list;
-    searchForm.value.total = res.data.total;
-    loading.value = false;
-  })
-}
-
-/**
- * 重置搜索表单
- */
-function resetSearchForm() {
-  searchForm.value = {
-    name: ''
-  }
-  searchFormRef.value.resetFields();
-}
-
-/**
- * 修改
- */
-function handleUpdate(row) {
-  resetAddForm();
-  title.value = '修改';
-  open.value = true;
-  getDemoApi(row.id).then((res) => {
-    addForm.value = res.data;
-  })
-}
-
+let tableData = ref([]);
+let loading = ref(false);
 
 /**
  * 添加提交
@@ -179,9 +117,9 @@ function submitAddForm() {
   addFormRef.value.validate(valid => {
     if (valid) {
       if (addForm.value.id) {
-        updateDemoApi(addForm.value).then((res) => {
+        pluginDemoUpdateApi(addForm.value).then((res) => {
           if (res.code === 200) {
-            ElMessage.success('更新成功');
+            ElMessage.success('操作成功');
             open.value = false;
             resetAddForm();
             initList();
@@ -190,9 +128,9 @@ function submitAddForm() {
           }
         })
       } else {
-        addDemoApi(addForm.value).then((res) => {
+        pluginDemoAddApi(addForm.value).then((res) => {
           if (res.code === 200) {
-            ElMessage.success('添加成功');
+            ElMessage.success('操作成功');
             open.value = false;
             resetAddForm();
             initList();
@@ -206,16 +144,38 @@ function submitAddForm() {
 }
 
 /**
+ * 新增
+ */
+function handleAdd() {
+  resetAddForm();
+  title.value = '添加测试';
+  open.value = true;
+}
+
+/**
+ * 修改
+ */
+function handleUpdate(row) {
+  resetAddForm();
+  title.value = '修改测试';
+  open.value = true;
+  pluginDemoGetApi(row.id).then((res) => {
+    addForm.value = res.data;
+  })
+}
+
+/**
  * 删除
  * @param row
  */
 function handleDelete(row) {
-  ElMessageBox.confirm('确定要删除[' + row.name + ']吗？', '提示', {
+  let keys = Object.keys(row);
+  ElMessageBox.confirm('确定要删除[' + row[keys[0]] + ']吗？', '提示', {
     confirmButtonText: '确认',
     cancelButtonText: '取消',
     type: 'warning',
   }).then(() => {
-    delDemoApi(row.id).then((res) => {
+    pluginDemoDelApi(row.id).then((res) => {
       if (res.code === 200 && res.data) {
         ElMessage.success('删除成功');
         initList();
@@ -223,7 +183,62 @@ function handleDelete(row) {
         ElMessage.error(res.msg);
       }
     });
-  }).catch(() => {})
+  }).catch(() => {
+  })
+}
+
+/**
+ * 加载列表
+ */
+function initList() {
+  loading.value = true;
+  pluginDemoPageApi(searchForm.value).then((res) => {
+    tableData.value = res.data.list;
+    searchForm.value.total = res.data.total;
+    loading.value = false;
+  })
+}
+
+/**
+ * 重置搜索表单
+ */
+function resetSearchForm() {
+  searchForm.value = {
+    pageNo: 1,
+    pageSize: 10,
+    total: 0,
+    name:   null ,
+    msg:   null ,
+  }
+  searchFormRef.value.resetFields();
+  initList();
+}
+
+/**
+ * 重置添加表单
+ */
+function resetAddForm() {
+  addForm.value = {
+    id: null,
+    name: null,
+    msg: null,
+  }
+  if (addFormRef.value) {
+    addFormRef.value.resetFields();
+  }
+}
+
+/**
+ * 导出excel
+ */
+function exportExcel() {
+  loading.value = true;
+  pluginDemoExportExcelApi(searchForm.value).then(res => {
+    loading.value = false;
+  }).catch(e => {
+    ElMessage.error('导出失败');
+    loading.value = false;
+  })
 }
 
 initList();

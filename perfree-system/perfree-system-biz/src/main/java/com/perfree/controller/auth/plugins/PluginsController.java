@@ -26,7 +26,6 @@ public class PluginsController {
 
     @PostMapping("/page")
     @Operation(summary = "插件分页列表")
-    @PreAuthorize("@ss.hasPermission('admin:plugin:page')")
     public CommonResult<PageResult<PluginsRespVO>> page(@RequestBody PluginsPageReqVO pageVO) {
         PageResult<Plugins> pluginsPageResult = pluginsService.pluginsPage(pageVO);
         return success(PluginsConvert.INSTANCE.convertPageResultVO(pluginsPageResult));

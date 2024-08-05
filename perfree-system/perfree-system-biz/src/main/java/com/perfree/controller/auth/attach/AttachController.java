@@ -45,7 +45,6 @@ public class AttachController {
 
     @PostMapping("/page")
     @Operation(summary = "附件分页列表")
-    @PreAuthorize("@ss.hasPermission('admin:attach:page')")
     public CommonResult<PageResult<AttachRespVO>> page(@RequestBody AttachPageReqVO pageVO) {
         PageResult<Attach> rolePageResult = attachService.attachPage(pageVO);
         return success(AttachConvert.INSTANCE.convertPageResultVO(rolePageResult));
@@ -53,7 +52,6 @@ public class AttachController {
 
     @GetMapping("/get")
     @Operation(summary = "获取附件")
-    @PreAuthorize("@ss.hasPermission('admin:attach:get')")
     public CommonResult<AttachRespVO> get(@RequestParam(value = "id") Integer id) {
         Attach byId = attachService.getById(id);
         return success(AttachConvert.INSTANCE.convertRespVO(byId));
@@ -77,7 +75,6 @@ public class AttachController {
 
     @GetMapping("/getAllAttachGroup")
     @Operation(summary = "获取所有附件分组")
-    @PreAuthorize("@ss.hasPermission('admin:attach:getAllAttachGroup')")
     public CommonResult<List<AttachGroupRespVO>> getAllAttachGroup() {
         List<Attach> attachList = attachService.getAllAttachGroup();
         return success(AttachConvert.INSTANCE.convertGroupRespVO(attachList));
@@ -85,7 +82,6 @@ public class AttachController {
 
     @PostMapping("/uploadAttachByUrl")
     @Operation(summary = "通过url下载并上传附件")
-    @PreAuthorize("@ss.hasPermission('admin:attach:uploadAttachByUrl')")
     public CommonResult<AttachByUrlRespVO> uploadAttachByUrl(@Valid @RequestBody AttachUploadByUrlVO attachUploadByUrlVO) {
         Attach attach = attachService.uploadAttachByUrl(attachUploadByUrlVO.getUrl());
         AttachByUrlRespVO attachByUrlRespVO = AttachConvert.INSTANCE.convertByUrlRespVO(attach);

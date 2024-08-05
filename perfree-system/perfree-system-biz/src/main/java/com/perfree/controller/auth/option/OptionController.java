@@ -35,7 +35,6 @@ public class OptionController {
 
     @GetMapping("/getOptionByIdentification")
     @Operation(summary = "根据标识获取所有的配置项")
-    @PreAuthorize("@ss.hasPermission('admin:option:getOptionByIdentification')")
     public CommonResult<List<OptionRespVO>> getOptionByIdentification(@RequestParam(value = "identification") String identification) {
         List<Option> optionList = optionService.getOptionByIdentification(identification);
         return success(OptionConvert.INSTANCE.convertToRespVOList(optionList));

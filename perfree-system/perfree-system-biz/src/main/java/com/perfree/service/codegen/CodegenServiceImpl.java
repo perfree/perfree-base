@@ -194,6 +194,7 @@ public class CodegenServiceImpl implements CodegenService{
             codegenTable.setModuleName(CodegenConstant.DEFAULT_PLUGIN_NAME);
         }
         codegenTable.setPackageName(CodegenConstant.DEFAULT_PACKAGE_NAME);
+        codegenTable.setMapperLocation(CodegenConstant.DEFAULT_MAPPER_LOCATION);
     }
 
     /**

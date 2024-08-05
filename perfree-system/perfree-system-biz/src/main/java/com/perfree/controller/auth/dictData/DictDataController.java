@@ -33,7 +33,6 @@ public class DictDataController {
 
     @PostMapping("/page")
     @Operation(summary = "数据字典值分页列表")
-    @PreAuthorize("@ss.hasPermission('admin:dictData:page')")
     public CommonResult<PageResult<DictDataRespVO>> page(@RequestBody DictDataPageReqVO pageVO) {
         PageResult<DictData> dictDataPageResult = dictDataService.dictDataPage(pageVO);
         return success(DictDataConvert.INSTANCE.convertPageResultVO(dictDataPageResult));
@@ -55,7 +54,6 @@ public class DictDataController {
 
     @GetMapping("/get")
     @Operation(summary = "根据id获取数据字典值")
-    @PreAuthorize("@ss.hasPermission('admin:dictData:get')")
     public CommonResult<DictDataRespVO> get(@RequestParam(value = "id") Integer id) {
         return success(DictDataConvert.INSTANCE.convertRespVO(dictDataService.get(id)));
     }

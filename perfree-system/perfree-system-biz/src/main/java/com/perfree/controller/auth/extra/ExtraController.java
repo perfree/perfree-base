@@ -36,7 +36,6 @@ public class ExtraController {
 
     @PostMapping("/page")
     @Operation(summary = "附加数据分页列表")
-    @PreAuthorize("@ss.hasPermission('admin:extra:page')")
     public CommonResult<PageResult<ExtraRespVO>> page(@RequestBody ExtraPageReqVO pageVO) {
         PageResult<Extra> extraPageResult = extraService.extraPage(pageVO);
         return success(ExtraConvert.INSTANCE.convertPageResultVO(extraPageResult));
@@ -44,7 +43,6 @@ public class ExtraController {
 
     @GetMapping("/get")
     @Operation(summary = "获取附加数据")
-    @PreAuthorize("@ss.hasPermission('admin:extra:get')")
     public CommonResult<ExtraRespVO> get(@RequestParam(value = "id") Integer id) {
         return success(ExtraConvert.INSTANCE.convertRespVO(extraService.get(id)));
     }

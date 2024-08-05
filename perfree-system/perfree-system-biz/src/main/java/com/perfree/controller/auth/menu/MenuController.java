@@ -35,7 +35,6 @@ public class MenuController {
 
     @PostMapping("/page")
     @Operation(summary = "菜单页面列表")
-    @PreAuthorize("@ss.hasPermission('admin:menu:page')")
     public CommonResult<List<MenuRespVO>> page(@RequestBody MenuListReqVO pageVO) {
         List<Menu> menuList = menuService.menuList(pageVO);
         return success(MenuConvert.INSTANCE.convertListVO(menuList));
@@ -43,7 +42,6 @@ public class MenuController {
 
     @PostMapping("/list")
     @Operation(summary = "菜单列表")
-    @PreAuthorize("@ss.hasPermission('admin:menu:list')")
     public CommonResult<List<MenuRespVO>> list(@RequestBody MenuListReqVO pageVO) {
         List<Menu> menuList = menuService.menuList(pageVO);
         return success(MenuConvert.INSTANCE.convertListVO(menuList));
@@ -51,7 +49,6 @@ public class MenuController {
 
     @GetMapping("/get")
     @Operation(summary = "获取菜单")
-    @PreAuthorize("@ss.hasPermission('admin:menu:get')")
     public CommonResult<MenuRespVO> list(@RequestParam(value = "id") String id) {
         Menu menu = menuService.getById(id);
         return success(MenuConvert.INSTANCE.convertRespVO(menu));

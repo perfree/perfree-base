@@ -69,7 +69,7 @@ const treeRef = ref();
 // 编辑器
 const code = ref(``)
 const extensions = [javascript(), oneDark]
-const supportEditFileType = ['java', 'js', 'css', 'html', 'json', 'yaml', 'less', 'scss', 'txt', 'md','vue', 'xml']
+const supportEditFileType = ['java', 'js', 'css', 'html', 'json', 'yaml', 'less', 'scss', 'txt', 'md','vue', 'xml', 'sql']
 function initFileList() {
   loading.value = true;
   getCodeFileList(route.params.id).then(res => {

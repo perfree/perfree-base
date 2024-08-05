@@ -2,16 +2,18 @@ package com.perfree.service.codegen;
 
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.map.MapUtil;
+import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.extra.template.TemplateConfig;
 import cn.hutool.extra.template.TemplateEngine;
 import cn.hutool.extra.template.engine.velocity.VelocityEngine;
 import com.google.common.collect.Sets;
+import com.perfree.commons.common.UUIDTool;
 import com.perfree.commons.constant.SystemConstants;
 import com.perfree.constant.CodegenConstant;
-import com.perfree.controller.auth.codegen.vo.CodegenFileListRespVO;
 import com.perfree.model.CodegenColumn;
 import com.perfree.model.CodegenTable;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
@@ -50,11 +52,53 @@ public class CodegenEngine {
 
             // mapper xml
             .put("codegen/java/mapper/MapperXml.vm", "${baseDir}/${moduleName}-biz/src/main/resources/mapper/${className}Mapper.xml")
+
+            // sql
+            .put("codegen/sql/sql.vm", "${baseDir}/sql/sql.sql")
             .build();
     private static final Map<String, String> BASE_VUE_TEMPLATES = MapUtil.<String, String>builder(new LinkedHashMap<>())
             .put("codegen/vue/index.js.vm", "${baseDir}/perfree-ui-base/src/modules/${frontModuleName}/index.js")
             .put("codegen/vue/api.js.vm", "${baseDir}/perfree-ui-base/src/modules/${frontModuleName}/api/${lowerFirstClassName}.js")
             .put("codegen/vue/View.vue.vm", "${baseDir}/perfree-ui-base/src/modules/${frontModuleName}/view/${className}View.vue")
+            .build();
+
+
+    private static final Map<String, String> PLUGIN_SERVER_TEMPLATES = MapUtil.<String, String>builder(new LinkedHashMap<>())
+            // controller
+            .put("codegen/java/controller/Controller.vm", "${baseDir}/${pluginId}/src/main/java/${packagePath}/controller/auth/${lowerFirstClassName}/${className}Controller.java")
+
+            // model
+            .put("codegen/java/model/Model.vm", "${baseDir}/${pluginId}/src/main/java/${packagePath}/model/${className}.java")
+
+            // mapper
+            .put("codegen/java/mapper/Mapper.vm", "${baseDir}/${pluginId}/src/main/java/${packagePath}/mapper/${className}Mapper.java")
+
+            // service
+            .put("codegen/java/service/Service.vm", "${baseDir}/${pluginId}/src/main/java/${packagePath}/service/${lowerFirstClassName}/${className}Service.java")
+            .put("codegen/java/service/ServiceImpl.vm", "${baseDir}/${pluginId}/src/main/java/${packagePath}/service/${lowerFirstClassName}/${className}ServiceImpl.java")
+
+            // VO
+            .put("codegen/java/controller/vo/BaseVO.vm", "${baseDir}/${pluginId}/src/main/java/${packagePath}/controller/auth/${lowerFirstClassName}/vo/${className}BaseVO.java")
+            .put("codegen/java/controller/vo/RespVO.vm", "${baseDir}/${pluginId}/src/main/java/${packagePath}/controller/auth/${lowerFirstClassName}/vo/${className}RespVO.java")
+            .put("codegen/java/controller/vo/PageReqVO.vm", "${baseDir}/${pluginId}/src/main/java/${packagePath}/controller/auth/${lowerFirstClassName}/vo/${className}PageReqVO.java")
+            .put("codegen/java/controller/vo/AddReqVO.vm", "${baseDir}/${pluginId}/src/main/java/${packagePath}/controller/auth/${lowerFirstClassName}/vo/${className}AddReqVO.java")
+            .put("codegen/java/controller/vo/UpdateReqVO.vm", "${baseDir}/${pluginId}/src/main/java/${packagePath}/controller/auth/${lowerFirstClassName}/vo/${className}UpdateReqVO.java")
+            .put("codegen/java/controller/vo/ExcelVO.vm", "${baseDir}/${pluginId}/src/main/java/${packagePath}/controller/auth/${lowerFirstClassName}/vo/${className}ExcelVO.java")
+            .put("codegen/java/controller/vo/ExportReqVO.vm", "${baseDir}/${pluginId}/src/main/java/${packagePath}/controller/auth/${lowerFirstClassName}/vo/${className}ExportReqVO.java")
+
+            // convert
+            .put("codegen/java/convert/Convert.vm", "${baseDir}/${pluginId}/src/main/java/${packagePath}/convert/${lowerFirstClassName}/${className}Convert.java")
+
+            // mapper xml
+            .put("codegen/java/mapper/MapperXml.vm", "${baseDir}/${pluginId}/src/main/resources/${mapperLocation}/${className}Mapper.xml")
+
+            // sql
+            .put("codegen/sql/sql.vm", "${baseDir}/${pluginId}/src/main/resources/sql/install-${lowerFirstClassName}.sql")
+            .build();
+    private static final Map<String, String> PLUGIN_VUE_TEMPLATES = MapUtil.<String, String>builder(new LinkedHashMap<>())
+            .put("codegen/vue/index.js.vm", "${baseDir}/${pluginId}/ui/src/modules/${frontModuleName}/index.js")
+            .put("codegen/vue/api.js.vm", "${baseDir}/${pluginId}/ui/src/modules/${frontModuleName}/api/${lowerFirstClassName}.js")
+            .put("codegen/vue/View.vue.vm", "${baseDir}/${pluginId}/ui/src/modules/${frontModuleName}/view/${className}View.vue")
             .build();
     private static final Set<String> BASE_MODEL_FIELDS =  Sets.newHashSet("createUserId", "updateUserId", "createTime", "updateTime");
 
@@ -71,14 +115,15 @@ public class CodegenEngine {
         if (baseDir.exists()) {
             FileUtil.clean(baseDir.getAbsolutePath());
         }
+        Map<String, Object> contextMap = new HashMap<>();
+        contextMap.put("table", handleTableContext(codegenTable, codegenColumnList));
+        contextMap.put("columnList",  codegenColumnList.stream()
+                .sorted(Comparator.comparing(CodegenColumn::getPrimaryKey, Comparator.comparing(s -> !s)))
+                .collect(Collectors.toList()));
+        contextMap.put("baseModelFields", BASE_MODEL_FIELDS);
+        contextMap.put("uuidTool", new UUIDTool());
         // 后台代码
         if (codegenTable.getScene().equals(CodegenConstant.SCENE_ADMIN)) {
-            Map<String, Object> contextMap = new HashMap<>();
-            contextMap.put("table", handleTableContext(codegenTable, codegenColumnList));
-            contextMap.put("columnList",  codegenColumnList.stream()
-                    .sorted(Comparator.comparing(CodegenColumn::getPrimaryKey, Comparator.comparing(s -> !s)))
-                    .collect(Collectors.toList()));
-            contextMap.put("baseModelFields", BASE_MODEL_FIELDS);
             for (String key : BASE_SERVER_TEMPLATES.keySet()) {
                 String render = templateEngine.getTemplate(key).render(contextMap);
                 FileUtil.writeString(render, new File(formatOutPath(baseDir, BASE_SERVER_TEMPLATES.get(key), codegenTable)), StandardCharsets.UTF_8);
@@ -90,6 +135,15 @@ public class CodegenEngine {
             }
         } else {
             // 插件代码
+            for (String key : PLUGIN_SERVER_TEMPLATES.keySet()) {
+                String render = templateEngine.getTemplate(key).render(contextMap);
+                FileUtil.writeString(render, new File(formatOutPath(baseDir, PLUGIN_SERVER_TEMPLATES.get(key), codegenTable)), StandardCharsets.UTF_8);
+            }
+
+            for (String key : PLUGIN_VUE_TEMPLATES.keySet()) {
+                String render = templateEngine.getTemplate(key).render(contextMap);
+                FileUtil.writeString(render, new File(formatOutPath(baseDir, PLUGIN_VUE_TEMPLATES.get(key), codegenTable)), StandardCharsets.UTF_8);
+            }
         }
         return baseDir;
     }
@@ -100,8 +154,12 @@ public class CodegenEngine {
         result.put("tableName", codegenTable.getTableName());
         result.put("comment", codegenTable.getClassComment());
         result.put("author", codegenTable.getAuthor());
+        result.put("pluginId", codegenTable.getModuleName());
+        result.put("scene", codegenTable.getScene());
+        result.put("moduleName", codegenTable.getModuleName());
         result.put("frontModuleName", codegenTable.getFrontModuleName());
         result.put("packageName", codegenTable.getPackageName());
+        result.put("parentMenuId", codegenTable.getParentMenuId());
         result.put("lowerFirstClassName", StrUtil.lowerFirst(codegenTable.getClassName()));
         String primaryColumn = "id";
         String primaryColumnType = "Integer";
@@ -125,6 +183,12 @@ public class CodegenEngine {
         filePath = StrUtil.replace(filePath, "${className}", codegenTable.getClassName());
         filePath = StrUtil.replace(filePath, "${lowerFirstClassName}",  StrUtil.lowerFirst(codegenTable.getClassName()));
         filePath = StrUtil.replace(filePath, "${frontModuleName}",  codegenTable.getFrontModuleName());
+        filePath = StrUtil.replace(filePath, "${pluginId}",  codegenTable.getModuleName());
+        String mapperLocation = codegenTable.getMapperLocation();
+        if (StringUtils.isBlank(mapperLocation)) {
+            mapperLocation = CodegenConstant.DEFAULT_MAPPER_LOCATION;
+        }
+        filePath = StrUtil.replace(filePath, "${mapperLocation}",  mapperLocation);
         return filePath;
     }
 

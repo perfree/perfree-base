@@ -32,8 +32,8 @@
               </el-form-item>
             </el-col>
             <el-col :span="12">
-              <el-form-item :label="baseForm.scene === 0 ? '后端模块名称' : '插件名称'" prop="moduleName">
-                <el-input v-model="baseForm.moduleName" placeholder="请输入模块名称"/>
+              <el-form-item :label="baseForm.scene === 0 ? '后端模块名称' : '插件ID'" prop="moduleName">
+                <el-input v-model="baseForm.moduleName" :placeholder="baseForm.scene === 0 ? '请输入模块名称' : '请输入插件ID'"/>
               </el-form-item>
             </el-col>
             <el-col :span="12">
@@ -54,6 +54,12 @@
             <el-col :span="12">
               <el-form-item label="类名称" prop="className">
                 <el-input v-model="baseForm.className" placeholder="请输入类名称"/>
+              </el-form-item>
+            </el-col>
+
+            <el-col :span="12" v-if="baseForm.scene === 1">
+              <el-form-item label="mapperXml路径" prop="mapperLocation">
+                <el-input v-model="baseForm.mapperLocation" placeholder="MapperXml存放路径(从resources目录开始)"/>
               </el-form-item>
             </el-col>
 
@@ -184,12 +190,13 @@ const baseForm = ref({
   classComment: '',
   author: '',
   parentMenuId: '-1',
-  packageName: ''
+  packageName: '',
+  mapperLocation: 'mapper'
 });
 
 const baseRule = reactive({
   scene: [{required: true, message: '请选择生成场景', trigger: 'blur'}],
-  moduleName: [{required: true, message: '请输入模块/插件名称', trigger: 'blur'}],
+  moduleName: [{required: true, message: '请输入模块名称或插件id', trigger: 'blur'}],
   frontModuleName: [{required: true, message: '请输入前端模块名称', trigger: 'blur'}],
   className: [{required: true, message: '请输入类名称', trigger: 'blur'}],
   packageName: [{required: true, message: '请输入包名称', trigger: 'blur'}],

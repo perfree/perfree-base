@@ -35,7 +35,7 @@ public class ${table.className}Controller {
 
     @PostMapping("/page")
     @Operation(summary = "${table.comment}分页列表")
-    @PreAuthorize("@ss.hasPermission('admin:${table.lowerFirstClassName}:page')")
+    @PreAuthorize("@ss.hasPermission('admin:${table.lowerFirstClassName}:query')")
     public CommonResult<PageResult<${table.className}RespVO>> page(@RequestBody ${table.className}PageReqVO pageVO) {
         PageResult<${table.className}> ${table.lowerFirstClassName}PageResult = ${table.lowerFirstClassName}Service.${table.lowerFirstClassName}Page(pageVO);
         return success(${table.className}Convert.INSTANCE.convertPageResultVO(${table.lowerFirstClassName}PageResult));

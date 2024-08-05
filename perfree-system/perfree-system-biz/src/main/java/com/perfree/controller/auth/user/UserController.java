@@ -34,7 +34,6 @@ public class UserController {
 
     @PostMapping("/page")
     @Operation(summary = "用户分页列表")
-    @PreAuthorize("@ss.hasPermission('admin:user:page')")
     public CommonResult<PageResult<UserRespVO>> page(@RequestBody UserPageReqVO pageVO) {
         PageResult<User> userPageResult = userService.userPage(pageVO);
         return success(UserConvert.INSTANCE.convertPageResultVO(userPageResult));
@@ -42,7 +41,6 @@ public class UserController {
 
     @GetMapping("/get")
     @Operation(summary = "获取用户")
-    @PreAuthorize("@ss.hasPermission('admin:user:get')")
     public CommonResult<UserRespVO> get(@RequestParam(value = "id") Integer id) {
         return success(UserConvert.INSTANCE.convertRespVO(userService.get(id)));
     }
@@ -77,7 +75,6 @@ public class UserController {
 
     @GetMapping("/getUserRole")
     @Operation(summary = "获取用户角色id集合")
-    @PreAuthorize("@ss.hasPermission('admin:user:queryRoles')")
     public CommonResult<UserRoleRespVO> getUserRole(@RequestParam(value = "id") Integer id) {
         return success(userService.getUserRole(id));
     }

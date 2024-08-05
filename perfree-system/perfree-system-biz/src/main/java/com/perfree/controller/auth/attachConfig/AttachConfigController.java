@@ -28,7 +28,6 @@ public class AttachConfigController {
 
     @GetMapping("/getAll")
     @Operation(summary = "获取所有配置")
-    @PreAuthorize("@ss.hasPermission('admin:attachConfig:getAll')")
     public CommonResult<List<AttachConfigRespVO>> getAll() {
         List<AttachConfig> attachConfigList = attachConfigService.getAll();
         return CommonResult.success(AttachConfigConvert.INSTANCE.convertRespListVO(attachConfigList));
@@ -36,7 +35,6 @@ public class AttachConfigController {
 
     @PostMapping("/page")
     @Operation(summary = "配置分页列表")
-    @PreAuthorize("@ss.hasPermission('admin:attachConfig:page')")
     public CommonResult<PageResult<AttachConfigRespVO>> page(@RequestBody AttachConfigPageReqVO pageVO) {
         PageResult<AttachConfig> attachPage = attachConfigService.attachConfigPage(pageVO);
         return success(AttachConfigConvert.INSTANCE.convertPageResultVO(attachPage));
@@ -68,7 +66,6 @@ public class AttachConfigController {
 
     @GetMapping("/get")
     @Operation(summary = "根据id获取配置")
-    @PreAuthorize("@ss.hasPermission('admin:attachConfig:get')")
     public CommonResult<AttachConfigRespVO> get(@RequestParam(value = "id") Integer id) {
         AttachConfig attachConfig = attachConfigService.getById(id);
         return CommonResult.success(AttachConfigConvert.INSTANCE.convertRespVO(attachConfig));

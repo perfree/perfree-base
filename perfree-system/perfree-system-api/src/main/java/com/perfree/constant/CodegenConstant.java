@@ -31,4 +31,5 @@ public class CodegenConstant {
     public static final int QUERY_TYPE_LE = 5;
     public static final int QUERY_TYPE_LIKE = 6;
     public static final int QUERY_TYPE_BETWEEN = 7;
+    public static final String DEFAULT_MAPPER_LOCATION = "mapper";
 }

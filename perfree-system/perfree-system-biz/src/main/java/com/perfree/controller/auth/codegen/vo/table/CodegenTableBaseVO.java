@@ -48,4 +48,7 @@ public class CodegenTableBaseVO {
     @NotNull(message = "包名称不能为空")
     private String packageName;
 
+    @Schema(description = "mapperXml路径")
+    private String mapperLocation;
+
 }

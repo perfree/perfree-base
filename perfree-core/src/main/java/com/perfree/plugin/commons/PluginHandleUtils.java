@@ -301,12 +301,21 @@ public class PluginHandleUtils {
         if (null == pluginDir || !pluginDir.exists()){
             return;
         }
-        File installSqlFile = new File(pluginDir.getAbsolutePath() + File.separator + SQL_DIR + File.separator + "install.sql");
-        if (installSqlFile.exists()) {
-            FileReader fileReader = new FileReader(installSqlFile);
-            String sqlStr = fileReader.readString();
-            SqlExecUtils.execSql(sqlStr);
-            LOGGER.info("执行插件安装sql: {}", sqlStr);
+        File sqlDirFile = new File(pluginDir.getAbsolutePath() + File.separator + SQL_DIR);
+        if (!sqlDirFile.exists()) {
+            return;
+        }
+        File[] files = sqlDirFile.listFiles();
+        if (null == files) {
+            return;
+        }
+        for (File file : files) {
+            if (file.getName().endsWith(".sql") && file.getName().startsWith("install")) {
+                FileReader fileReader = new FileReader(file.getAbsoluteFile());
+                String sqlStr = fileReader.readString();
+                SqlExecUtils.execSql(sqlStr);
+                LOGGER.info("执行插件安装sql: {}", sqlStr);
+            }
         }
     }
 

@@ -33,7 +33,6 @@ public class DictController {
 
     @PostMapping("/page")
     @Operation(summary = "数据字典分页列表")
-    @PreAuthorize("@ss.hasPermission('admin:dict:page')")
     public CommonResult<PageResult<DictRespVO>> page(@RequestBody DictPageReqVO pageVO) {
         PageResult<Dict> dictPageResult = dictService.dictPage(pageVO);
         return success(DictConvert.INSTANCE.convertPageResultVO(dictPageResult));
@@ -55,7 +54,6 @@ public class DictController {
 
     @GetMapping("/get")
     @Operation(summary = "根据id获取数据字典")
-    @PreAuthorize("@ss.hasPermission('admin:dict:get')")
     public CommonResult<DictRespVO> get(@RequestParam(value = "id") Integer id) {
         return success(DictConvert.INSTANCE.convertRespVO(dictService.get(id)));
     }
@@ -75,7 +73,6 @@ public class DictController {
 
     @GetMapping("/queryListAll")
     @Operation(summary = "根据条件获取所有数据字典")
-    @PreAuthorize("@ss.hasPermission('admin:dict:queryListAll')")
     public CommonResult<List<DictRespVO>> queryListAll(@RequestParam(value = "dictType") String dictType, @RequestParam(value = "dictName") String dictName) {
         return success(DictConvert.INSTANCE.convertListRespVO(dictService.queryListAll(dictType, dictName)));
     }

@@ -1,6 +1,6 @@
 plugin:
   # 插件id(必须唯一)
-  id: perfree-demo
+  id: perfree-plugin-demo
   # 插件名称,
   name: 示例插件
   # 插件mapperXml文件位置, 没有可不写
