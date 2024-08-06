@@ -44,4 +44,6 @@ public interface UserConvert {
 
     User convertByStatusReqVO(UserStatusReqVO userStatusReqVO);
 
+    User convertByProfileReqVO(UserProfileUpdateReqVO userProfileUpdateReqVO);
+
 }

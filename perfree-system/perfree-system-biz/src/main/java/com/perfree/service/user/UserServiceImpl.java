@@ -10,6 +10,7 @@ import com.perfree.commons.common.PageResult;
 import com.perfree.commons.exception.ServiceException;
 import com.perfree.commons.utils.WebUtils;
 import com.perfree.constant.OptionConstant;
+import com.perfree.constant.UserConstant;
 import com.perfree.controller.auth.system.vo.LoginUserInfoRespVO;
 import com.perfree.controller.auth.user.vo.*;
 import com.perfree.controller.common.system.vo.LoginUserReqVO;
@@ -176,6 +177,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         if (null != byAccount) {
             throw new ServiceException(ACCOUNT_EXIST);
         }
+
+        if (StringUtils.isBlank(user.getAvatar())) {
+            user.setAvatar(UserConstant.DEFAULT_AVATAR);
+        }
+
         user.setSalt(IdUtil.simpleUUID());
         // PS: 为了兼容老数据,这里依然采用MD5 + Salt的方式
         String hexPassword = DigestUtil.md5Hex(user.getSalt() + userAddReqVO.getPassword());
@@ -191,6 +197,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         User byAccount = userMapper.findByAccount(userUpdateReqVO.getAccount());
         if (null != byAccount && !byAccount.getId().equals(user.getId())) {
             throw new ServiceException(ACCOUNT_EXIST);
+        }
+        if (StringUtils.isBlank(user.getAvatar())) {
+            user.setAvatar(UserConstant.DEFAULT_AVATAR);
         }
         userMapper.updateById(user);
         return user;
@@ -244,6 +253,50 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Transactional
     public Boolean updateStatus(UserStatusReqVO userStatusReqVO) {
         User user = UserConvert.INSTANCE.convertByStatusReqVO(userStatusReqVO);
+        userMapper.updateById(user);
+        return true;
+    }
+
+    @Override
+    @Transactional
+    public void updateUserAvatar(String url, Integer id) {
+        User user = new User();
+        user.setAvatar(url);
+        user.setId(id);
+        userMapper.updateById(user);
+    }
+
+    @Override
+    public User updateProfile(UserProfileUpdateReqVO userProfileUpdateReqVO) {
+        User user = UserConvert.INSTANCE.convertByProfileReqVO(userProfileUpdateReqVO);
+        LoginUserVO loginUser = SecurityFrameworkUtils.getLoginUser();
+        if (null == loginUser) {
+            throw new ServiceException(ErrorCode.USER_NOT_LOGIN);
+        }
+        user.setId(loginUser.getId());
+
+        User byAccount = userMapper.findByAccount(userProfileUpdateReqVO.getAccount());
+        if (null != byAccount && !byAccount.getId().equals(user.getId())) {
+            throw new ServiceException(ACCOUNT_EXIST);
+        }
+        userMapper.updateById(user);
+        return user;
+    }
+
+    @Override
+    @Transactional
+    public Boolean updatePassword(UserUpdatePasswordReqVO userUpdatePasswordReqVO) {
+        LoginUserVO loginUser = SecurityFrameworkUtils.getLoginUser();
+        if (null == loginUser) {
+            throw new ServiceException(ErrorCode.USER_NOT_LOGIN);
+        }
+        User user = userMapper.selectById(loginUser.getId());
+        String oldPass = DigestUtil.md5Hex(user.getSalt() + userUpdatePasswordReqVO.getOldPassword());
+        if (!user.getPassword().equals(oldPass)) {
+            throw new ServiceException(ErrorCode.OLD_PASSWORD_ERROR);
+        }
+        String newPass = DigestUtil.md5Hex(user.getSalt() + userUpdatePasswordReqVO.getNewPassword());
+        user.setPassword(newPass);
         userMapper.updateById(user);
         return true;
     }

@@ -1,18 +1,15 @@
-
 // 创建一个路由器实例
 import {createRouter, createWebHistory} from "vue-router";
 import Layout from "../layout/Layout.vue";
 import NProgress from 'nprogress'
 import {CONSTANTS} from "@/core/utils/constants.js";
-import LoginView from "@/core/views/login/LoginView.vue";
 import {useCommonStore} from "@/core/stores/commonStore.js";
-import {menus} from "@/core/data/menuData.js";
 import _import from "@/core/utils/_import.js";
 import {getAllRouter, initMenu} from "@/core/utils/perfree.js";
-import RegisterView from "@/core/views/register/RegisterView.vue";
 import {userInfo} from "@/core/api/system.js";
 import {listAllCacheApi} from "@/core/api/dictData.js";
 import {useDictStore} from "@/core/stores/dictStore.js";
+import {userStore} from "@/core/stores/userStore.js";
 
 const router = createRouter({
     history: createWebHistory(),
@@ -104,7 +101,8 @@ function initUserInfo() {
     return new Promise( (resolve, reject) => {
         userInfo().then(r => {
             resolve()
-            localStorage.setItem(CONSTANTS.STORAGE_USER_INFO, JSON.stringify(r.data))
+            const storeUser = userStore();
+            storeUser.setUserInfo(r.data);
         })
     });
 }

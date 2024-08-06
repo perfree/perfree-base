@@ -95,9 +95,9 @@ public class GlobalExceptionHandler{
      */
     @ExceptionHandler(ServiceException.class)
     @ResponseBody
-    public CommonResult<?> handleServiceException(Exception exception) {
+    public CommonResult<?> handleServiceException(ServiceException exception) {
         LOGGER.error(exception.getMessage(),exception);
-        return CommonResult.error(ResultCodeEnum.FAIL.getCode(), exception.getMessage());
+        return CommonResult.error(exception.getCode(), exception.getMessage());
     }
 
     @ExceptionHandler(AccessDeniedException.class)

@@ -45,7 +45,7 @@
 
       <el-dropdown>
         <div class="h-user">
-          <el-avatar src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png" />
+          <el-avatar :src="userInfo.avatar" />
           <span class="h-userName">{{userInfo.userName}}</span>
         </div>
         <template #dropdown>
@@ -71,7 +71,7 @@ import ThemeSetting from './ThemeSetting.vue'
 import { useAppStore } from '@/core/stores/appStore'
 import {CONSTANTS} from "@/core/utils/constants.js";
 import {useRoute, useRouter} from "vue-router";
-import {nextTick, ref} from "vue";
+import {computed, nextTick, ref, watch} from "vue";
 
 const router = useRouter()
 const route = useRoute()
@@ -80,7 +80,11 @@ const isDark = useDark()
 const target = ref(null)
 const { isFullscreen, toggle } = useFullscreen(target)
 const themeSettingRef = ref(null)
-const userInfo = ref(JSON.parse(localStorage.getItem(CONSTANTS.STORAGE_USER_INFO)))
+const userInfo = ref(window.pinia.state._value.userStore.userInfo)
+
+watch(() => window.pinia.state._value.userStore.userInfo, (val) => {
+  userInfo.value = val;
+})
 
 // 全屏/退出全屏
 const toggleFullscreen = () => {

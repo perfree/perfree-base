@@ -155,10 +155,7 @@ const handleLogin = () => {
           commonStore.setMenuInit(false);
           clearTabs();
           localStorage.setItem(CONSTANTS.STORAGE_TOKEN, JSON.stringify(res.data));
-          userInfo().then(r => {
-            localStorage.setItem(CONSTANTS.STORAGE_USER_INFO, JSON.stringify(r.data))
-            router.replace("/admin");
-          })
+          router.replace("/admin");
         } else {
           ElMessage.error(res.msg);
           loginForm.value.code = "";

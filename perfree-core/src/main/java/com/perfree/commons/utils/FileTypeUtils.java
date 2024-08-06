@@ -61,4 +61,11 @@ public class FileTypeUtils {
         }
         return "other";
     }
+
+    public static boolean isImage(String contentType) {
+        if (StringUtils.isBlank(contentType)) {
+            return false;
+        }
+        return contentType.startsWith("image/");
+    }
 }

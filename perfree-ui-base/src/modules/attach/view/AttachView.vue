@@ -3,8 +3,7 @@
     <div class="search-box">
       <el-form :inline="true" :model="searchForm" class="demo-form-inline" ref="searchFormRef">
         <el-form-item label="分组">
-          <el-select v-model="searchForm.attachGroup" placeholder="请选择分组" filterable
-                     allow-create clearable style="width: 200px">
+          <el-select v-model="searchForm.attachGroup" placeholder="请选择分组"  clearable style="width: 200px">
             <el-option v-for="item in attachGroups" :key="item.attachGroup" :label="item.attachGroup" :value="item.attachGroup" />
           </el-select>
         </el-form-item>

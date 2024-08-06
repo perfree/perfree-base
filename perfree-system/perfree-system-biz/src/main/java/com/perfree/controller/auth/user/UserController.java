@@ -3,9 +3,18 @@ package com.perfree.controller.auth.user;
 import com.perfree.commons.common.CommonResult;
 import com.perfree.commons.common.PageResult;
 import com.perfree.commons.excel.ExcelUtils;
+import com.perfree.commons.exception.ServiceException;
+import com.perfree.commons.utils.FileTypeUtils;
+import com.perfree.constant.UserConstant;
+import com.perfree.controller.auth.attach.vo.AttachUploadVO;
 import com.perfree.controller.auth.user.vo.*;
 import com.perfree.convert.user.UserConvert;
+import com.perfree.enums.ErrorCode;
+import com.perfree.model.Attach;
 import com.perfree.model.User;
+import com.perfree.security.SecurityFrameworkUtils;
+import com.perfree.security.vo.LoginUserVO;
+import com.perfree.service.attach.AttachService;
 import com.perfree.service.user.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -31,6 +40,9 @@ public class UserController {
 
     @Resource
     private UserService userService;
+
+    @Resource
+    private AttachService attachService;
 
     @PostMapping("/page")
     @Operation(summary = "用户分页列表")
@@ -100,5 +112,38 @@ public class UserController {
     @PreAuthorize("@ss.hasPermission('admin:user:updateStatus')")
     public CommonResult<Boolean> updateStatus(@RequestBody UserStatusReqVO userStatusReqVO) {
         return success(userService.updateStatus(userStatusReqVO));
+    }
+
+    @PostMapping("/uploadAvatar")
+    @Operation(summary = "修改头像")
+    @PreAuthorize("@ss.hasPermission('admin:user:uploadAvatar')")
+    public CommonResult<String> upload(AttachUploadVO attachUploadVO) {
+        String contentType = attachUploadVO.getFile().getContentType();
+        boolean isImage = FileTypeUtils.isImage(contentType);
+        if (!isImage) {
+            throw new ServiceException(ErrorCode.AVATAR_MUST_IMAGE);
+        }
+        LoginUserVO loginUser = SecurityFrameworkUtils.getLoginUser();
+        if (null == loginUser) {
+            throw new ServiceException(ErrorCode.USER_NOT_LOGIN);
+        }
+        attachUploadVO.setAttachGroup(UserConstant.DEFAULT_AVATAR_ATTACH_GROUP);
+        Attach attach = attachService.create(attachUploadVO);
+        userService.updateUserAvatar(attach.getUrl(), loginUser.getId());
+        return success(attach.getUrl());
+    }
+
+    @PostMapping("/updateProfile")
+    @Operation(summary = "修改个人信息")
+    @PreAuthorize("@ss.hasPermission('admin:user:updateProfile')")
+    public CommonResult<UserRespVO> updateProfile(@RequestBody @Valid UserProfileUpdateReqVO userProfileUpdateReqVO) {
+        return success(UserConvert.INSTANCE.convertRespVO(userService.updateProfile(userProfileUpdateReqVO)));
+    }
+
+    @PostMapping("/updatePassword")
+    @Operation(summary = "修改密码")
+    @PreAuthorize("@ss.hasPermission('admin:user:updatePassword')")
+    public CommonResult<Boolean> updatePassword(@RequestBody @Valid UserUpdatePasswordReqVO userUpdatePasswordReqVO) {
+        return success(userService.updatePassword(userUpdatePasswordReqVO));
     }
 }

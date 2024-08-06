@@ -124,4 +124,15 @@ public interface UserService extends IService<User> {
      */
     Boolean updateStatus(UserStatusReqVO userStatusReqVO);
 
+    /**
+     * 修改头像
+     * @param url url
+     * @param id id
+     */
+    void updateUserAvatar(String url, Integer id);
+
+    User updateProfile(UserProfileUpdateReqVO userProfileUpdateReqVO);
+
+    Boolean updatePassword(UserUpdatePasswordReqVO userUpdatePasswordReqVO);
+
 }

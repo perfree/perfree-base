@@ -9,8 +9,7 @@ export const hasPermission =  {
         const { value } = binding;
         const all_permission = "*:*:*";
         if (value && value instanceof Array && value.length > 0) {
-            const userJson = localStorage.getItem(CONSTANTS.STORAGE_USER_INFO);
-            const user = JSON.parse(userJson);
+            const user = window.pinia.state._value.userStore.userInfo;
             // 管理员拥有所有权限
             if (user.admin) {
                 return;
