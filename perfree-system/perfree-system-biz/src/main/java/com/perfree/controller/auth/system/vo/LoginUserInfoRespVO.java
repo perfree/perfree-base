@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,6 +19,9 @@ public class LoginUserInfoRespVO extends UserBaseVO {
 
     @Schema(description = "是否为管理员")
     private Boolean admin;
+
+    @Schema(description = "最后登录时间")
+    private LocalDateTime loginDate;
 
     @Schema(description = "角色编码集合")
     private List<String> roles = new ArrayList<>();

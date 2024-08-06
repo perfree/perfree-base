@@ -81,5 +81,4 @@ window.axios = axios;
 window.pinia = pinia;
 window.download = download;
 
-
 app.mount('#app')

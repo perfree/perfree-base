@@ -1,5 +1,5 @@
 export function getDictByParentDictTypeAndValue(parentDictType, dictValue) {
-    if (!dictValue) {
+    if (dictValue === '' || dictValue === null || dictValue === undefined) {
         return null;
     }
     dictValue = dictValue.toString();
