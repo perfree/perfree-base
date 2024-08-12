@@ -15,6 +15,7 @@ import com.perfree.controller.auth.system.vo.LoginUserInfoRespVO;
 import com.perfree.controller.auth.user.vo.*;
 import com.perfree.controller.common.system.vo.LoginUserReqVO;
 import com.perfree.controller.common.system.vo.LoginUserRespVO;
+import com.perfree.controller.common.system.vo.RegisterUserReqVO;
 import com.perfree.convert.user.UserConvert;
 import com.perfree.enums.ErrorCode;
 import com.perfree.enums.OptionEnum;
@@ -78,20 +79,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
     @Override
     public LoginUserRespVO login(LoginUserReqVO loginUserVO) {
-        OptionDTO option = optionCacheService.getOption(OptionEnum.WEB_OPEN_CAPTCHA.getKey());
-        if (null == option || option.getValue().equals(OptionConstant.OPTION_PUBLIC_TRUE)) {
-            if (StringUtils.isBlank(loginUserVO.getUuid()) || StringUtils.isBlank(loginUserVO.getCode())) {
-                throw new ServiceException(ErrorCode.CAPTCHA_IS_NOT_EMPTY);
-            }
-            String captcha = captchaCacheService.getCaptcha(loginUserVO.getUuid());
-            if (StringUtils.isBlank(captcha)){
-                throw new ServiceException(ErrorCode.CAPTCHA_EXPIRE);
-            }
-            captchaCacheService.removeCaptcha(loginUserVO.getUuid());
-            if (!captcha.equals(loginUserVO.getCode())) {
-                throw new ServiceException(ErrorCode.CAPTCHA_VALID_ERROR);
-            }
-        }
+        validCaptcha(loginUserVO.getUuid(), loginUserVO.getCode());
         User user = userMapper.findByAccount(loginUserVO.getUsername());
         if (null == user) {
             throw new ServiceException(ErrorCode.ACCOUNT_NOT_FOUNT);
@@ -299,5 +287,62 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         user.setPassword(newPass);
         userMapper.updateById(user);
         return true;
+    }
+
+    @Override
+    @Transactional
+    public User register(RegisterUserReqVO reqVO) {
+        validCaptcha(reqVO.getUuid(), reqVO.getCode());
+        User user = UserConvert.INSTANCE.convertByRegisterVO(reqVO);
+        if (StringUtils.isBlank(user.getPassword())) {
+            throw new ServiceException(USER_PASSWORD_NOT_EMPTY);
+        }
+        User byAccount = userMapper.findByAccount(user.getAccount());
+        if (null != byAccount) {
+            throw new ServiceException(ACCOUNT_EXIST);
+        }
+
+        if (StringUtils.isBlank(user.getAvatar())) {
+            user.setAvatar(UserConstant.DEFAULT_AVATAR);
+        }
+
+        user.setSalt(IdUtil.simpleUUID());
+        // PS: 为了兼容老数据,这里依然采用MD5 + Salt的方式
+        String hexPassword = DigestUtil.md5Hex(user.getSalt() + user.getPassword());
+        user.setPassword(hexPassword);
+        userMapper.insert(user);
+
+        // 处理默认角色
+        OptionDTO option = optionCacheService.getOption(OptionEnum.WEB_REGISTER_DEFAULT_ROLE.getKey());
+        if (null != option && StringUtils.isNotBlank(option.getValue())) {
+            UserRole userRole = new UserRole();
+            userRole.setUserId(user.getId());
+            userRole.setRoleId(Integer.valueOf(option.getValue()));
+            userRoleMapper.insert(userRole);
+        }
+        return user;
+    }
+
+
+    /**
+     * 校验验证码
+     * @param uuid uuid
+     * @param code code
+     */
+    private void validCaptcha(String uuid, String code){
+        OptionDTO option = optionCacheService.getOption(OptionEnum.WEB_OPEN_CAPTCHA.getKey());
+        if (null == option || option.getValue().equals(OptionConstant.OPTION_PUBLIC_TRUE)) {
+            if (StringUtils.isBlank(uuid) || StringUtils.isBlank(code)) {
+                throw new ServiceException(ErrorCode.CAPTCHA_IS_NOT_EMPTY);
+            }
+            String captcha = captchaCacheService.getCaptcha(uuid);
+            if (StringUtils.isBlank(captcha)){
+                throw new ServiceException(ErrorCode.CAPTCHA_EXPIRE);
+            }
+            captchaCacheService.removeCaptcha(uuid);
+            if (!captcha.equals(code)) {
+                throw new ServiceException(ErrorCode.CAPTCHA_VALID_ERROR);
+            }
+        }
     }
 }

@@ -18,3 +18,7 @@ export function getOptionByNoAuth() {
     return axios.get('/api/getOptionByNoAuth');
 }
 
+export function register(data) {
+    return axios.post('/api/register', data);
+}
+

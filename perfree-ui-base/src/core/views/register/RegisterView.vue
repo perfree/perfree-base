@@ -1,15 +1,17 @@
 <template>
   <div class="container">
     <div class="login-box">
-      <el-form ref="loginRef" :model="loginForm" :rules="loginRules" class="login-form">
+      <el-form ref="registerRef" :model="registerForm" :rules="registerRules" class="login-form">
         <h3 class="title">Perfree</h3>
-        <el-form-item prop="username">
+        <el-form-item prop="userName">
           <el-input
-              v-model="loginForm.username"
+              v-model="registerForm.userName"
               type="text"
               size="large"
               auto-complete="off"
               placeholder="请输入昵称"
+              autocomplete="off"
+              readonly onfocus="this.removeAttribute('readonly');"
           >
             <template #prefix>
               <font-awesome-icon icon="fa-solid fa-chalkboard-user "/>
@@ -17,13 +19,15 @@
           </el-input>
         </el-form-item>
 
-        <el-form-item prop="username">
+        <el-form-item prop="account">
           <el-input
-              v-model="loginForm.username"
+              v-model="registerForm.account"
               type="text"
               size="large"
               auto-complete="off"
               placeholder="请输入账户"
+              autocomplete="off"
+              readonly onfocus="this.removeAttribute('readonly');"
           >
             <template #prefix>
               <font-awesome-icon icon="fa-solid fa-user "/>
@@ -32,12 +36,12 @@
         </el-form-item>
         <el-form-item prop="password">
           <el-input
-              v-model="loginForm.password"
+              v-model="registerForm.password"
               type="password"
               size="large"
               auto-complete="off"
               placeholder="请输入密码"
-              @keyup.enter="handleLogin"
+              readonly onfocus="this.removeAttribute('readonly');"
           >
             <template #prefix>
               <font-awesome-icon icon="fa-solid fa-lock "/>
@@ -45,9 +49,9 @@
           </el-input>
         </el-form-item>
 
-        <el-form-item prop="username">
+        <el-form-item prop="email">
           <el-input
-              v-model="loginForm.username"
+              v-model="registerForm.email"
               type="text"
               size="large"
               auto-complete="off"
@@ -61,19 +65,18 @@
 
         <el-form-item prop="code" v-if="captchaEnabled">
           <el-input
-              v-model="loginForm.code"
+              v-model="registerForm.code"
               auto-complete="off"
               placeholder="请输入验证码"
               size="large"
               style="width: 63%"
-              @keyup.enter="handleLogin"
           >
             <template #prefix>
               <font-awesome-icon icon="fa-solid fa-fax  "/>
             </template>
           </el-input>
           <div class="login-code">
-            <img :src="codeUrl" @click="getCode" class="login-code-img"/>
+            <img :src="codeUrl" @click="getCode" class="login-code-img" alt=""/>
           </div>
         </el-form-item>
 
@@ -83,15 +86,15 @@
               size="large"
               type="primary"
               style="width:100%;"
-              @click.prevent="handleLogin"
+              @click.prevent="handleRegister"
           >
             <span>注  册</span>
           </el-button>
 
           <div class="login-bottom-box">
-            <div class="register-box" v-if="isOpenRegister">
+            <div class="register-box">
               已有账号?
-              <router-link class="link-type" :to="'/login'" v-if="register">前往登录</router-link>
+              <router-link class="link-type" :to="'/login'">前往登录</router-link>
             </div>
             <div class="forget-password-box">
               <a href="javascript:;">忘记密码?</a>
@@ -110,55 +113,68 @@
 
 <script setup>
 // 验证码开关
-import {getCodeImg, getOptionByNoAuth, login, userInfo} from "@/core/api/system.js";
+import {getCodeImg, getOptionByNoAuth, login, register} from "@/core/api/system.js";
 import {CONSTANTS} from "@/core/utils/constants.js";
-import {ElMessage} from "element-plus";
+import {ElMessage, ElMessageBox} from "element-plus";
 import {useCommonStore} from "@/core/stores/commonStore.js";
 import {clearTabs} from "@/core/utils/tabs.js";
 import {useRouter} from "vue-router";
-import {computed, getCurrentInstance, ref} from "vue";
+import {computed, ref} from "vue";
 
-const {proxy} = getCurrentInstance();
 const router = useRouter();
 
+const registerRef = ref();
 let captchaEnabled = ref(false);
-let isOpenRegister = ref(false);
 const commonStore = useCommonStore()
 
-const loginForm = ref({
-  username: "",
+const registerForm = ref({
+  userName: "",
+  account: "",
   password: "",
+  email: "",
   rememberMe: false,
   code: "",
   uuid: ""
 });
 
-const loginRules = computed(() => ({
-  username: [{required: true, trigger: "blur", message: '请输入您的账户'}],
-  password: [{required: true, trigger: "blur", message: '请输入您的密码'}],
-  code: [{required: true, trigger: "blur", message: '请输入验证码'}]
+const registerRules = computed(() => ({
+  userName: [
+    { required: true, message: '请输入昵称', trigger: 'blur' },
+    { min: 2, max: 20, message: '昵称必须在2-20字之间', trigger: 'blur' }
+  ],
+  account: [
+    { required: true, message: '请输入账户', trigger: 'blur' },
+    { min: 5, max: 16, message: '账户必须在5-16字之间', trigger: 'blur' }
+  ],
+  password: [
+    { required: true, message: '请输入密码', trigger: 'blur' },
+    { min: 5, max: 16, message: '密码必须在5-16字之间', trigger: 'blur' }
+  ],
+  code: [{required: true, trigger: "blur", message: '验证码不能为空'}],
+  email: [{type: "email",message: "请输入正确的邮箱地址",trigger: ["blur", "change"]}],
 }))
 
 let codeUrl = ref("");
 const loading = ref(false);
-// 注册开关
-const register = ref(true);
 
 /**
  * 处理登录逻辑
  */
-const handleLogin = () => {
-  proxy.$refs.loginRef.validate(valid => {
+const handleRegister = () => {
+  registerRef.value.validate(valid => {
     if (valid) {
-      login(loginForm.value).then((res) => {
+      register(registerForm.value).then((res) => {
         if (res.code === 200) {
-          commonStore.setMenuInit(false);
-          clearTabs();
-          localStorage.setItem(CONSTANTS.STORAGE_TOKEN, JSON.stringify(res.data));
-          router.replace("/admin");
+          ElMessageBox.confirm('注册成功,前往登录~', '提示', {
+            confirmButtonText: '确认',
+            showCancelButton: false,
+            type: 'success',
+          }).then(() => {
+            router.replace("/login");
+          }).catch(() => {})
         } else {
           ElMessage.error(res.msg);
-          loginForm.value.code = "";
+          registerForm.value.code = "";
           loading.value = false;
           getCode();
         }
@@ -174,7 +190,7 @@ const handleLogin = () => {
 const getCode = () => {
   getCodeImg().then(res => {
     codeUrl.value = "data:image/gif;base64," + res.data.img;
-    loginForm.value.uuid = res.data.uuid;
+    registerForm.value.uuid = res.data.uuid;
   });
 }
 
@@ -186,7 +202,6 @@ const initOption = () => {
         options[item.key] = item;
       })
       captchaEnabled.value = options["WEB_OPEN_CAPTCHA"] ? options["WEB_OPEN_CAPTCHA"].value === 'ON' : true;
-      isOpenRegister.value = options["WEB_IS_REGISTER"]? options["WEB_IS_REGISTER"].value === 'ON' : true;
       if (captchaEnabled.value) {
         getCode();
       }

@@ -6,6 +6,7 @@ import com.perfree.controller.auth.system.vo.LoginUserInfoRespVO;
 import com.perfree.controller.auth.user.vo.*;
 import com.perfree.controller.common.system.vo.LoginUserReqVO;
 import com.perfree.controller.common.system.vo.LoginUserRespVO;
+import com.perfree.controller.common.system.vo.RegisterUserReqVO;
 import com.perfree.model.User;
 
 import java.util.List;
@@ -134,5 +135,12 @@ public interface UserService extends IService<User> {
     User updateProfile(UserProfileUpdateReqVO userProfileUpdateReqVO);
 
     Boolean updatePassword(UserUpdatePasswordReqVO userUpdatePasswordReqVO);
+
+    /**
+     * 注册账号
+     * @param reqVO reqVO
+     * @return User
+     */
+    User register(RegisterUserReqVO reqVO);
 
 }

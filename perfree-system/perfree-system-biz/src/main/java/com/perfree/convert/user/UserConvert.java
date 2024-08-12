@@ -5,6 +5,7 @@ import com.perfree.controller.auth.system.vo.LoginUserInfoRespVO;
 import com.perfree.controller.auth.user.vo.*;
 import com.perfree.controller.common.system.vo.LoginUserReqVO;
 import com.perfree.controller.common.system.vo.LoginUserRespVO;
+import com.perfree.controller.common.system.vo.RegisterUserReqVO;
 import com.perfree.model.User;
 import com.perfree.system.api.user.dto.UserRespDTO;
 import org.mapstruct.Mapper;
@@ -45,5 +46,7 @@ public interface UserConvert {
     User convertByStatusReqVO(UserStatusReqVO userStatusReqVO);
 
     User convertByProfileReqVO(UserProfileUpdateReqVO userProfileUpdateReqVO);
+
+    User convertByRegisterVO(RegisterUserReqVO reqVO);
 
 }

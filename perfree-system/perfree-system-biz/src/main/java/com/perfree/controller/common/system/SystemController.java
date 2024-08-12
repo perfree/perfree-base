@@ -14,6 +14,7 @@ import com.perfree.controller.auth.system.vo.CaptchaImageRespVO;
 import com.perfree.controller.auth.user.vo.UserRespVO;
 import com.perfree.controller.common.system.vo.LoginUserReqVO;
 import com.perfree.controller.common.system.vo.LoginUserRespVO;
+import com.perfree.controller.common.system.vo.RegisterUserReqVO;
 import com.perfree.convert.option.OptionConvert;
 import com.perfree.convert.user.UserConvert;
 import com.perfree.enums.ErrorCode;
@@ -26,6 +27,7 @@ import com.perfree.system.api.option.dto.OptionDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
+import jakarta.validation.Valid;
 import org.springframework.util.FastByteArrayOutputStream;
 import org.springframework.web.bind.annotation.*;
 
@@ -57,8 +59,14 @@ public class SystemController {
 
     @PostMapping("login")
     @Operation(summary = "使用账号密码登录")
-    public CommonResult<LoginUserRespVO> login(@RequestBody LoginUserReqVO loginUserVO){
+    public CommonResult<LoginUserRespVO> login(@RequestBody @Valid LoginUserReqVO loginUserVO){
         return CommonResult.success(userService.login(loginUserVO));
+    }
+
+    @PostMapping("register")
+    @Operation(summary = "注册账号")
+    public CommonResult<UserRespVO> register(@RequestBody @Valid RegisterUserReqVO reqVO){
+        return CommonResult.success(UserConvert.INSTANCE.convertRespVO(userService.register(reqVO)));
     }
 
 

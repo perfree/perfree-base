@@ -13,7 +13,8 @@ public enum OptionEnum {
     WEB_NAME("WEB_NAME", "网站名称"),
     WEB_OPEN_CAPTCHA("WEB_OPEN_CAPTCHA","是否开启登录验证码"),
     WEB_AUTO_GEN_SUMMARY("WEB_AUTO_GEN_SUMMARY","是否自动生成文章摘要"),
-    WEB_IS_REGISTER("WEB_IS_REGISTER", "是否允许注册新用户")
+    WEB_IS_REGISTER("WEB_IS_REGISTER", "是否允许注册新用户"),
+    WEB_REGISTER_DEFAULT_ROLE("WEB_REGISTER_DEFAULT_ROLE", "注册账户默认角色")
     ;
     private final String key;
 
