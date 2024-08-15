@@ -33,7 +33,6 @@
     "loadjs": "^4.2.0",
     "pinia": "^2.1.7",
     "pinia-plugin-persist": "^1.0.0",
-    "vditor": "^3.10.4",
     "vue": "^3.4.29",
     "vue-codemirror": "^6.1.1",
     "vue-dompurify-html": "^5.1.0",

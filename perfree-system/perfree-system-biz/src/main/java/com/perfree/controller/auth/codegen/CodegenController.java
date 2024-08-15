@@ -1,7 +1,7 @@
 package com.perfree.controller.auth.codegen;
 
 
-import cn.hutool.http.server.HttpServerResponse;
+import org.dromara.hutool.http.server.HttpServerResponse;
 import com.baomidou.mybatisplus.generator.config.po.TableInfo;
 import com.perfree.commons.common.CommonResult;
 import com.perfree.commons.common.PageResult;

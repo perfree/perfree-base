@@ -84,6 +84,9 @@
         <el-form-item label="账号" prop="account">
           <el-input v-model="addForm.account" placeholder="请输入邮箱服务账号"/>
         </el-form-item>
+        <el-form-item label="密码" prop="password">
+          <el-input v-model="addForm.password" placeholder="请输入邮箱服务密码"/>
+        </el-form-item>
         <el-form-item label="用户名" prop="userName">
           <el-input v-model="addForm.userName" placeholder="请输入邮箱服务用户名"/>
         </el-form-item>
@@ -130,6 +133,7 @@ const addForm = ref({
   name: null,
   account: null,
   userName: null,
+  password: null,
   address: null,
   port: null,
   status: 0,
@@ -142,6 +146,7 @@ const addRule = reactive({
       {type: "email",message: "请输入正确的邮箱地址",trigger: ["blur", "change"]}
   ],
   userName: [{required: true, message: '邮箱服务用户名不能为空', trigger: 'blur'}],
+  password: [{required: true, message: '邮箱服务密码不能为空', trigger: 'blur'}],
   address: [{required: true, message: '邮箱服务SMTP域名不能为空', trigger: 'blur'}],
   port: [{required: true, message: '邮箱服务SMTP端口不能为空', trigger: 'blur'}],
   status: [{required: true, message: '状态不能为空', trigger: 'blur'}],
@@ -268,6 +273,7 @@ function resetAddForm() {
     name: null,
     account: null,
     userName: null,
+    password: null,
     address: null,
     port: null,
     status: 0,

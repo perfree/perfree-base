@@ -1,16 +1,10 @@
 package com.perfree.service.attach;
 
-import cn.hutool.core.io.FileUtil;
-import cn.hutool.core.io.file.FileNameUtil;
-import cn.hutool.core.util.IdUtil;
-import cn.hutool.core.util.URLUtil;
-import cn.hutool.http.HttpUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.perfree.commons.common.CustomMultipartFile;
 import com.perfree.commons.common.PageResult;
 import com.perfree.commons.constant.SystemConstants;
 import com.perfree.commons.exception.ServiceException;
-import com.perfree.commons.utils.SortingFieldUtils;
 import com.perfree.controller.auth.attach.vo.AttachPageReqVO;
 import com.perfree.controller.auth.attach.vo.AttachUpdateVO;
 import com.perfree.controller.auth.attach.vo.AttachUploadVO;
@@ -23,6 +17,11 @@ import com.perfree.model.Attach;
 import com.perfree.system.api.attach.dto.AttachFileDTO;
 import com.perfree.system.api.attach.dto.AttachUploadDTO;
 import jakarta.annotation.Resource;
+import org.dromara.hutool.core.data.id.IdUtil;
+import org.dromara.hutool.core.io.file.FileNameUtil;
+import org.dromara.hutool.core.io.file.FileUtil;
+import org.dromara.hutool.core.net.url.UrlUtil;
+import org.dromara.hutool.http.client.HttpDownloader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -31,6 +30,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
@@ -113,10 +113,9 @@ public class AttachServiceImpl extends ServiceImpl<AttachMapper, Attach> impleme
     @Override
     public Attach uploadAttachByUrl(String url) {
         try{
-            String fileName = URLUtil.getPath(url);
-            fileName = IdUtil.fastSimpleUUID() + "." + FileNameUtil.extName(FileUtil.getName(fileName));
+            String fileName = IdUtil.fastSimpleUUID() + "." + FileNameUtil.extName(FileUtil.getName(Path.of(UrlUtil.toURI(url))));
             File tmpSaveFile = FileUtil.file(SystemConstants.UPLOAD_TEMP_PATH + File.separator + fileName);
-            HttpUtil.downloadFile(url, tmpSaveFile.getAbsoluteFile());
+            HttpDownloader.downloadFile(url, tmpSaveFile.getAbsoluteFile());
             // 自动检测文件 MIME 类型
             String contentType = Files.probeContentType(Paths.get(tmpSaveFile.getAbsolutePath()));
             if (contentType == null) {

@@ -81,4 +81,11 @@ public class MailTemplateController {
         List<MailTemplate> mailTemplateList = mailTemplateService.queryExportData(exportReqVO);
         ExcelUtils.renderExcel(response, MailTemplateConvert.INSTANCE.convertToExcelVOList(mailTemplateList), MailTemplateExcelVO.class, "邮件模板数据","邮件模板数据.xlsx");
     }
+
+    @PostMapping("/testMail")
+    @Operation(summary = "发送测试邮件")
+    @PreAuthorize("@ss.hasPermission('admin:mailTemplate:testMail')")
+    public CommonResult<Boolean> testMail(@RequestBody @Valid MailTemplateTestReqVO mailTemplateTestReqVO) {
+        return success(mailTemplateService.testMail(mailTemplateTestReqVO));
+    }
 }

@@ -36,8 +36,8 @@
         <el-table-column prop="name" label="模板名称" min-width="120"/>
         <el-table-column prop="code" label="模板编码" min-width="120"/>
         <el-table-column prop="nickname" label="发送人名称" min-width="120"/>
-        <el-table-column prop="mailTitle" label="邮件标题" min-width="120"/>
-        <el-table-column prop="mailContent" label="邮件内容" min-width="150"/>
+        <el-table-column prop="mailTitle" label="邮件标题" min-width="120"  show-overflow-tooltip/>
+        <el-table-column prop="mailContent" label="邮件内容" min-width="150"  show-overflow-tooltip/>
         <el-table-column prop="status" label="状态" min-width="80">
           <template #default="scope">
             <el-tag class="ml-2" type="success" v-if="scope.row.status === 0">启用</el-tag>
@@ -52,6 +52,7 @@
         </el-table-column>
         <el-table-column label="操作" width="240" fixed="right">
           <template v-slot="scope">
+            <el-button size="small" type="primary" link :icon="Position" @click="handleTestMail(scope.row)" v-hasPermission="['admin:mailTemplate:testMail']">测试</el-button>
             <el-button size="small" type="primary" link :icon="Edit" @click="handleUpdate(scope.row)" v-hasPermission="['admin:mailTemplate:update']">修改</el-button>
             <el-button size="small" type="primary" link :icon="Delete" @click="handleDelete(scope.row)" v-hasPermission="['admin:mailTemplate:delete']">删除</el-button>
           </template>
@@ -70,7 +71,7 @@
       />
     </div>
 
-    <el-dialog v-model="open" :title="title" width="600px" draggable>
+    <el-dialog v-model="open" :title="title" width="800px" draggable>
       <el-form
           ref="addFormRef"
           :model="addForm"
@@ -96,13 +97,13 @@
           <el-input v-model="addForm.mailTitle" placeholder="请输入邮件标题"/>
         </el-form-item>
         <el-form-item label="邮件内容" prop="mailContent">
-          <el-input v-model="addForm.mailContent" placeholder="请输入邮件内容"/>
+          <ai-editor :init-value="mailContent" ref="editorRef" :height="'400px'"></ai-editor>
         </el-form-item>
         <el-form-item label="状态" prop="status">
           <el-switch v-model="addForm.status" inline-prompt active-text="启用" inactive-text="禁用" :active-value="0" :inactive-value="1" />
         </el-form-item>
         <el-form-item label="备注" prop="remark">
-          <el-input v-model="addForm.remark" placeholder="请输入备注"/>
+          <el-input v-model="addForm.remark" placeholder="请输入备注" :autosize="{ minRows: 3, maxRows: 6 }" type="textarea"/>
         </el-form-item>
       </el-form>
 
@@ -113,17 +114,52 @@
         </span>
       </template>
     </el-dialog>
+
+    <el-dialog v-model="testMailOpen" :title="title" width="800px" draggable>
+      <el-form
+          ref="testMailFormRef"
+          :model="testMailForm"
+          label-width="100px"
+          status-icon
+          :rules="testMailRule"
+          v-loading="testMailLoading"
+      >
+        <el-form-item label="收件邮箱" prop="receiveMail">
+          <el-input v-model="testMailForm.receiveMail" placeholder="请输入收件邮箱"/>
+        </el-form-item>
+        <el-form-item :label="'参数 [' + param + ']'" prop="mailParams" v-for="param in mailParams">
+          <el-input v-model="testMailForm.mailParams[param]" :placeholder="'请输入参数 [' + param + ']'"/>
+        </el-form-item>
+      </el-form>
+
+      <template #footer>
+        <span class="dialog-footer">
+              <el-button type="primary" @click="sendTestMail">发 送</el-button>
+              <el-button @click="testMailOpen = false; resetTestMailFormForm()">取 消</el-button>
+        </span>
+      </template>
+    </el-dialog>
   </div>
 </template>
 <script setup>
 import {ElMessage, ElMessageBox} from "element-plus";
 import {handleTree, parseTime} from "@/core/utils/perfree.js";
-import {mailTemplateAddApi, mailTemplateDelApi, mailTemplateGetApi, mailTemplatePageApi, mailTemplateUpdateApi, mailTemplateExportExcelApi} from "../api/mailTemplate.js";
-import {Delete, Edit, Filter, Plus, Refresh, Search, Download} from "@element-plus/icons-vue";
+import {
+  mailTemplateAddApi,
+  mailTemplateDelApi,
+  mailTemplateGetApi,
+  mailTemplatePageApi,
+  mailTemplateUpdateApi,
+  mailTemplateExportExcelApi,
+  mailTemplateTestApi
+} from "../api/mailTemplate.js";
+import {Delete, Edit, Filter, Plus, Refresh, Search, Download, Position} from "@element-plus/icons-vue";
 import {reactive, ref} from "vue";
 import {getDictByParentDictType, getDictByParentDictTypeAndValue} from "@/core/utils/dictUtils.js";
 import {mailServerListAllApi} from "@/modules/mail/api/mailServer.js";
+import AiEditor from "@/core/components/editor/ai-editor.vue";
 
+let mailContent = ref('');
 const searchForm = ref({
   pageNo: 1,
   pageSize: 10,
@@ -153,18 +189,36 @@ const addRule = reactive({
   status: [{required: true, message: '状态不能为空', trigger: 'blur'}],
 });
 
+const editorRef = ref();
 const searchFormRef = ref();
 const addFormRef = ref();
 let open = ref(false);
 let title = ref('');
 let tableData = ref([]);
 let loading = ref(false);
-let mailServerList = ref([])
+let mailServerList = ref([]);
+let testMailOpen = ref(false);
+let testMailLoading = ref(false);
 
+const testMailForm = ref({
+  mailTemplateId: '',
+  receiveMail: "",
+  mailParams: {}
+});
+const testMailFormRef = ref();
+const testMailRule = reactive({
+  receiveMail: [
+    {required: true, message: '收件邮箱不能为空', trigger: 'blur'},
+    {type: "email",message: "请输入正确的邮箱地址",trigger: ["blur", "change"]}
+  ],
+  mailParams: [{required: true, message: '参数不能为空', trigger: 'blur'}],
+});
+let mailParams = ref([]);
 /**
  * 添加提交
  */
 function submitAddForm() {
+  addForm.value.mailContent = editorRef.value.getValue().parseContent;
   addFormRef.value.validate(valid => {
     if (valid) {
       if (addForm.value.id) {
@@ -212,6 +266,7 @@ function handleUpdate(row) {
   open.value = true;
   mailTemplateGetApi(row.id).then((res) => {
     addForm.value = res.data;
+    mailContent.value = addForm.value.mailContent;
   })
 }
 
@@ -270,6 +325,10 @@ function resetSearchForm() {
  * 重置添加表单
  */
 function resetAddForm() {
+  mailContent.value = '';
+  if (editorRef.value) {
+    editorRef.value.resetContent();
+  }
   addForm.value = {
     id: null,
     name: null,
@@ -305,6 +364,49 @@ function initMailServerList() {
     mailServerList.value = res.data
   })
 }
+
+/**
+ * 测试邮件
+ */
+function handleTestMail(row) {
+  title.value = '发送测试邮件';
+  testMailOpen.value = true;
+  mailParams.value = [];
+  mailTemplateGetApi(row.id).then((res) => {
+    testMailForm.value.mailTemplateId = res.data.id;
+    mailContent.value = res.data.mailContent;
+    mailParams.value = res.data.mailParams;
+  })
+}
+
+function sendTestMail() {
+  testMailFormRef.value.validate(valid => {
+    if (valid) {
+      testMailLoading.value = true;
+      mailTemplateTestApi(testMailForm.value).then(res => {
+        if(res.code === 200 && res.data) {
+          ElMessage.success('发送成功');
+          testMailOpen.value = false;
+        } else {
+          ElMessage.error('发送失败,请检查邮箱服务配置');
+        }
+        testMailLoading.value = false;
+      })
+    }
+  })
+}
+
+function resetTestMailFormForm() {
+  testMailForm.value = {
+    mailTemplateId: '',
+    receiveMail: "",
+    mailParams: {}
+  }
+  if (testMailFormRef.value) {
+    testMailFormRef.value.resetFields();
+  }
+}
+
 initMailServerList();
 initList();
 </script>

@@ -1,6 +1,5 @@
 package com.perfree.service.menu;
 
-import cn.hutool.core.util.IdUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.perfree.commons.exception.ServiceException;
 import com.perfree.constant.MenuConstant;
@@ -20,6 +19,7 @@ import com.perfree.security.vo.LoginUserVO;
 import com.perfree.service.role.RoleService;
 import jakarta.annotation.Resource;
 import org.apache.commons.lang3.StringUtils;
+import org.dromara.hutool.core.data.id.IdUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

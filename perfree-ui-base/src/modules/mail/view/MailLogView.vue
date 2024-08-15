@@ -53,7 +53,7 @@
           </template>
         </el-table-column>
         <el-table-column prop="receiveMail" label="接收邮箱" min-width="120"/>
-        <el-table-column prop="mailTitle" label="邮件标题" min-width="120"/>
+        <el-table-column prop="mailTitle" label="邮件标题" min-width="120"  show-overflow-tooltip/>
         <el-table-column prop="sendStatus" label="发送状态" min-width="80">
           <template #default="scope">
             <el-tag class="ml-2" type="success" v-if="scope.row.sendStatus === 0">发送成功</el-tag>
@@ -61,7 +61,7 @@
           </template>
         </el-table-column>
         <el-table-column prop="sendMail" label="发件邮箱" min-width="120"/>
-        <el-table-column prop="content" label="邮件内容" min-width="150"/>
+        <el-table-column prop="content" label="邮件内容" min-width="150"  show-overflow-tooltip/>
         <el-table-column prop="createTime" label="创建时间" min-width="120">
           <template v-slot="scope">
             <span>{{ parseTime(scope.row.createTime) }}</span>

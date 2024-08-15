@@ -22,4 +22,7 @@ public class MailTemplateRespVO extends MailTemplateBaseVO{
     @Schema(description = "创建时间", requiredMode = Schema.RequiredMode.REQUIRED)
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createTime;
+
+    @Schema(description = "参数")
+    private List<String> mailParams;
 }

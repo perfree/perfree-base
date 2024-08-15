@@ -1,6 +1,5 @@
 package com.perfree.plugin;
 
-import cn.hutool.core.io.FileUtil;
 import com.perfree.constant.PluginConstant;
 import com.perfree.plugin.commons.PluginHandleUtils;
 import com.perfree.plugin.exception.PluginException;
@@ -8,6 +7,7 @@ import com.perfree.plugin.handle.compound.PluginHandle;
 import com.perfree.plugin.pojo.PluginBaseConfig;
 import jakarta.annotation.Resource;
 import org.apache.commons.lang3.StringUtils;
+import org.dromara.hutool.core.io.file.FileUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;

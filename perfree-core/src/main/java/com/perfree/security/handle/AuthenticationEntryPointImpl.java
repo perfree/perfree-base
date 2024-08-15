@@ -1,8 +1,8 @@
 package com.perfree.security.handle;
 
 
-import cn.hutool.http.ContentType;
-import cn.hutool.json.JSONUtil;
+import org.dromara.hutool.http.meta.ContentType;
+import org.dromara.hutool.json.JSONUtil;
 import com.perfree.commons.common.CommonResult;
 import com.perfree.commons.enums.ResultCodeEnum;
 import com.perfree.commons.utils.WebUtils;

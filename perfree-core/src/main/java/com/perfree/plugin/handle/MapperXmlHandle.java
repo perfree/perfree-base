@@ -1,6 +1,5 @@
 package com.perfree.plugin.handle;
 
-import cn.hutool.core.io.FileUtil;
 import com.perfree.plugin.PluginApplicationContextHolder;
 import com.perfree.plugin.PluginInfo;
 import com.perfree.plugin.commons.PluginHandleUtils;
@@ -9,6 +8,7 @@ import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.mapping.MappedStatement;
 import org.apache.ibatis.session.Configuration;
 import org.apache.ibatis.session.SqlSessionFactory;
+import org.dromara.hutool.core.io.file.FileUtil;
 import org.springframework.util.ClassUtils;
 
 import java.io.BufferedInputStream;

@@ -60,4 +60,7 @@ public interface MailLogService extends IService<MailLog> {
      * @return List<MailLog>
      */
     List<MailLog> queryExportData(MailLogExportReqVO exportReqVO);
+
+    void saveMailLog(MailLog mailLog);
+
 }

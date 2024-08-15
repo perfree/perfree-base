@@ -1,8 +1,7 @@
 package com.perfree.service.user;
 
-import cn.hutool.core.util.IdUtil;
-import cn.hutool.crypto.digest.DigestUtil;
-import cn.hutool.extra.servlet.ServletUtil;
+import org.dromara.hutool.core.data.id.IdUtil;
+import org.dromara.hutool.crypto.digest.DigestUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.perfree.cache.CaptchaCacheService;
 import com.perfree.cache.OptionCacheService;

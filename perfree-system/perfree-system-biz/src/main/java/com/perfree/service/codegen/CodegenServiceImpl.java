@@ -1,13 +1,11 @@
 package com.perfree.service.codegen;
 
-import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.io.FileUtil;
-import cn.hutool.core.io.file.FileReader;
-import cn.hutool.core.io.file.PathUtil;
-import cn.hutool.core.util.IdUtil;
-import cn.hutool.core.util.StrUtil;
-import cn.hutool.core.util.ZipUtil;
-import cn.hutool.http.server.HttpServerResponse;
+import org.dromara.hutool.core.collection.CollUtil;
+import org.dromara.hutool.core.compress.ZipUtil;
+import org.dromara.hutool.core.data.id.IdUtil;
+import org.dromara.hutool.core.io.file.FileReader;
+import org.dromara.hutool.core.io.file.FileUtil;
+import org.dromara.hutool.core.io.file.PathUtil;
 import com.baomidou.mybatisplus.generator.config.DataSourceConfig;
 import com.baomidou.mybatisplus.generator.config.GlobalConfig;
 import com.baomidou.mybatisplus.generator.config.StrategyConfig;
@@ -33,11 +31,13 @@ import com.perfree.model.CodegenColumn;
 import com.perfree.model.CodegenTable;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletResponse;
+import org.dromara.hutool.core.text.StrUtil;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.File;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -143,7 +143,7 @@ public class CodegenServiceImpl implements CodegenService{
         if (!findFile.exists()) {
             return null;
         }
-        FileReader fileReader = new FileReader(findFile);
+        FileReader fileReader = new FileReader(findFile, StandardCharsets.UTF_8);
         return fileReader.readString();
     }
 

@@ -31,7 +31,10 @@ public enum ErrorCode {
     DICT_DATA_EXIST(100000034, "字典类型已存在!"),
     AVATAR_MUST_IMAGE(100000035, "头像必须是图片!"),
     USER_NOT_LOGIN(100000036, "账户未登录!" ),
-    OLD_PASSWORD_ERROR(100000037, "旧密码校验失败!");
+    OLD_PASSWORD_ERROR(100000037, "旧密码校验失败!"),
+    MAIL_TEMPLATE_NOT_EXIST(100000038, "邮件模板不存在!"),
+    MAIL_SERVER_NOT_EXIST(100000040, "邮件服务不存在!")
+    ;
 
     private final Integer code;
 

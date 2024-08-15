@@ -1,6 +1,7 @@
 package com.perfree.model;
 
 import com.baomidou.mybatisplus.annotation.*;
+import com.baomidou.mybatisplus.extension.handlers.JacksonTypeHandler;
 import com.perfree.base.BaseModel;
 import lombok.*;
 import java.util.*;
@@ -14,7 +15,7 @@ import java.io.Serializable;
 */
 @Getter
 @Setter
-@TableName("p_mail_template")
+@TableName(value = "p_mail_template", autoResultMap = true)
 public class MailTemplate extends BaseModel implements Serializable {
 
     @Serial
@@ -66,4 +67,10 @@ public class MailTemplate extends BaseModel implements Serializable {
     * 备注
     */
     private String remark;
+
+    /**
+     * 参数
+     */
+    @TableField(typeHandler = JacksonTypeHandler.class)
+    private List<String> mailParams;
 }

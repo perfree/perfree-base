@@ -18,6 +18,8 @@ logging:
     root: info
 
 spring:
+  main:
+    allow-circular-references: true
   jackson:
     time-zone: GMT+8
   aop:

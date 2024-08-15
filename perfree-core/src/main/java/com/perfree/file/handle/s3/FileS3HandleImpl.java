@@ -1,12 +1,12 @@
 package com.perfree.file.handle.s3;
 
-import cn.hutool.core.date.DateUtil;
-import cn.hutool.core.io.IoUtil;
-import cn.hutool.core.io.file.FileNameUtil;
-import cn.hutool.core.util.IdUtil;
-import cn.hutool.core.util.StrUtil;
-import cn.hutool.http.HttpUtil;
-import cn.hutool.json.JSONUtil;
+import org.dromara.hutool.core.data.id.IdUtil;
+import org.dromara.hutool.core.date.DateUtil;
+import org.dromara.hutool.core.io.IoUtil;
+import org.dromara.hutool.core.io.file.FileNameUtil;
+import org.dromara.hutool.core.text.StrUtil;
+import org.dromara.hutool.http.HttpUtil;
+import org.dromara.hutool.json.JSONUtil;
 import com.perfree.commons.exception.ServiceException;
 import com.perfree.commons.utils.FileTypeUtils;
 import com.perfree.enums.ErrorCode;

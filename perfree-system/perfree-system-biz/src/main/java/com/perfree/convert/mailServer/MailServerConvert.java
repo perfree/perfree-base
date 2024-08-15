@@ -3,6 +3,7 @@ package com.perfree.convert.mailServer;
 import com.perfree.commons.common.PageResult;
 import com.perfree.controller.auth.mailServer.vo.*;
 import com.perfree.model.MailServer;
+import com.perfree.system.api.mailServer.dto.MailServerDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 import java.util.List;
@@ -56,4 +57,7 @@ public interface MailServerConvert {
      * @return List<MailServerExcelVO>
      */
     List<MailServerExcelVO> convertToExcelVOList(List<MailServer> list);
+
+    MailServerDTO convertToDTO(MailServer byId);
+
 }

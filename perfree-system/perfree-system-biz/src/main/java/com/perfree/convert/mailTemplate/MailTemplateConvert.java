@@ -3,6 +3,7 @@ package com.perfree.convert.mailTemplate;
 import com.perfree.commons.common.PageResult;
 import com.perfree.controller.auth.mailTemplate.vo.*;
 import com.perfree.model.MailTemplate;
+import com.perfree.system.api.mailTemplate.dto.MailTemplateDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 import java.util.List;
@@ -56,4 +57,7 @@ public interface MailTemplateConvert {
      * @return List<MailTemplateExcelVO>
      */
     List<MailTemplateExcelVO> convertToExcelVOList(List<MailTemplate> list);
+
+    MailTemplateDTO convertToDTO(MailTemplate byId);
+
 }

@@ -1,9 +1,9 @@
 package com.perfree.commons.utils;
 
-import cn.hutool.core.io.IoUtil;
-import cn.hutool.extra.servlet.JakartaServletUtil;
+import org.dromara.hutool.core.io.IoUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.dromara.hutool.http.server.servlet.ServletUtil;
 import org.springframework.http.MediaType;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -60,6 +60,6 @@ public class WebUtils {
         if (request == null) {
             return null;
         }
-        return JakartaServletUtil.getClientIP(request);
+        return ServletUtil.getClientIP(request);
     }
 }

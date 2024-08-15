@@ -25,3 +25,8 @@ export function mailTemplateListAllApi() {
 export function mailTemplateExportExcelApi(data) {
     return axios.post('/api/auth/mailTemplate/export', data, {responseType: 'blob'});
 }
+
+
+export function mailTemplateTestApi(data){
+    return axios.post('/api/auth/mailTemplate/testMail', data);
+}

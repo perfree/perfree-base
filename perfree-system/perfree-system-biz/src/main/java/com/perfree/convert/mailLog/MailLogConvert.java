@@ -3,6 +3,7 @@ package com.perfree.convert.mailLog;
 import com.perfree.commons.common.PageResult;
 import com.perfree.controller.auth.mailLog.vo.*;
 import com.perfree.model.MailLog;
+import com.perfree.system.api.mailLog.dto.MailLogDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 import java.util.List;
@@ -56,4 +57,7 @@ public interface MailLogConvert {
      * @return List<MailLogExcelVO>
      */
     List<MailLogExcelVO> convertToExcelVOList(List<MailLog> list);
+
+    MailLog convertByDTO(MailLogDTO mailLogDTO);
+
 }

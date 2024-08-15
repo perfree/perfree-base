@@ -1,7 +1,10 @@
 package com.perfree.plugin.handle.compound;
 
 import com.perfree.plugin.PluginInfo;
-import com.perfree.plugin.handle.*;
+import com.perfree.plugin.handle.BasePluginRegistryHandler;
+import com.perfree.plugin.handle.ClassHandler;
+import com.perfree.plugin.handle.ControllerHandler;
+import com.perfree.plugin.handle.MapperXmlHandle;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -31,7 +34,6 @@ public class PluginCompoundHandle implements BasePluginRegistryHandler, Applicat
         pluginRegisterList.add(new ClassHandler());
         pluginRegisterList.add(new MapperXmlHandle());
         pluginRegisterList.add(new ControllerHandler(this.applicationContext));
-        pluginRegisterList.add(new OpenApiDocHandle(this.applicationContext));
         for (BasePluginRegistryHandler pluginHandle : pluginRegisterList) {
             pluginHandle.initialize();
         }

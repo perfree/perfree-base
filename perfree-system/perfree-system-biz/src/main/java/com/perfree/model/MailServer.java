@@ -48,6 +48,11 @@ public class MailServer extends BaseModel implements Serializable {
     private String address;
 
     /**
+     * 邮箱服务密码
+     */
+    private String password;
+
+    /**
     * 邮箱服务SMTP端口
     */
     private Integer port;

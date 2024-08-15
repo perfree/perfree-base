@@ -1,10 +1,10 @@
 package com.perfree.file.handle.local;
 
-import cn.hutool.core.date.DateUtil;
-import cn.hutool.core.io.FileUtil;
-import cn.hutool.core.io.file.FileNameUtil;
-import cn.hutool.core.util.IdUtil;
-import cn.hutool.json.JSONUtil;
+import org.dromara.hutool.core.data.id.IdUtil;
+import org.dromara.hutool.core.date.DateUtil;
+import org.dromara.hutool.core.io.file.FileNameUtil;
+import org.dromara.hutool.core.io.file.FileUtil;
+import org.dromara.hutool.json.JSONUtil;
 import com.perfree.commons.constant.SystemConstants;
 import com.perfree.commons.utils.FileTypeUtils;
 import com.perfree.file.handle.BaseFileHandle;
@@ -36,7 +36,7 @@ public class FileLocalHandleImpl extends BaseFileHandle {
 
         String datePath = DateUtil.format(new Date(), "yyyy-MM-dd") + SystemConstants.FILE_SEPARATOR;
         fileLocalConfig.setBasePath(fileLocalConfig.getBasePath() + datePath);
-        if (!FileUtil.exist(fileLocalConfig.getBasePath())) {
+        if (!FileUtil.exists(fileLocalConfig.getBasePath())) {
             FileUtil.mkdir(fileLocalConfig.getBasePath());
         }
 
@@ -62,7 +62,7 @@ public class FileLocalHandleImpl extends BaseFileHandle {
         FileLocalConfig fileLocalConfig = JSONUtil.toBean(getAttachConfig().getConfig(), FileLocalConfig.class);
         // 统一使用/
         fileLocalConfig.setBasePath(fileLocalConfig.getBasePath().replaceAll("\\\\", SystemConstants.FILE_SEPARATOR));
-        if (FileUtil.exist(fileLocalConfig.getBasePath() + SystemConstants.FILE_SEPARATOR + attachFileDTO.getPath())) {
+        if (FileUtil.exists(fileLocalConfig.getBasePath() + SystemConstants.FILE_SEPARATOR + attachFileDTO.getPath())) {
             FileUtil.del(fileLocalConfig.getBasePath() + SystemConstants.FILE_SEPARATOR + attachFileDTO.getPath());
             return true;
         }

@@ -1,6 +1,6 @@
 package com.perfree.service.attachConfig;
 
-import cn.hutool.json.JSONUtil;
+import org.dromara.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.perfree.cache.AttachConfigCacheService;
 import com.perfree.commons.common.PageResult;

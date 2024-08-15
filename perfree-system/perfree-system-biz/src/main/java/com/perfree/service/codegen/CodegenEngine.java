@@ -1,12 +1,11 @@
 package com.perfree.service.codegen;
 
-import cn.hutool.core.io.FileUtil;
-import cn.hutool.core.map.MapUtil;
-import cn.hutool.core.util.IdUtil;
-import cn.hutool.core.util.StrUtil;
-import cn.hutool.extra.template.TemplateConfig;
-import cn.hutool.extra.template.TemplateEngine;
-import cn.hutool.extra.template.engine.velocity.VelocityEngine;
+import org.dromara.hutool.core.io.file.FileUtil;
+import org.dromara.hutool.core.map.MapUtil;
+import org.dromara.hutool.core.text.StrUtil;
+import org.dromara.hutool.extra.template.TemplateConfig;
+import org.dromara.hutool.extra.template.engine.TemplateEngine;
+import org.dromara.hutool.extra.template.engine.velocity.VelocityEngine;
 import com.google.common.collect.Sets;
 import com.perfree.commons.common.UUIDTool;
 import com.perfree.commons.constant.SystemConstants;

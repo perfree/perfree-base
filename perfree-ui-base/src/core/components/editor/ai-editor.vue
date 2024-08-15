@@ -1,5 +1,5 @@
 <template>
-  <div ref="divRef" style="height: 666px"/>
+  <div ref="divRef" :style="{height: props.height}"/>
   <el-dialog v-model="open" :title="title" width="900px" draggable   destroy-on-close>
     <attach-select-panel @update:selected-attach="selectAttach" :max="attachMaxSelect" :attach-type="attachType"></attach-select-panel>
     <template #footer>
@@ -26,7 +26,7 @@ let title = ref('')
 let selectData = ref([])
 let attachType = ref('')
 let attachMaxSelect = ref(0)
-const props = defineProps(['initValue'])
+const props = defineProps(['initValue', 'height'])
 
 watch(() => props.initValue, (val) => {
   if (aiEditor) {
@@ -76,7 +76,7 @@ onMounted(() => {
         tip: "插入附件",
       },
       "quote", "code-block", "table",
-      "|", "printer", "fullscreen", "ai"
+      "|", "printer", "fullscreen"
     ],
     image: {
       allowBase64: false,

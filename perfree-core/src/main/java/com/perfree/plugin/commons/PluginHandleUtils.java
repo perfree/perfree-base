@@ -1,18 +1,20 @@
 package com.perfree.plugin.commons;
 
-import cn.hutool.core.io.FileUtil;
-import cn.hutool.core.io.file.FileReader;
-import cn.hutool.core.util.IdUtil;
-import cn.hutool.core.util.StrUtil;
-import cn.hutool.core.util.ZipUtil;
+import org.dromara.hutool.core.compress.ZipUtil;
+import org.dromara.hutool.core.data.id.IdUtil;
+import org.dromara.hutool.core.io.file.FileReader;
 import com.perfree.commons.constant.SystemConstants;
 import com.perfree.commons.utils.SqlExecUtils;
 import com.perfree.plugin.pojo.PluginBaseConfig;
+import org.dromara.hutool.core.io.file.FileUtil;
+import org.dromara.hutool.core.text.StrUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.*;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Enumeration;
@@ -311,7 +313,7 @@ public class PluginHandleUtils {
         }
         for (File file : files) {
             if (file.getName().endsWith(".sql") && file.getName().startsWith("install")) {
-                FileReader fileReader = new FileReader(file.getAbsoluteFile());
+                FileReader fileReader = new FileReader(file.getAbsoluteFile(), StandardCharsets.UTF_8);
                 String sqlStr = fileReader.readString();
                 SqlExecUtils.execSql(sqlStr);
                 LOGGER.info("执行插件安装sql: {}", sqlStr);
@@ -341,7 +343,7 @@ public class PluginHandleUtils {
                         && isWithinVersionRange(file, oldVersion, newVersion))
                 .toList();
         for (File updateSqlFile : updateSqlFiles) {
-            FileReader fileReader = new FileReader(updateSqlFile);
+            FileReader fileReader = new FileReader(updateSqlFile, StandardCharsets.UTF_8);
             String sqlStr = fileReader.readString();
             SqlExecUtils.execSql(sqlStr);
             LOGGER.info("执行插件更新sql: {}", sqlStr);
@@ -374,7 +376,7 @@ public class PluginHandleUtils {
         }
         File installSqlFile = new File(pluginDir.getAbsolutePath() + File.separator + SQL_DIR + File.separator + "uninstall.sql");
         if (installSqlFile.exists()) {
-            FileReader fileReader = new FileReader(installSqlFile);
+            FileReader fileReader = new FileReader(installSqlFile, StandardCharsets.UTF_8);
             String sqlStr = fileReader.readString();
             SqlExecUtils.execSql(sqlStr);
             LOGGER.info("执行插件卸载sql: {}", sqlStr);

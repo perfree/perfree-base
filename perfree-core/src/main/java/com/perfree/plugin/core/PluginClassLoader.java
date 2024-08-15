@@ -1,9 +1,9 @@
 package com.perfree.plugin.core;
 
-import cn.hutool.core.io.FileUtil;
-import cn.hutool.core.io.IoUtil;
+import org.dromara.hutool.core.io.IoUtil;
 import com.perfree.commons.constant.SystemConstants;
 import com.perfree.plugin.commons.PluginHandleUtils;
+import org.dromara.hutool.core.io.file.FileUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

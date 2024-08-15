@@ -67,4 +67,9 @@ public class MailLogServiceImpl extends ServiceImpl<MailLogMapper, MailLog> impl
     public List<MailLog> queryExportData(MailLogExportReqVO exportReqVO) {
         return mailLogMapper.queryExportData(exportReqVO);
     }
+
+    @Override
+    public void saveMailLog(MailLog mailLog) {
+        mailLogMapper.insert(mailLog);
+    }
 }

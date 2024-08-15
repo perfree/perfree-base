@@ -60,4 +60,12 @@ public interface MailTemplateService extends IService<MailTemplate> {
      * @return List<MailTemplate>
      */
     List<MailTemplate> queryExportData(MailTemplateExportReqVO exportReqVO);
+
+    /**
+     * 发送测试邮件
+     * @param mailTemplateTestReqVO mailTemplateTestReqVO
+     * @return Boolean
+     */
+    Boolean testMail(MailTemplateTestReqVO mailTemplateTestReqVO);
+
 }
