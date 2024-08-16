@@ -26,3 +26,8 @@ author:
   email: perfree@126.com
   # 作者网站
   webSite: http://111111
+# 接口文档配置
+springdoc:
+  groupName: 测试插件
+  pathsToMatch: '/**'
+  packagesToScan: com.demo.controller

@@ -37,7 +37,7 @@ public class PluginHandle implements ApplicationContextAware {
         pluginInfo.setPluginId(pluginInfo.getPluginConfig().getPlugin().getId());
 
         // 加载插件JarClassLoader
-        PluginClassLoader pluginClassLoader = new PluginClassLoader(pluginInfo.getPluginConfig().getPlugin().getId(), getClass().getClassLoader().getParent(), getClass().getClassLoader());
+        PluginClassLoader pluginClassLoader = new PluginClassLoader(pluginInfo.getPluginConfig().getPlugin().getId(), getClass().getClassLoader(), getClass().getClassLoader());
         pluginClassLoader.addFile(pluginDir);
         pluginInfo.setPluginClassLoader(pluginClassLoader);
         pluginInfo.setClassList(PluginHandleUtils.getClassList(pluginDir, pluginClassLoader));

@@ -14,6 +14,9 @@ public class PluginBaseConfig {
     @Schema(description = "作者信息")
     private PluginAuthor author;
 
+    @Schema(description = "接口文档信息")
+    private PluginSpringDoc springdoc;
+
     @Schema(description = "插件状态:0禁用,1启用")
     private Integer status;
 }

@@ -50,10 +50,11 @@ public class PluginHandleUtils {
             return null;
         }
         PluginBaseConfig pluginBaseConfig = null;
-        try (InputStream input = new FileInputStream(file)) {
+        try (InputStream input = new FileInputStream(file.getAbsoluteFile())) {
             Yaml yaml = new Yaml();
             pluginBaseConfig = yaml.loadAs(input, PluginBaseConfig.class);
-        } catch (Exception ignored) {
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return pluginBaseConfig;
     }
