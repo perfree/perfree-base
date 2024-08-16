@@ -26,7 +26,7 @@ import static com.perfree.commons.common.CommonResult.success;
 * @author Perfree
 **/
 @RestController
-@Tag(name = "测试相关接口}")
+@Tag(name = "测试相关接口")
 @RequestMapping("api/auth/pluginDemo")
 public class PluginDemoController {
 
@@ -34,7 +34,7 @@ public class PluginDemoController {
     private PluginDemoService pluginDemoService;
 
     @PostMapping("/page")
-    @Operation(summary = "测试分页列表")
+    @Operation(summary = "测试分页列表2")
     @PreAuthorize("@ss.hasPermission('admin:pluginDemo:query')")
     public CommonResult<PageResult<PluginDemoRespVO>> page(@RequestBody PluginDemoPageReqVO pageVO) {
         PageResult<PluginDemo> pluginDemoPageResult = pluginDemoService.pluginDemoPage(pageVO);

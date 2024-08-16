@@ -26,7 +26,7 @@ import static com.perfree.commons.common.CommonResult.success;
 * @author Perfree
 **/
 @RestController
-@Tag(name = "邮箱服务相关接口}")
+@Tag(name = "邮箱服务相关接口")
 @RequestMapping("api/auth/mailServer")
 public class MailServerController {
 

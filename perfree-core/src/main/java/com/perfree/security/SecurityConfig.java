@@ -46,6 +46,7 @@ public class SecurityConfig {
         return new SecurityFrameworkServiceImpl(permissionApi);
     }
 
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();

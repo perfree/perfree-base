@@ -24,7 +24,7 @@ import static com.perfree.commons.common.CommonResult.success;
 * @author Perfree
 **/
 @RestController
-@Tag(name = "数据字典相关接口}")
+@Tag(name = "数据字典相关接口")
 @RequestMapping("api/auth/dict")
 public class DictController {
 
