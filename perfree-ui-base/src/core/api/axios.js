@@ -23,7 +23,6 @@ axios.interceptors.request.use(
 // 响应拦截器
 axios.interceptors.response.use(
   function(response) {
-      console.log(response);
       if (response.status === 200) {
           if (response.data.code === 401) {
               ElMessageBox.confirm('登录状态已过期，是否重新登陆?', '提示', {

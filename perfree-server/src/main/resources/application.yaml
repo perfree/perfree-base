@@ -75,6 +75,8 @@ mybatis-plus:
   mapper-locations: classpath*:mapper/*.xml
 
 springdoc:
+  cache:
+    disabled: false
   swagger-ui:
     path: /swagger-ui.html
     tags-sorter: alpha
@@ -82,15 +84,25 @@ springdoc:
   api-docs:
     path: /v3/api-docs
   group-configs:
-    - group: '公共接口'
+    - group: 'common'
+      display-name: '公共接口(无需登录)'
       paths-to-match: '/**'
       packages-to-scan: com.perfree.controller.common
-    - group: '认证接口'
+    - group: 'auth'
+      display-name: '认证接口(需登录)'
       paths-to-match: '/**'
       packages-to-scan: com.perfree.controller.auth
-    - group: '视图接口'
+    - group: 'view'
+      display-name: '视图接口(界面渲染)'
       paths-to-match: '/**'
       packages-to-scan: com.perfree.controller.view
+    - group: 'other'
+      display-name: '其他接口'
+      paths-to-match: '/**'
+      packages-to-exclude:
+        - com.perfree.controller.view
+        - com.perfree.controller.auth
+        - com.perfree.controller.common
 # knife4j的增强配置
 knife4j:
   enable: true
@@ -98,7 +110,6 @@ knife4j:
     language: zh_cn
     enable-version: true
     enable-home-custom: true
-    home-custom-path: classpath:markdown/home.md
     enable-footer-custom: true
     footer-custom-content: Apache License 2.0 | Copyright  2019-[浙江八一菜刀股份有限公司](https://gitee.com/xiaoym/knife4j)
   cors: false

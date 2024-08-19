@@ -3,20 +3,10 @@ package com.perfree.plugin.handle;
 import com.perfree.plugin.PluginApplicationContextHolder;
 import com.perfree.plugin.PluginInfo;
 import org.springdoc.api.AbstractOpenApiResource;
-import org.springdoc.core.configurer.SpringdocActuatorBeanFactoryConfigurer;
-import org.springdoc.core.configurer.SpringdocBeanFactoryConfigurer;
-import org.springdoc.core.models.GroupedOpenApi;
-import org.springdoc.core.properties.AbstractSwaggerUiConfigProperties;
-import org.springdoc.core.properties.SwaggerUiConfigParameters;
-import org.springdoc.core.properties.SwaggerUiConfigProperties;
-import org.springdoc.core.providers.SpringDocProviders;
 import org.springdoc.core.service.OpenAPIService;
 import org.springdoc.webmvc.api.MultipleOpenApiResource;
 import org.springdoc.webmvc.api.OpenApiResource;
-import org.springdoc.webmvc.ui.SwaggerConfigResource;
-import org.springdoc.webmvc.ui.SwaggerWelcomeCommon;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.web.bind.annotation.*;
@@ -25,10 +15,6 @@ import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandl
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Set;
 
 /**
  * @author Perfree
@@ -59,9 +45,7 @@ public class ControllerHandler implements BasePluginRegistryHandler{
 
     @Override
     public void registry(PluginInfo pluginInfo) throws Exception {
-      /*  // 获取包含Controller/RestController注解的类,将其中的接口进行注册
-        registryOpenApi(pluginInfo);
-        OpenAPIService openAPIService = applicationContext.getBean(OpenAPIService.class);*/
+        // OpenAPIService openAPIService = getOpenAPIServiceByGroupName("other");
         for (Class<?> aClass : pluginInfo.getClassList()) {
             Controller controller = aClass.getAnnotation(Controller.class);
             RestController restController = aClass.getAnnotation(RestController.class);
@@ -80,27 +64,21 @@ public class ControllerHandler implements BasePluginRegistryHandler{
                         requestMappingHandlerMapping.registerMapping(requestMappingInfo, bean, method);
                     }
                 }
-              /*  openAPIService.addMappings(Map.of(bean.toString(), bean));*/
+               // openAPIService.addMappings(Map.of(bean.toString(), bean));
             }
         }
-       /* SpringDocProviders bean = applicationContext.getBean(SpringDocProviders.class);
-        SpringdocBeanFactoryConfigurer.initBeanFactoryPostProcessor(PluginApplicationContextHolder.getApplicationContext(pluginInfo.getPluginId()).getBeanFactory());*/
+       // openAPIService.setCachedOpenAPI(openAPIService.build(Locale.getDefault()), Locale.getDefault());
     }
 
     @Override
     public void unRegistry(PluginInfo pluginInfo) throws Exception {
-      /*  OpenAPIService openAPIService = null;
-        if (null != pluginInfo.getPluginConfig().getSpringdoc()) {
-            openAPIService = getOpenAPIServiceByGroupName(pluginInfo.getPluginConfig().getSpringdoc().getGroupName());
-        }*/
+        // OpenAPIService openAPIService = getOpenAPIServiceByGroupName("other");
         for (Class<?> aClass : pluginInfo.getClassList()) {
-           /* if (null != openAPIService) {
-                Map<String, Object> mappingsMap = openAPIService.getMappingsMap();
-                mappingsMap.remove(aClass.toString());
-            }*/
             Controller controller = aClass.getAnnotation(Controller.class);
             RestController restController = aClass.getAnnotation(RestController.class);
             if (controller != null || restController != null) {
+                // openAPIService.getMappingsMap().remove(bean.toString());
+
                 Method[] methods = aClass.getMethods();
                 for (Method method : methods) {
                     RequestMappingInfo requestMappingInfo = (RequestMappingInfo) getMappingForMethod.invoke(requestMappingHandlerMapping, method, aClass);
@@ -108,58 +86,7 @@ public class ControllerHandler implements BasePluginRegistryHandler{
                 }
             }
         }
-  /*      if (null != openAPIService) {
-            openAPIService.build(Locale.CHINA);
-        }
-        unRegistryOpenApi(pluginInfo);
-        OpenAPIService openAPIService2 = applicationContext.getBean(OpenAPIService.class);
-        openAPIService2.build(Locale.CHINA);*/
-    }
-
-
-    private void unRegistryOpenApi(PluginInfo plugin) throws Exception {
-        if (null == plugin.getPluginConfig().getSpringdoc()) {
-            return;
-        }
-        MultipleOpenApiResource bean = applicationContext.getBean(MultipleOpenApiResource.class);
-        Field groupedOpenApis = MultipleOpenApiResource.class.getDeclaredField("groupedOpenApis");
-        ReflectionUtils.makeAccessible(groupedOpenApis);
-        List<GroupedOpenApi> groupedOpenApiList = (List<GroupedOpenApi>)groupedOpenApis.get(bean);
-        for (int i = groupedOpenApiList.size() -1; i >= 0; i--) {
-            if (groupedOpenApiList.get(i).getGroup().equals( plugin.getPluginConfig().getSpringdoc().getGroupName())) {
-                groupedOpenApiList.remove(i);
-            }
-        }
-        groupedOpenApis.set(bean, groupedOpenApiList);
-        bean.afterPropertiesSet();
-    }
-
-
-    private OpenAPIService registryOpenApi(PluginInfo plugin) throws Exception {
-        if (null == plugin.getPluginConfig().getSpringdoc()) {
-            return null;
-        }
-        MultipleOpenApiResource bean = applicationContext.getBean(MultipleOpenApiResource.class);
-        Field groupedOpenApis = MultipleOpenApiResource.class.getDeclaredField("groupedOpenApis");
-        ReflectionUtils.makeAccessible(groupedOpenApis);
-        List<GroupedOpenApi> groupedOpenApiList = (List<GroupedOpenApi>)groupedOpenApis.get(bean);
-        for (GroupedOpenApi groupedOpenApi : groupedOpenApiList) {
-            if (groupedOpenApi.getGroup().equals(plugin.getPluginConfig().getSpringdoc().getGroupName())) {
-                return getOpenAPIServiceByGroupName(plugin.getPluginConfig().getSpringdoc().getGroupName());
-            }
-        }
-        GroupedOpenApi groupedOpenApi = GroupedOpenApi.builder()
-                .group(plugin.getPluginConfig().getSpringdoc().getGroupName())
-                .packagesToScan(plugin.getPluginConfig().getSpringdoc().getPackagesToScan())
-                .pathsToMatch(plugin.getPluginConfig().getSpringdoc().getPathsToMatch())
-                .displayName(plugin.getPluginConfig().getSpringdoc().getGroupName())
-                .addOpenApiCustomizer(groupedOpenApiList.get(0).getOpenApiCustomizers().get(0))
-                .addOperationCustomizer(groupedOpenApiList.get(0).getOperationCustomizers().get(0))
-                .build();
-        groupedOpenApiList.add(groupedOpenApi);
-        groupedOpenApis.set(bean, groupedOpenApiList);
-        bean.afterPropertiesSet();
-        return getOpenAPIServiceByGroupName(plugin.getPluginConfig().getSpringdoc().getGroupName());
+       // openAPIService.setCachedOpenAPI(openAPIService.build(Locale.getDefault()), Locale.getDefault());
     }
 
     private OpenAPIService getOpenAPIServiceByGroupName(String groupName) throws Exception {
