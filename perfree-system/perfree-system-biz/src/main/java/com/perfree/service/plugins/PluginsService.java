@@ -43,23 +43,23 @@ public interface PluginsService extends IService<Plugins> {
 
     /**
      * 禁用插件
-     * @param id id
+     * @param pluginId pluginId
      * @return Boolean
      */
-    Boolean disablePlugin(Integer id);
+    Boolean disablePlugin(String pluginId);
 
     /**
      * 启用插件
-     * @param id id
+     * @param pluginId pluginId
      * @return Boolean
      */
-    Boolean enablePlugin(Integer id);
+    Boolean enablePlugin(String pluginId);
 
     /**
      * 卸载插件
-     * @param id id
+     * @param pluginId pluginId
      * @return Boolean
      */
-    Boolean unInstallPlugin(Integer id);
+    Boolean unInstallPlugin(String pluginId);
 
 }

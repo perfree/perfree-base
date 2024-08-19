@@ -20,6 +20,7 @@ logging:
 spring:
   main:
     allow-circular-references: true
+    allow-bean-definition-overriding: true
   jackson:
     time-zone: GMT+8
   aop:

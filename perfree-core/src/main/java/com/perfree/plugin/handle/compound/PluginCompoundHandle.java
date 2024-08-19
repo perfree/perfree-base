@@ -1,7 +1,10 @@
 package com.perfree.plugin.handle.compound;
 
 import com.perfree.plugin.PluginInfo;
-import com.perfree.plugin.handle.*;
+import com.perfree.plugin.handle.BasePluginRegistryHandler;
+import com.perfree.plugin.handle.ClassHandler;
+import com.perfree.plugin.handle.ControllerHandler;
+import com.perfree.plugin.handle.MapperXmlHandle;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -24,17 +27,28 @@ public class PluginCompoundHandle implements BasePluginRegistryHandler, Applicat
 
     // 定义执行逻辑集合pluginRegisterList
     List<BasePluginRegistryHandler> pluginRegisterList = Collections.synchronizedList(new ArrayList<>());
+    List<BasePluginRegistryHandler> pluginUnRegisterList = Collections.synchronizedList(new ArrayList<>());
 
     @Override
     public void initialize() throws Exception {
         pluginRegisterList.clear();
-        pluginRegisterList.add(new ClassHandler());
-        pluginRegisterList.add(new MapperXmlHandle());
-        pluginRegisterList.add(new ControllerHandler(this.applicationContext));
-        pluginRegisterList.add(new SwaggerHandler(this.applicationContext));
+        pluginUnRegisterList.clear();
+
+        ClassHandler classHandler = new ClassHandler();
+        MapperXmlHandle mapperXmlHandle = new MapperXmlHandle();
+        ControllerHandler controllerHandler = new ControllerHandler(this.applicationContext);
+
+        pluginRegisterList.add(classHandler);
+        pluginRegisterList.add(mapperXmlHandle);
+        pluginRegisterList.add(controllerHandler);
         for (BasePluginRegistryHandler pluginHandle : pluginRegisterList) {
             pluginHandle.initialize();
         }
+
+
+        pluginUnRegisterList.add(mapperXmlHandle);
+        pluginUnRegisterList.add(controllerHandler);
+        pluginUnRegisterList.add(classHandler);
     }
 
     @Override
@@ -47,7 +61,7 @@ public class PluginCompoundHandle implements BasePluginRegistryHandler, Applicat
     @Override
     public void unRegistry(PluginInfo plugin) throws Exception {
         try {
-            for (BasePluginRegistryHandler pluginHandle : pluginRegisterList) {
+            for (BasePluginRegistryHandler pluginHandle : pluginUnRegisterList) {
                 pluginHandle.unRegistry(plugin);
             }
         } finally {

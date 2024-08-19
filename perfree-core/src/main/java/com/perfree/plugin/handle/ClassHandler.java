@@ -70,8 +70,6 @@ public class ClassHandler implements BasePluginRegistryHandler{
     private void registerMapper(PluginInfo pluginInfo) {
         List<Class<?>> mapperClassList = getMapperList(pluginInfo);
         if (mapperClassList.isEmpty()) return;
-//        SqlSessionFactory sqlSessionFactory = SpringBeanUtil.context.getBean(SqlSessionFactory.class);
-//        MybatisConfiguration configuration = (MybatisConfiguration) sqlSessionFactory.getConfiguration();
         //注册mapper
         for (Class<?> mapperClass : mapperClassList) {
             GenericBeanDefinition definition = new GenericBeanDefinition();
@@ -80,7 +78,6 @@ public class ClassHandler implements BasePluginRegistryHandler{
             definition.getPropertyValues().add("addToConfig", true);
             definition.setAutowireMode(AbstractBeanDefinition.AUTOWIRE_BY_TYPE);
             PluginApplicationContextHolder.getApplicationContext(pluginInfo.getPluginId()).registerBeanDefinition(mapperClass.getName(), definition);
-          //  configuration.addMapper(mapperClass);
         }
 
     }
@@ -104,6 +101,7 @@ public class ClassHandler implements BasePluginRegistryHandler{
 
     @Override
     public void unRegistry(PluginInfo pluginInfo) throws Exception {
+
         String[] beanDefinitionNames = PluginApplicationContextHolder.getApplicationContext(pluginInfo.getPluginId()).getBeanDefinitionNames();
         for (String beanDefinitionName : beanDefinitionNames) {
             PluginApplicationContextHolder.getApplicationContext(pluginInfo.getPluginId()).removeBeanDefinition(beanDefinitionName);

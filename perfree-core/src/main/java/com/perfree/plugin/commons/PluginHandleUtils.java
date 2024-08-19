@@ -54,7 +54,7 @@ public class PluginHandleUtils {
             Yaml yaml = new Yaml();
             pluginBaseConfig = yaml.loadAs(input, PluginBaseConfig.class);
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.error("plugin.yaml parse error", e);
         }
         return pluginBaseConfig;
     }

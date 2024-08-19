@@ -194,8 +194,8 @@ public class PluginsServiceImpl extends ServiceImpl<PluginsMapper, Plugins> impl
 
     @Override
     @Transactional
-    public Boolean disablePlugin(Integer id) {
-        Plugins plugins = pluginsMapper.selectById(id);
+    public Boolean disablePlugin(String pluginId) {
+        Plugins plugins = pluginsMapper.getByPluginId(pluginId);
         if (null != PluginInfoHolder.getPluginInfo(plugins.getPluginId())) {
             pluginManager.stopPlugin(plugins.getPluginId());
         }
@@ -206,8 +206,8 @@ public class PluginsServiceImpl extends ServiceImpl<PluginsMapper, Plugins> impl
 
     @Override
     @Transactional
-    public Boolean enablePlugin(Integer id) {
-        Plugins plugins = pluginsMapper.selectById(id);
+    public Boolean enablePlugin(String pluginId) {
+        Plugins plugins = pluginsMapper.getByPluginId(pluginId);
         File pluginDirFile = new File(SystemConstants.PLUGINS_DIR + SystemConstants.FILE_SEPARATOR + plugins.getPluginId());
         if (pluginDirFile.exists()) {
             if (null == PluginInfoHolder.getPluginInfo(plugins.getPluginId())) {
@@ -224,8 +224,8 @@ public class PluginsServiceImpl extends ServiceImpl<PluginsMapper, Plugins> impl
     }
 
     @Override
-    public Boolean unInstallPlugin(Integer id) {
-        Plugins plugins = pluginsMapper.selectById(id);
+    public Boolean unInstallPlugin(String pluginId) {
+        Plugins plugins = pluginsMapper.getByPluginId(pluginId);
         if (null != PluginInfoHolder.getPluginInfo(plugins.getPluginId())) {
             throw new ServiceException(ErrorCode.PLUGIN_IS_RUN);
         }

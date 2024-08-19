@@ -188,7 +188,7 @@ function handleDisable(row) {
     cancelButtonText: '取消',
     type: 'warning',
   }).then(() => {
-    disablePluginApi(row.id).then(res => {
+    disablePluginApi(row.pluginId).then(res => {
       if (res.code === 200 && res.data) {
         initMenu().then(res => {
 
@@ -212,7 +212,7 @@ function handleEnable(row){
     cancelButtonText: '取消',
     type: 'warning',
   }).then(() => {
-    enablePluginApi(row.id).then(res => {
+    enablePluginApi(row.pluginId).then(res => {
       if (res.code === 200 && res.data) {
         initMenu().then(res => {
 
@@ -232,7 +232,7 @@ function handleUnInstall(row) {
     cancelButtonText: '取消',
     type: 'warning',
   }).then(() => {
-    uninstallPluginApi(row.id).then(res => {
+    uninstallPluginApi(row.pluginId).then(res => {
       if (res.code === 200) {
         if (res.data) {
           ElMessage.success('插件卸载成功');

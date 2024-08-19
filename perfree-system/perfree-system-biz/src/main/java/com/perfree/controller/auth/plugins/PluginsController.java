@@ -43,21 +43,21 @@ public class PluginsController {
     @PostMapping("/disablePlugin")
     @Operation(summary = "插件禁用")
     @PreAuthorize("@ss.hasPermission('admin:plugin:disable')")
-    public CommonResult<Boolean> disablePlugin(@RequestParam(value = "id") Integer id) {
-        return success( pluginsService.disablePlugin(id));
+    public CommonResult<Boolean> disablePlugin(@RequestParam(value = "pluginId") String pluginId) {
+        return success( pluginsService.disablePlugin(pluginId));
     }
 
     @PostMapping("/enablePlugin")
     @Operation(summary = "插件启用")
     @PreAuthorize("@ss.hasPermission('admin:plugin:enable')")
-    public CommonResult<Boolean> enablePlugin(@RequestParam(value = "id") Integer id) {
-        return success( pluginsService.enablePlugin(id));
+    public CommonResult<Boolean> enablePlugin(@RequestParam(value = "pluginId") String pluginId) {
+        return success( pluginsService.enablePlugin(pluginId));
     }
 
     @PostMapping("/uninstallPlugin")
     @Operation(summary = "卸载插件")
     @PreAuthorize("@ss.hasPermission('admin:plugin:uninstall')")
-    public CommonResult<Boolean> uninstallPlugin(@RequestParam(value = "id") Integer id) {
-        return success( pluginsService.unInstallPlugin(id));
+    public CommonResult<Boolean> uninstallPlugin(@RequestParam(value = "pluginId") String pluginId) {
+        return success( pluginsService.unInstallPlugin(pluginId));
     }
 }
