@@ -11,7 +11,11 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
+#if(${table.scene} == "1")
+import com.perfree.security.annotation.PluginPreAuthorize;
+#else
 import org.springframework.security.access.prepost.PreAuthorize;
+#end
 import org.springframework.web.bind.annotation.*;
 import jakarta.servlet.http.HttpServletResponse;
 import com.perfree.commons.excel.ExcelUtils;
@@ -35,7 +39,11 @@ public class ${table.className}Controller {
 
     @PostMapping("/page")
     @Operation(summary = "${table.comment}分页列表")
+    #if(${table.scene} == "1")
+    @PluginPreAuthorize("@ss.hasPermission('admin:${table.lowerFirstClassName}:query')")
+    #else
     @PreAuthorize("@ss.hasPermission('admin:${table.lowerFirstClassName}:query')")
+    #end
     public CommonResult<PageResult<${table.className}RespVO>> page(@RequestBody ${table.className}PageReqVO pageVO) {
         PageResult<${table.className}> ${table.lowerFirstClassName}PageResult = ${table.lowerFirstClassName}Service.${table.lowerFirstClassName}Page(pageVO);
         return success(${table.className}Convert.INSTANCE.convertPageResultVO(${table.lowerFirstClassName}PageResult));
@@ -43,14 +51,22 @@ public class ${table.className}Controller {
 
     @PostMapping("/add")
     @Operation(summary = "添加${table.comment}")
+    #if(${table.scene} == "1")
+    @PluginPreAuthorize("@ss.hasPermission('admin:${table.lowerFirstClassName}:create')")
+    #else
     @PreAuthorize("@ss.hasPermission('admin:${table.lowerFirstClassName}:create')")
+    #end
     public CommonResult<${table.className}RespVO> add(@RequestBody @Valid ${table.className}AddReqVO ${table.lowerFirstClassName}AddReqVO) {
         return success(${table.className}Convert.INSTANCE.convertRespVO(${table.lowerFirstClassName}Service.add(${table.lowerFirstClassName}AddReqVO)));
     }
 
     @PostMapping("/update")
     @Operation(summary = "更新${table.comment}")
+    #if(${table.scene} == "1")
+    @PluginPreAuthorize("@ss.hasPermission('admin:${table.lowerFirstClassName}:update')")
+    #else
     @PreAuthorize("@ss.hasPermission('admin:${table.lowerFirstClassName}:update')")
+    #end
     public CommonResult<${table.className}RespVO> update(@RequestBody @Valid ${table.className}UpdateReqVO ${table.lowerFirstClassName}UpdateReqVO) {
         return success(${table.className}Convert.INSTANCE.convertRespVO(${table.lowerFirstClassName}Service.update(${table.lowerFirstClassName}UpdateReqVO)));
     }
@@ -63,7 +79,11 @@ public class ${table.className}Controller {
 
     @DeleteMapping("/del")
     @Operation(summary = "根据${table.primaryColumn}删除${table.comment}")
+    #if(${table.scene} == "1")
+    @PluginPreAuthorize("@ss.hasPermission('admin:${table.lowerFirstClassName}:delete')")
+    #else
     @PreAuthorize("@ss.hasPermission('admin:${table.lowerFirstClassName}:delete')")
+    #end
     public CommonResult<Boolean> del(@RequestParam(value = "${table.primaryColumn}") ${table.primaryColumnType} ${table.primaryColumn}) {
         return success(${table.lowerFirstClassName}Service.del(${table.primaryColumn}));
     }
@@ -76,7 +96,11 @@ public class ${table.className}Controller {
 
     @PostMapping("/export")
     @Operation(summary = "导出${table.comment}")
+    #if(${table.scene} == "1")
+    @PluginPreAuthorize("@ss.hasPermission('admin:${table.lowerFirstClassName}:export')")
+    #else
     @PreAuthorize("@ss.hasPermission('admin:${table.lowerFirstClassName}:export')")
+    #end
     public void export(@RequestBody ${table.className}ExportReqVO exportReqVO, HttpServletResponse response) {
         List<${table.className}> ${table.lowerFirstClassName}List = ${table.lowerFirstClassName}Service.queryExportData(exportReqVO);
         ExcelUtils.renderExcel(response, ${table.className}Convert.INSTANCE.convertToExcelVOList(${table.lowerFirstClassName}List), ${table.className}ExcelVO.class, "${table.comment}数据","${table.comment}数据.xlsx");

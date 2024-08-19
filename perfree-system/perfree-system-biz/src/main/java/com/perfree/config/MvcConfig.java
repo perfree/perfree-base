@@ -2,14 +2,12 @@ package com.perfree.config;
 
 import com.perfree.commons.constant.SystemConstants;
 import com.perfree.plugin.core.PluginResourceResolver;
+import com.perfree.security.interceptor.PluginPreAuthorizeInterceptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.CacheControl;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistration;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.config.annotation.*;
 
 import java.time.Duration;
 
@@ -17,6 +15,13 @@ import java.time.Duration;
 public class MvcConfig implements WebMvcConfigurer {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MvcConfig.class);
+
+    private final PluginPreAuthorizeInterceptor pluginPreAuthorizeInterceptor;
+
+    public MvcConfig(PluginPreAuthorizeInterceptor pluginPreAuthorizeInterceptor) {
+        this.pluginPreAuthorizeInterceptor = pluginPreAuthorizeInterceptor;
+    }
+
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
         // 如果前端放在后端容器运行
@@ -42,6 +47,12 @@ public class MvcConfig implements WebMvcConfigurer {
         resourceHandlerRegistration.resourceChain(false).addResolver(new PluginResourceResolver());
         WebMvcConfigurer.super.addResourceHandlers(registry);
 
+    }
+
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(pluginPreAuthorizeInterceptor)
+                .addPathPatterns("/**"); // 你可以根据需要调整拦截的路径
     }
 
 
