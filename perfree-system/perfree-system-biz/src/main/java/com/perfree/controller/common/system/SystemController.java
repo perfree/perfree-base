@@ -9,6 +9,7 @@ import com.perfree.controller.auth.system.vo.CaptchaImageRespVO;
 import com.perfree.controller.auth.user.vo.UserRespVO;
 import com.perfree.controller.common.system.vo.LoginUserReqVO;
 import com.perfree.controller.common.system.vo.LoginUserRespVO;
+import com.perfree.controller.common.system.vo.RefreshTokenReqVO;
 import com.perfree.controller.common.system.vo.RegisterUserReqVO;
 import com.perfree.convert.option.OptionConvert;
 import com.perfree.convert.user.UserConvert;
@@ -111,5 +112,11 @@ public class SystemController {
         }
         User byId = userService.getById(loginUser.getId());
         return CommonResult.success(UserConvert.INSTANCE.convertRespVO(byId));
+    }
+
+    @PostMapping("refreshToken")
+    @Operation(summary = "刷新token")
+    public CommonResult<LoginUserRespVO> refreshToken(@Valid @RequestBody RefreshTokenReqVO reqVO){
+        return CommonResult.success(userService.refreshToken(reqVO.getRefreshToken()));
     }
 }

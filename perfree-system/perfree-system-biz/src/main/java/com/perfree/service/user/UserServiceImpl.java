@@ -1,5 +1,6 @@
 package com.perfree.service.user;
 
+import io.jsonwebtoken.Claims;
 import org.dromara.hutool.core.data.id.IdUtil;
 import org.dromara.hutool.crypto.digest.DigestUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -90,7 +91,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         }
         // 生成Token
         String token = JwtUtil.generateToken(user.getAccount(), false);
-        Date expirationDate = new Date(System.currentTimeMillis() + SecurityConstants.TOKEN_EXPIRATION_REMEMBER_TIME * 1000);
+        Date expirationDate = new Date(System.currentTimeMillis() + SecurityConstants.REFRESH_TOKEN_EXPIRATION_TIME * 1000);
         // 生成refreshToken
         String refreshToken = JwtUtil.getRefreshToken(user.getAccount(), expirationDate);
         // 组装返回信息
@@ -320,6 +321,27 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             userRoleMapper.insert(userRole);
         }
         return user;
+    }
+
+    @Override
+    public LoginUserRespVO refreshToken(String refreshToken) {
+        boolean verifyRefreshToken = JwtUtil.verifyRefreshToken(refreshToken);
+        if (!verifyRefreshToken) {
+            throw new ServiceException(ErrorCode.ACCOUNT_PASSWORD_ERROR);
+        }
+        Claims refreshTokenBody = JwtUtil.getRefreshTokenBody(refreshToken);
+        String account = refreshTokenBody.getSubject();
+        User user = userMapper.findByAccount(account);
+        if (null == user) {
+            throw new ServiceException(ErrorCode.ACCOUNT_NOT_FOUNT);
+        }
+        // 生成Token
+        String token = JwtUtil.generateToken(user.getAccount(), false);
+        LoginUserRespVO loginUserRespVO = new LoginUserRespVO();
+        loginUserRespVO.setUserId(user.getId());
+        loginUserRespVO.setRefreshToken(refreshToken);
+        loginUserRespVO.setAccessToken(token);
+        return loginUserRespVO;
     }
 
 

@@ -22,3 +22,7 @@ export function register(data) {
     return axios.post('/api/register', data);
 }
 
+export function refreshTokenApi(data) {
+    return axios.post('/api/refreshToken', data);
+}
+

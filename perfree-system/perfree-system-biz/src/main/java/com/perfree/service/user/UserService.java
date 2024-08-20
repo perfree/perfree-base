@@ -143,4 +143,6 @@ public interface UserService extends IService<User> {
      */
     User register(RegisterUserReqVO reqVO);
 
+    LoginUserRespVO refreshToken(String refreshToken);
+
 }

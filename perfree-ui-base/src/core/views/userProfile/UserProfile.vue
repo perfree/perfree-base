@@ -260,7 +260,7 @@ function getUserInfo() {
   getUserApi(userId).then(res => {
     userInfo.value = res.data
     baseForm.value = res.data;
-    baseForm.value.sex = baseForm.value.sex.toString();
+    baseForm.value.sex = baseForm.value.sex? baseForm.value.sex.toString() : null;
     loading.value = false;
   })
 }

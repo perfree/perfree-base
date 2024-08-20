@@ -91,6 +91,22 @@ public class JwtUtil {
     }
 
     /**
+     * @param refreshToken refreshToken
+     * @return boolean
+     * @author Perfree
+     * @description 校验refreshToken是否有效
+     * @date 15:15 2023/9/28
+     */
+    public static boolean verifyRefreshToken(String refreshToken) {
+        try{
+            getRefreshTokenBody(refreshToken);
+            return true;
+        }catch (Exception e) {
+            return false;
+        }
+    }
+
+    /**
      * @param token token
      * @return org.springframework.security.core.Authentication
      * @author Perfree
