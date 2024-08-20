@@ -1,10 +1,7 @@
 package com.perfree.plugin.handle.compound;
 
 import com.perfree.plugin.PluginInfo;
-import com.perfree.plugin.handle.BasePluginRegistryHandler;
-import com.perfree.plugin.handle.ClassHandler;
-import com.perfree.plugin.handle.ControllerHandler;
-import com.perfree.plugin.handle.MapperXmlHandle;
+import com.perfree.plugin.handle.*;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -37,10 +34,12 @@ public class PluginCompoundHandle implements BasePluginRegistryHandler, Applicat
         ClassHandler classHandler = new ClassHandler();
         MapperXmlHandle mapperXmlHandle = new MapperXmlHandle();
         ControllerHandler controllerHandler = new ControllerHandler(this.applicationContext);
+        WebSocketHandle webSocketHandle = new WebSocketHandle(this.applicationContext);
 
         pluginRegisterList.add(classHandler);
         pluginRegisterList.add(mapperXmlHandle);
         pluginRegisterList.add(controllerHandler);
+        pluginRegisterList.add(webSocketHandle);
         for (BasePluginRegistryHandler pluginHandle : pluginRegisterList) {
             pluginHandle.initialize();
         }
@@ -48,6 +47,7 @@ public class PluginCompoundHandle implements BasePluginRegistryHandler, Applicat
 
         pluginUnRegisterList.add(mapperXmlHandle);
         pluginUnRegisterList.add(controllerHandler);
+        pluginUnRegisterList.add(webSocketHandle);
         pluginUnRegisterList.add(classHandler);
     }
 
