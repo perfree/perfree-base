@@ -20,13 +20,13 @@ public class InterceptorDemo implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        LOGGER.info("-----------进入插件拦截器preHandle: {}", request.getContextPath());
+        LOGGER.info("-----------进入插件拦截器preHandle: {}", request.getRequestURI());
         return HandlerInterceptor.super.preHandle(request, response, handler);
     }
 
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
-        LOGGER.info("-----------进入插件拦截器postHandle:{}", request.getContextPath());
+        LOGGER.info("-----------进入插件拦截器postHandle:{}", request.getRequestURI());
         HandlerInterceptor.super.postHandle(request, response, handler, modelAndView);
     }
 }
