@@ -1,6 +1,7 @@
 package com.perfree.config;
 
 import com.perfree.commons.constant.SystemConstants;
+import com.perfree.plugin.handle.PluginInterceptorBaseHandler;
 import com.perfree.plugin.core.PluginResourceResolver;
 import com.perfree.security.interceptor.PluginPreAuthorizeInterceptor;
 import org.slf4j.Logger;
@@ -18,8 +19,11 @@ public class MvcConfig implements WebMvcConfigurer {
 
     private final PluginPreAuthorizeInterceptor pluginPreAuthorizeInterceptor;
 
-    public MvcConfig(PluginPreAuthorizeInterceptor pluginPreAuthorizeInterceptor) {
+    private final PluginInterceptorBaseHandler pluginInterceptorBaseHandler;
+
+    public MvcConfig(PluginPreAuthorizeInterceptor pluginPreAuthorizeInterceptor, PluginInterceptorBaseHandler pluginInterceptorBaseHandler) {
         this.pluginPreAuthorizeInterceptor = pluginPreAuthorizeInterceptor;
+        this.pluginInterceptorBaseHandler = pluginInterceptorBaseHandler;
     }
 
     @Override
@@ -52,7 +56,10 @@ public class MvcConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(pluginPreAuthorizeInterceptor)
-                .addPathPatterns("/**"); // 你可以根据需要调整拦截的路径
+                .addPathPatterns("/**");
+
+        registry.addInterceptor(pluginInterceptorBaseHandler)
+                .addPathPatterns("/**");
     }
 
 

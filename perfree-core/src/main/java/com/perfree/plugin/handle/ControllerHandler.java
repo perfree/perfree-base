@@ -10,11 +10,13 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.Map;
 
 /**
  * @author Perfree
@@ -61,6 +63,10 @@ public class ControllerHandler implements BasePluginRegistryHandler{
                             || method.getAnnotation(PatchMapping.class) != null) {
                         RequestMappingInfo requestMappingInfo = (RequestMappingInfo) getMappingForMethod.invoke(requestMappingHandlerMapping, method, aClass);
                         // 注册路由
+                        Map<RequestMappingInfo, HandlerMethod> handlerMethods = requestMappingHandlerMapping.getHandlerMethods();
+                        if (handlerMethods.containsKey(requestMappingInfo)) {
+                            requestMappingHandlerMapping.unregisterMapping(requestMappingInfo);
+                        }
                         requestMappingHandlerMapping.registerMapping(requestMappingInfo, bean, method);
                     }
                 }
