@@ -1,29 +1,111 @@
 <template>
-  <el-row :gutter="10">
+  <el-row :gutter="15">
+    <el-col :span="24">
+      <div class="panelBox">
+        <div style="display: flex">
+          <el-avatar :size="65" :src="'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png'" />
+          <div class="loginBoxRight">
+            <div class="title">欢迎登录, Perfree</div>
+            <div class="welcome">工欲善其事，必先利其器。 -- 论语</div>
+          </div>
+        </div>
+      </div>
+    </el-col>
     <el-col :span="20">
-      <el-row :gutter="10">
+      <el-row :gutter="15">
         <el-col :span="6">
           <div class="panelBox">
-            <el-statistic title="访问量" :value="79552415" />
+            <el-statistic :value="79552415">
+              <template #title>
+                <span><el-icon><UserFilled /></el-icon> 用户数量</span>
+              </template>
+            </el-statistic>
           </div>
         </el-col>
         <el-col :span="6">
           <div class="panelBox">
-            <el-statistic title="用户数量" :value="21999" />
+            <el-statistic :value="9999999">
+              <template #title>
+                <span><el-icon><PictureFilled /></el-icon> 附件数量</span>
+              </template>
+            </el-statistic>
           </div>
         </el-col>
         <el-col :span="6">
           <div class="panelBox">
-            <el-statistic title="下载数量" :value="5648155" />
+            <el-statistic :value="50">
+              <template #title>
+                <span><el-icon><List /></el-icon> 已安装插件数量</span>
+              </template>
+            </el-statistic>
           </div>
         </el-col>
         <el-col :span="6">
           <div class="panelBox">
-            <el-statistic title="交易量" :value="268500" />
+            <el-statistic :value="5">
+              <template #title>
+                <span><el-icon><Checked /></el-icon> 已运行插件数量</span>
+              </template>
+            </el-statistic>
           </div>
         </el-col>
         <el-col :span="24">
-          <div  class="panelBox" id="main" style="height:500px;"></div>
+          <el-row :gutter="15" v-loading="serverLoading">
+            <el-col :span="8">
+              <div class="panelBox">
+                <div class="panelTitle">服务器CPU使用率</div>
+                <div style="text-align: center;margin-top: 10px;">
+                 <el-progress type="dashboard" :percentage="cpuInfo.used" :color="colors"/>
+                 <el-descriptions :column="1" border>
+                   <el-descriptions-item label="CPU主频" label-class-name="my-label">{{cpuInfo.maxFrequency}}GHz</el-descriptions-item>
+                   <el-descriptions-item label="核心数" label-class-name="my-label">{{cpuInfo.cpuNum}}</el-descriptions-item>
+                 </el-descriptions>
+                </div>
+              </div>
+            </el-col>
+            <el-col :span="8">
+              <div class="panelBox">
+                <div class="panelTitle">服务器内存使用率</div>
+                <div style="text-align: center;margin-top: 10px;">
+                  <el-progress type="dashboard" :percentage="memInfo.usage" :color="colors"/>
+                  <el-descriptions :column="1" border>
+                    <el-descriptions-item label="总内存" label-class-name="my-label">{{memInfo.total}}G</el-descriptions-item>
+                    <el-descriptions-item label="已用内存" label-class-name="my-label">{{memInfo.used}}G</el-descriptions-item>
+                  </el-descriptions>
+                </div>
+              </div>
+            </el-col>
+            <el-col :span="8">
+              <div class="panelBox">
+                <div class="panelTitle">服务器JVM使用率</div>
+                <div style="text-align: center;margin-top: 10px;">
+                  <el-progress type="dashboard" :percentage="jvmInfo.usage" :color="colors"/>
+                  <el-descriptions :column="1" border>
+                    <el-descriptions-item label="JVM大小" label-class-name="my-label">{{jvmInfo.total}}M</el-descriptions-item>
+                    <el-descriptions-item label="已用JVM" label-class-name="my-label">{{jvmInfo.used}}M</el-descriptions-item>
+                  </el-descriptions>
+                </div>
+              </div>
+            </el-col>
+
+            <el-col :span="24">
+              <div class="panelBox">
+                <div class="panelTitle">服务器信息</div>
+                <el-descriptions :column="2" border style="margin-top: 15px">
+                  <el-descriptions-item label="服务器名称" >{{sysInfo.computerName}}</el-descriptions-item>
+                  <el-descriptions-item label="操作系统">{{sysInfo.osName}}</el-descriptions-item>
+                  <el-descriptions-item label="系统架构">{{sysInfo.osArch}}</el-descriptions-item>
+                  <el-descriptions-item label="CPU">{{cpuInfo.cpuName}}</el-descriptions-item>
+                  <el-descriptions-item label="CPU核心数">{{cpuInfo.cpuNum}}</el-descriptions-item>
+                  <el-descriptions-item label="CPU主频">{{cpuInfo.maxFrequency}}GHz</el-descriptions-item>
+                  <el-descriptions-item label="总内存">{{memInfo.total}}G</el-descriptions-item>
+                  <el-descriptions-item label="可用内存">{{memInfo.free}}G</el-descriptions-item>
+                  <el-descriptions-item label="JDK版本">{{jvmInfo.version}}</el-descriptions-item>
+                  <el-descriptions-item label="JDK路径">{{jvmInfo.home}}</el-descriptions-item>
+                </el-descriptions>
+              </div>
+            </el-col>
+          </el-row>
         </el-col>
       </el-row>
     </el-col>
@@ -31,7 +113,7 @@
       <el-row :gutter="10">
         <el-col :span="24">
           <div class="panelBox">
-            <div>快捷功能</div>
+            <div class="panelTitle">快捷功能</div>
             <el-row>
               <el-col :span="8" class="shortcuts-item">
                 <el-button plain><font-awesome-icon icon="fa-solid fa-list-numeric"></font-awesome-icon></el-button>
@@ -63,14 +145,14 @@
         </el-col>
 
         <el-col :span="24">
-          <div class="panelBox" style="height:220px;">
-            相关文档
+          <div class="panelBox" style="height:185px;">
+            <div class="panelTitle">相关文档</div>
           </div>
         </el-col>
 
         <el-col :span="24">
-          <div class="panelBox" style="height:220px;">
-            最新插件
+          <div class="panelBox" style="height:185px;">
+            <div class="panelTitle">最新插件</div>
           </div>
         </el-col>
 
@@ -80,82 +162,56 @@
 </template>
 
 <script setup>
-import * as echarts from 'echarts';
-import {onMounted} from "vue";
-import {Edit} from "@element-plus/icons-vue";
 import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
+import {Checked, List, PictureFilled, UserFilled} from "@element-plus/icons-vue";
+import {getServerInfoApi} from "../api/adminHome.js";
+import {ElMessage} from "element-plus";
+import {ref} from "vue";
 
-onMounted(() => {
-  const primaryColor = getComputedStyle(document.documentElement).getPropertyValue('--el-color-primary').trim();
-  let myChart = echarts.init(document.getElementById('main'));
-  myChart.setOption({
-    tooltip: {
-      trigger: 'axis',
-      axisPointer: {
-        type: 'cross',
-        label: {
-          backgroundColor: '#6a7985'
-        }
-      }
-    },
-    legend: {
-      data: ['访问量', '下载量']
-    },
-    toolbox: {
-      feature: {
-        saveAsImage: {}
-      }
-    },
-    grid: {
-      left: '3%',
-      right: '4%',
-      bottom: '3%',
-      containLabel: true
-    },
-    xAxis: [
-      {
-        type: 'category',
-        boundaryGap: false,
-        data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
-      }
-    ],
-    yAxis: [
-      {
-        type: 'value'
-      }
-    ],
-    series: [
-      {
-        name: '访问量',
-        type: 'line',
-        stack: 'Total',
-        areaStyle: {},
-        emphasis: {
-          focus: 'series'
-        },
-        data: [12458, 9999, 13004, 18888, 20598, 26658, 29999]
-      },
-      {
-        name: '下载量',
-        type: 'line',
-        stack: 'Total',
-        areaStyle: {},
-        emphasis: {
-          focus: 'series'
-        },
-        data: [10000, 9000, 13000, 15000, 18000, 25000, 28000]
-      },
-    ]
-  });
-})
+let serverLoading = ref(true);
+let cpuInfo = ref({
+  cpuNum: 0,
+  free: 0,
+  ioWait: 0,
+  sys: 0,
+  total: 0,
+  used: 0
+});
+let jvmInfo = ref({});
+let memInfo = ref({});
+let sysInfo = ref({});
 
+const primaryColor = getComputedStyle(document.documentElement).getPropertyValue('--el-color-primary').trim();
+
+const colors = [
+  { color: primaryColor, percentage: 70 },
+  { color: '#e6a23c', percentage: 90 },
+  { color: '#f56c6c', percentage: 100 },
+]
+
+function getServerInfo() {
+  serverLoading.value = true;
+  getServerInfoApi().then(res => {
+    if (res.code === 200) {
+      cpuInfo.value = res.data.cpuInfo;
+      jvmInfo.value = res.data.jvmInfo;
+      memInfo.value = res.data.memInfo;
+      sysInfo.value = res.data.sysInfo;
+    } else {
+      ElMessage.error(res.msg);
+    }
+    serverLoading.value = false;
+  })
+}
+
+getServerInfo();
 </script>
 <style scoped>
 .panelBox{
   background: var(--el-bg-color);
   padding: 15px;
   border-radius: 5px;
-  margin-bottom: 10px;
+  margin-bottom: 15px;
   width: calc(100% - 30px);
 }
 .shortcuts-item{
@@ -165,5 +221,25 @@ onMounted(() => {
 .shortcuts-item-name{
   font-size: 14px;
   margin-top: 5px;
+}
+.loginBoxRight{
+  padding-left: 10px;
+  .title{
+    padding-top: 5px;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--el-text-color-primary);
+  }
+  .welcome{
+    padding-top: 5px;
+  }
+}
+:deep(.my-label){
+  background: var(--el-bg-color) !important;
+}
+.panelTitle{
+  font-size: 14px;
+  border-bottom: 1px solid var(--el-border-color-light);
+  padding-bottom: 10px;
 }
 </style>

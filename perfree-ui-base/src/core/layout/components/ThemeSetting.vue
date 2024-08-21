@@ -42,7 +42,7 @@
                 <el-main></el-main>
               </el-container>
             </el-container>
-            <el-radio :value="'purple'">骚紫</el-radio>
+            <el-radio :value="'purple'">紫色</el-radio>
           </div>
         </el-radio-group>
       </div>
