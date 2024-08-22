@@ -141,4 +141,9 @@ public class AttachServiceImpl extends ServiceImpl<AttachMapper, Attach> impleme
             throw new ServiceException(ErrorCode.FILE_HANDLE_ERROR);
         }
     }
+
+    @Override
+    public Long getTotalAttach() {
+        return attachMapper.selectCount();
+    }
 }

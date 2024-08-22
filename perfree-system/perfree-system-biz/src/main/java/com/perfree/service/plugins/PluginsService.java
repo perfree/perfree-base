@@ -62,4 +62,6 @@ public interface PluginsService extends IService<Plugins> {
      */
     Boolean unInstallPlugin(String pluginId);
 
+    Long getTotalPlugins();
+
 }

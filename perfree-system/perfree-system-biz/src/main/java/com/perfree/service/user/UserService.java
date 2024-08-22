@@ -145,4 +145,6 @@ public interface UserService extends IService<User> {
 
     LoginUserRespVO refreshToken(String refreshToken);
 
+    Long getTotalUser();
+
 }

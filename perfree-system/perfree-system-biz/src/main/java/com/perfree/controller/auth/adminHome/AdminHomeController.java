@@ -1,6 +1,7 @@
 package com.perfree.controller.auth.adminHome;
 
 import com.perfree.commons.common.CommonResult;
+import com.perfree.controller.auth.adminHome.vo.HomeStatisticRespVO;
 import com.perfree.controller.auth.adminHome.vo.ServerInfoRespVO;
 import com.perfree.controller.auth.mailLog.vo.MailLogRespVO;
 import com.perfree.convert.mailLog.MailLogConvert;
@@ -29,6 +30,12 @@ public class AdminHomeController {
     @Operation(summary = "获取系统服务信息")
     public CommonResult<ServerInfoRespVO> getServerInfo() {
         return success(homeService.getServerInfo());
+    }
+
+    @GetMapping("/getHomeStatistic")
+    @Operation(summary = "获取首页统计信息")
+    public CommonResult<HomeStatisticRespVO> getHomeStatistic() {
+        return success(homeService.getHomeStatistic());
     }
 
 }

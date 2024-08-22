@@ -2,6 +2,11 @@ package com.perfree.service.adminHome;
 
 import com.perfree.commons.utils.ArithmeticUtils;
 import com.perfree.controller.auth.adminHome.vo.*;
+import com.perfree.plugin.PluginInfoHolder;
+import com.perfree.service.attach.AttachService;
+import com.perfree.service.plugins.PluginsService;
+import com.perfree.service.user.UserService;
+import jakarta.annotation.Resource;
 import org.dromara.hutool.core.net.Ipv4Util;
 import org.springframework.stereotype.Service;
 import oshi.SystemInfo;
@@ -19,6 +24,16 @@ import java.util.Properties;
 public class AdminHomeServiceImpl implements AdminHomeService {
 
     private static final int OSHI_WAIT_SECOND = 1000;
+
+    @Resource
+    private UserService userService;
+
+    @Resource
+    private AttachService attachService;
+
+    @Resource
+    private PluginsService pluginsService;
+
 
     @Override
     public ServerInfoRespVO getServerInfo() {
@@ -101,5 +116,15 @@ public class AdminHomeServiceImpl implements AdminHomeService {
         }
         serverInfoRespVO.setSysFileInfoList(sysFileInfoRespVOList);
         return serverInfoRespVO;
+    }
+
+    @Override
+    public HomeStatisticRespVO getHomeStatistic() {
+        HomeStatisticRespVO homeStatisticRespVO = new HomeStatisticRespVO();
+        homeStatisticRespVO.setUserTotal(userService.getTotalUser());
+        homeStatisticRespVO.setAttachTotal(attachService.getTotalAttach());
+        homeStatisticRespVO.setInstallPluginTotal(pluginsService.getTotalPlugins());
+        homeStatisticRespVO.setRunningPluginTotal((long) PluginInfoHolder.getAllPluginInfo().size());
+        return homeStatisticRespVO;
     }
 }

@@ -344,6 +344,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         return loginUserRespVO;
     }
 
+    @Override
+    public Long getTotalUser() {
+        return userMapper.getTotalUser();
+    }
+
 
     /**
      * 校验验证码

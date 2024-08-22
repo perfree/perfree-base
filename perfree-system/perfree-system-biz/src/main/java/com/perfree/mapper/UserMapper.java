@@ -5,6 +5,7 @@ import com.perfree.commons.common.PageResult;
 import com.perfree.commons.mapper.BaseMapperX;
 import com.perfree.controller.auth.user.vo.UserExportReqVO;
 import com.perfree.controller.auth.user.vo.UserPageReqVO;
+import com.perfree.enums.UserStatusEnum;
 import com.perfree.model.User;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.annotations.Mapper;
@@ -40,6 +41,10 @@ public interface UserMapper extends BaseMapperX<User> {
                 .like(StringUtils.isNotBlank(reqVO.getAccount()), User::getAccount, reqVO.getAccount())
                 .orderByDesc(User::getId)
         );
+    }
+
+    default Long getTotalUser(){
+        return selectCount(new LambdaQueryWrapper<User>().eq(User::getStatus, UserStatusEnum.ENABLE.getCode()));
     }
 
 }

@@ -246,6 +246,11 @@ public class PluginsServiceImpl extends ServiceImpl<PluginsMapper, Plugins> impl
         }
     }
 
+    @Override
+    public Long getTotalPlugins() {
+        return pluginsMapper.selectCount();
+    }
+
     /**
      * 保存插件逻辑
      * @param pluginBaseConfig pluginBaseConfig

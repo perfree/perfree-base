@@ -70,4 +70,6 @@ public interface AttachService extends IService<Attach> {
      */
     Attach uploadAttachByUrl(String url);
 
+    Long getTotalAttach();
+
 }

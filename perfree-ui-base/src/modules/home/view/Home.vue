@@ -3,9 +3,9 @@
     <el-col :span="24">
       <div class="panelBox">
         <div style="display: flex">
-          <el-avatar :size="65" :src="'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png'" />
+          <el-avatar :size="65" :src="userInfo.avatar" />
           <div class="loginBoxRight">
-            <div class="title">欢迎登录, Perfree</div>
+            <div class="title">欢迎登录, {{userInfo.userName}}</div>
             <div class="welcome">工欲善其事，必先利其器。 -- 论语</div>
           </div>
         </div>
@@ -14,8 +14,8 @@
     <el-col :span="20">
       <el-row :gutter="15">
         <el-col :span="6">
-          <div class="panelBox">
-            <el-statistic :value="79552415">
+          <div class="panelBox"  v-loading="statisticLoading">
+            <el-statistic :value="homeStatistic.userTotal">
               <template #title>
                 <span><el-icon><UserFilled /></el-icon> 用户数量</span>
               </template>
@@ -23,8 +23,8 @@
           </div>
         </el-col>
         <el-col :span="6">
-          <div class="panelBox">
-            <el-statistic :value="9999999">
+          <div class="panelBox" v-loading="statisticLoading">
+            <el-statistic :value="homeStatistic.attachTotal">
               <template #title>
                 <span><el-icon><PictureFilled /></el-icon> 附件数量</span>
               </template>
@@ -32,8 +32,8 @@
           </div>
         </el-col>
         <el-col :span="6">
-          <div class="panelBox">
-            <el-statistic :value="50">
+          <div class="panelBox" v-loading="statisticLoading">
+            <el-statistic :value="homeStatistic.installPluginTotal">
               <template #title>
                 <span><el-icon><List /></el-icon> 已安装插件数量</span>
               </template>
@@ -41,8 +41,8 @@
           </div>
         </el-col>
         <el-col :span="6">
-          <div class="panelBox">
-            <el-statistic :value="5">
+          <div class="panelBox" v-loading="statisticLoading">
+            <el-statistic :value="homeStatistic.runningPluginTotal">
               <template #title>
                 <span><el-icon><Checked /></el-icon> 已运行插件数量</span>
               </template>
@@ -116,27 +116,27 @@
             <div class="panelTitle">快捷功能</div>
             <el-row>
               <el-col :span="8" class="shortcuts-item">
-                <el-button plain><font-awesome-icon icon="fa-solid fa-list-numeric"></font-awesome-icon></el-button>
+                <el-button plain @click="shortcutClick('/admin/menu')"><font-awesome-icon icon="fa-solid fa-list-numeric"></font-awesome-icon></el-button>
                 <div class="shortcuts-item-name">菜单管理</div>
               </el-col>
               <el-col :span="8" class="shortcuts-item">
-                <el-button plain><font-awesome-icon icon="fa-solid fa-user"></font-awesome-icon></el-button>
+                <el-button plain @click="shortcutClick('/admin/user')"><font-awesome-icon icon="fa-solid fa-user"></font-awesome-icon></el-button>
                 <div class="shortcuts-item-name">用户管理</div>
               </el-col>
               <el-col :span="8" class="shortcuts-item">
-                <el-button plain><font-awesome-icon icon="fa-solid fa-male"></font-awesome-icon></el-button>
+                <el-button plain @click="shortcutClick('/admin/role')"><font-awesome-icon icon="fa-solid fa-male"></font-awesome-icon></el-button>
                 <div class="shortcuts-item-name">角色管理</div>
               </el-col>
               <el-col :span="8" class="shortcuts-item">
-                <el-button plain><font-awesome-icon icon="fa-solid fa-tools"></font-awesome-icon></el-button>
+                <el-button plain @click="shortcutClick('/admin/setting')"><font-awesome-icon icon="fa-solid fa-tools"></font-awesome-icon></el-button>
                 <div class="shortcuts-item-name">系统设置</div>
               </el-col>
               <el-col :span="8" class="shortcuts-item">
-                <el-button plain><font-awesome-icon icon="fa-solid fa-clipboard"></font-awesome-icon></el-button>
+                <el-button plain @click="shortcutClick('/admin/dict')"><font-awesome-icon icon="fa-solid fa-clipboard"></font-awesome-icon></el-button>
                 <div class="shortcuts-item-name">字典管理</div>
               </el-col>
               <el-col :span="8" class="shortcuts-item">
-                <el-button plain><font-awesome-icon icon="fa-solid fa-swatchbook"></font-awesome-icon></el-button>
+                <el-button plain @click="shortcutClick('/admin/plugin')"><font-awesome-icon icon="fa-solid fa-swatchbook"></font-awesome-icon></el-button>
                 <div class="shortcuts-item-name">插件管理</div>
               </el-col>
 
@@ -164,11 +164,13 @@
 <script setup>
 import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
 import {Checked, List, PictureFilled, UserFilled} from "@element-plus/icons-vue";
-import {getServerInfoApi} from "../api/adminHome.js";
+import {getHomeStatisticApi, getServerInfoApi} from "../api/adminHome.js";
 import {ElMessage} from "element-plus";
 import {ref} from "vue";
 
+let statisticLoading = ref(true);
 let serverLoading = ref(true);
+let homeStatistic = ref({});
 let cpuInfo = ref({
   cpuNum: 0,
   free: 0,
@@ -180,6 +182,7 @@ let cpuInfo = ref({
 let jvmInfo = ref({});
 let memInfo = ref({});
 let sysInfo = ref({});
+const userInfo = ref(window.pinia.state._value.userStore.userInfo)
 
 const primaryColor = getComputedStyle(document.documentElement).getPropertyValue('--el-color-primary').trim();
 
@@ -204,6 +207,23 @@ function getServerInfo() {
   })
 }
 
+function getHomeStatistic() {
+  statisticLoading.value = true;
+  getHomeStatisticApi().then(res => {
+    if (res.code === 200) {
+      homeStatistic.value = res.data;
+    } else {
+      ElMessage.error(res.msg);
+    }
+    statisticLoading.value = false;
+  })
+}
+
+function shortcutClick(path) {
+  router.replace(path);
+}
+
+getHomeStatistic();
 getServerInfo();
 </script>
 <style scoped>
