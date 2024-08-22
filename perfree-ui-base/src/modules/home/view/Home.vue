@@ -8,6 +8,9 @@
             <div class="title">欢迎登录, {{userInfo.userName}}</div>
             <div class="welcome">工欲善其事，必先利其器。 -- 论语</div>
           </div>
+          <div style="margin-left: auto">
+            <iframe scrolling="no" src="https://widget.tianqiapi.com/?style=tg&skin=pitaya" frameborder="0" width="470" height="60" allowtransparency="true"></iframe>
+          </div>
         </div>
       </div>
     </el-col>
@@ -145,14 +148,34 @@
         </el-col>
 
         <el-col :span="24">
-          <div class="panelBox" style="height:185px;">
+          <div class="panelBox">
             <div class="panelTitle">相关文档</div>
+            <ul class="link-ul">
+              <li>
+                <el-link :icon="Link" href="https://cn.vuejs.org" target="_blank">Vue 官方文档</el-link>
+              </li>
+              <li>
+                <el-link :icon="Link" href="https://element-plus.org" target="_blank">Element Plus 官方文档</el-link>
+              </li>
+              <li>
+                <el-link :icon="Link" href="https://base.perfree.org.cn" target="_blank">PerfreeBase 官网</el-link>
+              </li>
+              <li>
+                <el-link :icon="Link" href="https://base.perfree.org.cn/useDoc" target="_blank">PerfreeBase 使用文档</el-link>
+              </li>
+              <li>
+                <el-link :icon="Link" href="https://base.perfree.org.cn/devDoc" target="_blank">PerfreeBase 开发文档</el-link>
+              </li>
+              <li>
+                <el-link :icon="Link" href="https://base.perfree.org.cn/pluginDoc" target="_blank">PerfreeBase 插件开发文档</el-link>
+              </li>
+            </ul>
           </div>
         </el-col>
 
         <el-col :span="24">
-          <div class="panelBox" style="height:185px;">
-            <div class="panelTitle">最新插件</div>
+          <div class="panelBox" style="height:155px;">
+            <div class="panelTitle">这个地方写啥???</div>
           </div>
         </el-col>
 
@@ -163,7 +186,7 @@
 
 <script setup>
 import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
-import {Checked, List, PictureFilled, UserFilled} from "@element-plus/icons-vue";
+import {Checked, Edit, Link, List, PictureFilled, UserFilled} from "@element-plus/icons-vue";
 import {getHomeStatisticApi, getServerInfoApi} from "../api/adminHome.js";
 import {ElMessage} from "element-plus";
 import {ref} from "vue";
@@ -261,5 +284,20 @@ getServerInfo();
   font-size: 14px;
   border-bottom: 1px solid var(--el-border-color-light);
   padding-bottom: 10px;
+}
+.link-ul{
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  li{
+    line-height: 30px;
+    .el-link{
+      width: 100%;
+      justify-content: left;
+    }
+  }
+}
+:deep(.el-link__inner){
+  padding-left: 5px;
 }
 </style>
