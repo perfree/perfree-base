@@ -327,7 +327,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     public LoginUserRespVO refreshToken(String refreshToken) {
         boolean verifyRefreshToken = JwtUtil.verifyRefreshToken(refreshToken);
         if (!verifyRefreshToken) {
-            throw new ServiceException(ErrorCode.ACCOUNT_PASSWORD_ERROR);
+            throw new ServiceException(ErrorCode.REFRESH_TOKEN_VALID_FAIL);
         }
         Claims refreshTokenBody = JwtUtil.getRefreshTokenBody(refreshToken);
         String account = refreshTokenBody.getSubject();

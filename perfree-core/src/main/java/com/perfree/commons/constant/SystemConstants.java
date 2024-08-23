@@ -32,4 +32,6 @@ public class SystemConstants {
     /** 临时目录 */
     public static final String CODEGEN_TEMP_PATH = "resources/temp/codeGen";
 
+    /** resources路径 */
+    public static final String RESOURCES_DIR = "resources";
 }

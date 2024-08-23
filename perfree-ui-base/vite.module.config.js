@@ -19,7 +19,7 @@ export default defineConfig({
       axios: "axios",
       "vue-demi": "VueDemi",
       "@vueuse/core": "VueUse",
-      "@fortawesome/fontawesome-svg-core": "fontawesome-svg-core"
+      "@fortawesome/fontawesome-svg-core": "fontawesome-svg-core",
     }),
     cssInjectedByJsPlugin(),
   ],
@@ -27,6 +27,11 @@ export default defineConfig({
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),
     },
+  },
+  define: {
+    process: {
+      env: {}
+    }
   },
   build: {
     cssCodeSplit: true,
@@ -36,7 +41,7 @@ export default defineConfig({
       entry: entry,
       name: `_module_${moduleName}`
     },
-    outDir: `../perfree-system-web/src/main/resources/static/admin/modules/${moduleName}`,
+    outDir: `../perfree-server/src/main/resources/static/admin/modules/${moduleName}`,
     modulePreload: false,
     rollupOptions: {
       external: [

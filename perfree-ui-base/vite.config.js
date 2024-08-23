@@ -57,7 +57,7 @@ export default defineConfig(({mode })=> {
         axios: "axios",
         "vue-demi": "VueDemi",
         "@vueuse/core": "VueUse",
-        "@fortawesome/fontawesome-svg-core": "fontawesome-svg-core"
+        "@fortawesome/fontawesome-svg-core": "fontawesome-svg-core",
       }),
       progress()
     ],
@@ -103,7 +103,7 @@ export default defineConfig(({mode })=> {
       }
     },
     build: {
-      outDir: "../perfree-system-web/src/main/resources/static/admin",
+      outDir: "../perfree-server/src/main/resources/static/admin",
       modulePreload: true,
       emptyOutDir: true,
       rollupOptions: {
