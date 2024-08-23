@@ -15,6 +15,7 @@ import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -38,12 +39,14 @@ public class PluginResourceResolver extends AbstractResourceResolver {
             // 从插件内置文件路径获取资源
             Resource resource = resolveClassPathFile(plugin, partialPath);
             if(resource != null){
+                System.out.println("1111111111111111111111111");
                 return resource;
             }
 
             // 从外置文件路径获取资源
             resource = resolveFilePath(plugin, partialPath);
             if(resource != null){
+                System.out.println("2222222222222222222");
                 return resource;
             }
             return null;
@@ -116,28 +119,18 @@ public class PluginResourceResolver extends AbstractResourceResolver {
     }
 
     private Set<String> getStaticFileLocations(String locations) {
-        Set<String> result = new HashSet<>();
         String[] staticLocations = locations.split(",");
-        for (String staticLocation : staticLocations) {
-            if (!staticLocation.contains("classpath:")){
-                result.add(staticLocation);
-
-            }
-        }
-        return result;
+        return new HashSet<>(Arrays.asList(staticLocations));
     }
 
     private Set<String> getStaticClassPathLocations(String locations) {
         Set<String> result = new HashSet<>();
         String[] staticLocations = locations.split(",");
         for (String staticLocation : staticLocations) {
-            if (staticLocation.contains("classpath:")){
-                staticLocation = staticLocation.replace("classpath:", "");
-                if (StringUtils.isNotBlank(staticLocation) && staticLocation.startsWith("/")){
-                    staticLocation = staticLocation.substring(1);
-                }
-                result.add(staticLocation);
+            if (StringUtils.isNotBlank(staticLocation) && staticLocation.startsWith("/")){
+                staticLocation = staticLocation.substring(1);
             }
+            result.add(staticLocation);
         }
         return result;
     }

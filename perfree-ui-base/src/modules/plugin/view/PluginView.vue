@@ -214,11 +214,8 @@ function handleEnable(row){
   }).then(() => {
     enablePluginApi(row.pluginId).then(res => {
       if (res.code === 200 && res.data) {
-        initMenu().then(res => {
-
-        })
         ElMessage.success('插件启用成功');
-        initList();
+        window.location.reload();
       }else {
         ElMessage.error(res.msg);
       }

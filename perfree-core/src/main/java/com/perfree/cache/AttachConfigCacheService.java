@@ -29,8 +29,7 @@ public class AttachConfigCacheService {
     public AttachConfigCacheDTO getMasterAttachConfig() {
         for (Integer i : attachConfingCache.asMap().keySet()) {
             AttachConfigCacheDTO attachConfigCacheDTO = attachConfingCache.getIfPresent(i);
-            assert attachConfigCacheDTO != null;
-            if (attachConfigCacheDTO.getMaster()) {
+            if (attachConfigCacheDTO != null && attachConfigCacheDTO.getMaster()) {
                 return attachConfigCacheDTO;
             }
         }

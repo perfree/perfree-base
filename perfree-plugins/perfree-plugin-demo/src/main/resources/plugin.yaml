@@ -12,9 +12,9 @@ plugin:
   # 插件版本
   version: 1.0.2
   # 插件静态资源路径
-  staticLocations: classpath:/ui/
+  staticLocations: /ui/
   # 是否为开发环境(如果是插件前端通过node运行,需要开启dev且设置前端开发环境地址)
-  isDev: true
+  isDev: false
   # 前端开发环境地址
   frontDevAddress: http://127.0.0.1:4202
   # 插件更新url
@@ -26,8 +26,3 @@ author:
   email: perfree@126.com
   # 作者网站
   webSite: http://111111
-# 接口文档配置
-springdoc:
-  groupName: 测试插件
-  pathsToMatch: '/**'
-  packagesToScan: com.demo.controller

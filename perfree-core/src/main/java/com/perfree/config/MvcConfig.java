@@ -41,9 +41,20 @@ public class MvcConfig implements WebMvcConfigurer {
                 .addResourceLocations("file:resources/upload/")
                 .setCachePeriod(3600)
                 .setCacheControl(CacheControl.maxAge(Duration.ofMinutes(30)));
-        registry.addResourceHandler("/static/**").addResourceLocations( "classpath:/static/");
-        registry.addResourceHandler("/assets/**").addResourceLocations( "classpath:/static/admin/assets/");
-        registry.addResourceHandler("/modules/**").addResourceLocations( "classpath:/static/admin/modules/");
+        registry.addResourceHandler("/static/**").addResourceLocations(
+                "classpath:/static/",
+                "file:./resources/static/"
+        );
+
+        registry.addResourceHandler("/assets/**").addResourceLocations(
+                "classpath:/static/admin/assets/",
+                "file:./resources/static/admin/assets/"
+        );
+        registry.addResourceHandler("/modules/**").addResourceLocations(
+                "classpath:/static/admin/modules/",
+                "file:./resources/static/admin/modules/"
+        );
+
         registry.addResourceHandler("doc.html").addResourceLocations("classpath:/META-INF/resources/");
         registry.addResourceHandler("/webjars/**").addResourceLocations("classpath:/META-INF/resources/webjars/");
         String pathPattern = "/plugin-static/**";
