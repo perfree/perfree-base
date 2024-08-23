@@ -17,6 +17,7 @@ import oshi.software.os.OSFileStore;
 import oshi.util.Util;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Properties;
 
@@ -120,7 +121,10 @@ public class AdminHomeServiceImpl implements AdminHomeService {
 
     @Override
     public HomeStatisticRespVO getHomeStatistic() {
-        HomeStatisticRespVO homeStatisticRespVO = new HomeStatisticRespVO();
+        HomeStatisticRespVO homeStatisticRespVO = attachService.getTypeCount();
+        if (null == homeStatisticRespVO) {
+            homeStatisticRespVO = new HomeStatisticRespVO();
+        }
         homeStatisticRespVO.setUserTotal(userService.getTotalUser());
         homeStatisticRespVO.setAttachTotal(attachService.getTotalAttach());
         homeStatisticRespVO.setInstallPluginTotal(pluginsService.getTotalPlugins());

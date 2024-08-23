@@ -1,10 +1,12 @@
 package com.perfree.service.attach;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.perfree.commons.common.CustomMultipartFile;
 import com.perfree.commons.common.PageResult;
 import com.perfree.commons.constant.SystemConstants;
 import com.perfree.commons.exception.ServiceException;
+import com.perfree.controller.auth.adminHome.vo.HomeStatisticRespVO;
 import com.perfree.controller.auth.attach.vo.AttachPageReqVO;
 import com.perfree.controller.auth.attach.vo.AttachUpdateVO;
 import com.perfree.controller.auth.attach.vo.AttachUploadVO;
@@ -32,6 +34,7 @@ import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -145,5 +148,10 @@ public class AttachServiceImpl extends ServiceImpl<AttachMapper, Attach> impleme
     @Override
     public Long getTotalAttach() {
         return attachMapper.selectCount();
+    }
+
+    @Override
+    public HomeStatisticRespVO getTypeCount() {
+        return attachMapper.getTypeCount();
     }
 }

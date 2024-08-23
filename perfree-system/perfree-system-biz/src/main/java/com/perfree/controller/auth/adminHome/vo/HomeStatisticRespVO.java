@@ -12,4 +12,12 @@ public class HomeStatisticRespVO {
     private Long installPluginTotal;
 
     private Long runningPluginTotal;
+
+    private Long attachImageTotal;
+
+    private Long attachVideoTotal;
+
+    private Long attachAudioTotal;
+
+    private Long attachOtherTotal;
 }

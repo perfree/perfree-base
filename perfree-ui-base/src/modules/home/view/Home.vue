@@ -174,8 +174,9 @@
         </el-col>
 
         <el-col :span="24">
-          <div class="panelBox" style="height:155px;">
-            <div class="panelTitle">这个地方写啥???</div>
+          <div class="panelBox" v-loading="statisticLoading">
+            <div class="panelTitle">附件统计</div>
+            <div  class="echartsBox" id="attachEcharts" style="height:130px;"></div>
           </div>
         </el-col>
 
@@ -186,10 +187,11 @@
 
 <script setup>
 import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
-import {Checked, Edit, Link, List, PictureFilled, UserFilled} from "@element-plus/icons-vue";
+import {Checked, Link, List, PictureFilled, UserFilled} from "@element-plus/icons-vue";
 import {getHomeStatisticApi, getServerInfoApi} from "../api/adminHome.js";
 import {ElMessage} from "element-plus";
-import {ref} from "vue";
+import {onMounted, ref} from "vue";
+import * as echarts from 'echarts';
 
 let statisticLoading = ref(true);
 let serverLoading = ref(true);
@@ -235,6 +237,32 @@ function getHomeStatistic() {
   getHomeStatisticApi().then(res => {
     if (res.code === 200) {
       homeStatistic.value = res.data;
+      let myChart = echarts.init(document.getElementById('attachEcharts'));
+      myChart.setOption({
+        tooltip: {
+          trigger: 'item'
+        },
+        series: [
+          {
+            name: '附件统计',
+            type: 'pie',
+            radius: '50%',
+            data: [
+              { value: homeStatistic.value.attachImageTotal, name: '图片' },
+              { value: homeStatistic.value.attachVideoTotal, name: '视频' },
+              { value: homeStatistic.value.attachAudioTotal, name: '音频' },
+              { value: homeStatistic.value.attachOtherTotal, name: '其他' },
+            ],
+            emphasis: {
+              itemStyle: {
+                shadowBlur: 10,
+                shadowOffsetX: 0,
+                shadowColor: 'rgba(0, 0, 0, 0.5)'
+              }
+            }
+          }
+        ]
+      });
     } else {
       ElMessage.error(res.msg);
     }
@@ -246,7 +274,10 @@ function shortcutClick(path) {
   router.replace(path);
 }
 
-getHomeStatistic();
+onMounted(() => {
+  getHomeStatistic();
+})
+
 getServerInfo();
 </script>
 <style scoped>

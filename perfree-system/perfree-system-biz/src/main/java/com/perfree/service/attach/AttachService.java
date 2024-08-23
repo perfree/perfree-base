@@ -2,12 +2,14 @@ package com.perfree.service.attach;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.perfree.commons.common.PageResult;
+import com.perfree.controller.auth.adminHome.vo.HomeStatisticRespVO;
 import com.perfree.controller.auth.attach.vo.AttachPageReqVO;
 import com.perfree.controller.auth.attach.vo.AttachUpdateVO;
 import com.perfree.controller.auth.attach.vo.AttachUploadVO;
 import com.perfree.model.Attach;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -71,5 +73,7 @@ public interface AttachService extends IService<Attach> {
     Attach uploadAttachByUrl(String url);
 
     Long getTotalAttach();
+
+    HomeStatisticRespVO getTypeCount();
 
 }
