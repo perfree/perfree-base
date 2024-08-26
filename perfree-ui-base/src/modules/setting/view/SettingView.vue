@@ -20,7 +20,6 @@ const loading = ref(true);
 
 function initSettingFrom() {
   extraGetByKeyApi('system_setting').then(res => {
-    console.log(res)
     if (res.code === 200) {
       if (!res.data) {
         notSetting.value = true;

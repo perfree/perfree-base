@@ -55,15 +55,17 @@ axios.interceptors.response.use(
               return Promise.reject(new Error(response.data.msg));
           }
           return response.data;
+      } else {
+          ElMessage.error('系统异常,请联系管理员')
+          return Promise.reject(new Error('系统异常,请联系管理员'));
       }
-      ElMessage.error('错误信息')
-    return response;
   },
   function(error) {
       if (error.response.status === 403) {
           ElMessage.error(error.response.data.msg)
       }
-    return Promise.reject(error);
+      ElMessage.error('系统异常,请联系管理员')
+      return Promise.reject(error);
   }
 );
 

@@ -53,6 +53,10 @@ router.afterEach(() => {
 router.beforeEach((to, from, next) => {
     const commonStore = useCommonStore()
     NProgress.start();
+    if (to.path === '/login' || to.path === '/register') {
+        next();
+        return;
+    }
 
     // 获取本地token,判断是否存在
     let token_info = localStorage.getItem(CONSTANTS.STORAGE_TOKEN);
@@ -60,10 +64,6 @@ router.beforeEach((to, from, next) => {
         token_info = JSON.parse(token_info);
     }
     if (!token_info || !token_info.accessToken || token_info.accessToken === '') {
-        if (to.path === '/login' || to.path === '/register' ) {
-            next();
-            return;
-        }
         next('/login');
         return;
     }

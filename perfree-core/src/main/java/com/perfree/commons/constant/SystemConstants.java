@@ -34,4 +34,8 @@ public class SystemConstants {
 
     /** resources路径 */
     public static final String RESOURCES_DIR = "resources";
+
+
+    /**数据库配置文件地址*/
+    public static final String DB_PROPERTIES_PATH = "resources/db.properties";
 }

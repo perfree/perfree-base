@@ -1,8 +1,8 @@
 package com.perfree.config;
 
 import com.perfree.commons.constant.SystemConstants;
-import com.perfree.plugin.handle.PluginInterceptorBaseHandler;
 import com.perfree.plugin.core.PluginResourceResolver;
+import com.perfree.plugin.handle.PluginInterceptorBaseHandler;
 import com.perfree.security.interceptor.PluginPreAuthorizeInterceptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

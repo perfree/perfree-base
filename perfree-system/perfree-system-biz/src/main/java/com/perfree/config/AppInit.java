@@ -1,36 +1,18 @@
 package com.perfree.config;
 
-import com.perfree.cache.AttachConfigCacheService;
-import com.perfree.cache.OptionCacheService;
-import com.perfree.commons.utils.SpringBeanUtil;
-import com.perfree.convert.attachConfig.AttachConfigConvert;
-import com.perfree.convert.dictData.DictDataConvert;
-import com.perfree.convert.option.OptionConvert;
 import com.perfree.file.FileHandleStorageHolder;
 import com.perfree.file.handle.local.FileLocalHandleImpl;
 import com.perfree.file.handle.s3.FileS3HandleImpl;
-import com.perfree.mapper.AttachConfigMapper;
-import com.perfree.model.AttachConfig;
-import com.perfree.model.DictData;
-import com.perfree.model.Option;
-import com.perfree.plugin.PluginInfo;
-import com.perfree.plugin.PluginInfoHolder;
 import com.perfree.service.attachConfig.AttachConfigService;
 import com.perfree.service.dictData.DictDataService;
 import com.perfree.service.option.OptionService;
 import com.perfree.service.plugins.PluginsService;
-import com.perfree.system.api.attachConfig.dto.AttachConfigCacheDTO;
-import com.perfree.system.api.dictData.dto.DictDataDTO;
-import com.perfree.system.api.option.dto.OptionDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
-import java.util.Map;
 
 /**
  * @author Perfree
@@ -83,9 +65,7 @@ public class AppInit implements ApplicationRunner {
         LOGGER.info("-> 初始化插件....");
         pluginsService.watchMonitorDevPlugins();
         pluginsService.initPlugins();
-        List<PluginInfo> pluginInfoList = PluginInfoHolder.getAllPluginInfo();
-        StringBuilder successPluginStr = new StringBuilder();
-        pluginInfoList.forEach(pluginInfo -> successPluginStr.append("Success Load Plugin -> ").append(pluginInfo.getPluginPath()).append("\n"));
+        LOGGER.info("-> 初始化插件完成");
         String banner = """
                 ----------------------------------------------------------------------------------
                                          __                     \s
@@ -97,11 +77,10 @@ public class AppInit implements ApplicationRunner {
                  | |                                            \s
                  |_|                                            \s
                  
-                 %s
                  Successfully started!
                  access port: %s
                 ----------------------------------------------------------------------------------
-                """.formatted(successPluginStr, port);
+                """.formatted(port);
         System.out.println(banner);
     }
 
