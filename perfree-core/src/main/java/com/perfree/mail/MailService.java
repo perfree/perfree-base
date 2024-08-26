@@ -13,12 +13,10 @@ import com.sun.mail.util.MailSSLSocketFactory;
 import jakarta.annotation.Resource;
 import org.dromara.hutool.extra.mail.MailAccount;
 import org.dromara.hutool.extra.mail.MailUtil;
-import org.dromara.hutool.http.html.HtmlUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import java.security.GeneralSecurityException;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 
@@ -43,10 +41,26 @@ public class MailService {
      * @return Boolean
      */
     public Boolean sendMailByTemplateId(Integer templateId, String receiveMail, HashMap<String, String> params){
+        MailTemplateDTO mailTemplateDTO =  mailTemplateApi.getById(templateId);
+        return sendMail(mailTemplateDTO, receiveMail, params);
+    }
+
+    /**
+     * 根据模板code发送邮件
+     * @param templateCode templateCode
+     * @param receiveMail receiveMail
+     * @param params params
+     * @return Boolean
+     */
+    public Boolean sendMailByTemplateCode(String templateCode, String receiveMail, HashMap<String, String> params){
+        MailTemplateDTO mailTemplateDTO =  mailTemplateApi.getByCode(templateCode);
+        return sendMail(mailTemplateDTO, receiveMail, params);
+    }
+
+    private Boolean sendMail( MailTemplateDTO mailTemplateDTO, String receiveMail, HashMap<String, String> params) {
         boolean result = false;
         MailLogDTO mailLogDTO = null;
         try{
-            MailTemplateDTO mailTemplateDTO =  mailTemplateApi.getById(templateId);
             if (null == mailTemplateDTO) {
                 throw new ServiceException(ErrorCode.MAIL_TEMPLATE_NOT_EXIST);
             }
@@ -87,7 +101,6 @@ public class MailService {
         }
         return result;
     }
-
 
     /**
      * 处理模板参数

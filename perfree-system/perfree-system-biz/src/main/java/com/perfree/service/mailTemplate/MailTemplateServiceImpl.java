@@ -84,4 +84,9 @@ public class MailTemplateServiceImpl extends ServiceImpl<MailTemplateMapper, Mai
     public Boolean testMail(MailTemplateTestReqVO mailTemplateTestReqVO) {
         return mailService.sendMailByTemplateId(mailTemplateTestReqVO.getMailTemplateId(), mailTemplateTestReqVO.getReceiveMail(), mailTemplateTestReqVO.getMailParams());
     }
+
+    @Override
+    public MailTemplate getByCode(String templateCode) {
+        return mailTemplateMapper.getByCode(templateCode);
+    }
 }

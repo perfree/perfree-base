@@ -46,4 +46,8 @@ public interface MailTemplateMapper extends BaseMapperX<MailTemplate> {
         return selectList(lambdaQueryWrapper);
     }
 
+    default MailTemplate getByCode(String templateCode){
+        return selectOne(new LambdaQueryWrapper<MailTemplate>().eq(MailTemplate::getCode, templateCode));
+    }
+
 }

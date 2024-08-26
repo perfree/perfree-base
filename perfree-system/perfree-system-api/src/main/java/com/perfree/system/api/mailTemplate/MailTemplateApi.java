@@ -11,4 +11,6 @@ public interface MailTemplateApi {
      */
     MailTemplateDTO getById(Integer templateId);
 
+    MailTemplateDTO getByCode(String templateCode);
+
 }

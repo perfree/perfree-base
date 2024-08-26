@@ -20,4 +20,10 @@ public class MailTemplateApiImpl implements MailTemplateApi {
         MailTemplate byId = mailTemplateService.getById(templateId);
         return MailTemplateConvert.INSTANCE.convertToDTO(byId);
     }
+
+    @Override
+    public MailTemplateDTO getByCode(String templateCode) {
+        MailTemplate byCode = mailTemplateService.getByCode(templateCode);
+        return MailTemplateConvert.INSTANCE.convertToDTO(byCode);
+    }
 }

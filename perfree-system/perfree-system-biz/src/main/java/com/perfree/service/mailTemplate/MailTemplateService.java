@@ -68,4 +68,6 @@ public interface MailTemplateService extends IService<MailTemplate> {
      */
     Boolean testMail(MailTemplateTestReqVO mailTemplateTestReqVO);
 
+    MailTemplate getByCode(String templateCode);
+
 }
