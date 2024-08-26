@@ -19,7 +19,7 @@ export function toPage(name, path, params) {
     }
     router.push({
         path: path,
-        query: params
+        params: params
     })
 }
 

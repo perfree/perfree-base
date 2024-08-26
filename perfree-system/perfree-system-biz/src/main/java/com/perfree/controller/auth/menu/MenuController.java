@@ -50,7 +50,7 @@ public class MenuController {
 
     @GetMapping("/get")
     @Operation(summary = "获取菜单")
-    public CommonResult<MenuRespVO> list(@RequestParam(value = "id") String id) {
+    public CommonResult<MenuRespVO> get(@RequestParam(value = "id") String id) {
         Menu menu = menuService.getById(id);
         return success(MenuConvert.INSTANCE.convertRespVO(menu));
     }

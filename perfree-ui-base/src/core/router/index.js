@@ -29,6 +29,15 @@ const router = createRouter({
                         keepAlive: true
                     }
                 },
+                {
+                    path: '/admin/frame/:id',
+                    name: 'frame',
+                    component: () => import('../views/frame/FrameView.vue'),
+                    meta: {
+                        title: '外部链接',
+                        keepAlive: true
+                    }
+                },
             ],
         },
         {
