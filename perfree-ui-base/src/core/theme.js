@@ -1,8 +1,8 @@
 export const themeSettings = {
   // 主题
-  theme: 'default',
+  theme: 'light',
   // 主题色
-  primaryColor: '#5FB878',
+  primaryColor: '#646CFF',
   // 顶栏通色
   headerUnified: false,
   // 是否开启tab栏
