@@ -19,4 +19,6 @@ public class OptionDTO {
      * value
      */
     private String value;
+
+    private String title;
 }

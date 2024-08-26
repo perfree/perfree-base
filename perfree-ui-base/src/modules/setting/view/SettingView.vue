@@ -6,10 +6,11 @@
 </template>
 <script setup>
 
-import {extraGetByKeyApi} from "@/modules/setting/api/extra.js";
+import {extraGetByKeyApi} from "../api/extra.js";
 import {ElMessage} from "element-plus";
 import {ref} from "vue";
-import {getOptionByIdentificationApi, saveOptionListApi} from "@/modules/setting/api/option.js";
+import {getOptionByIdentificationApi, saveOptionListApi} from "../api/option.js";
+import formCreate from "@form-create/element-ui";
 
 const fApi = ref({});
 const formData = ref({});
@@ -41,7 +42,14 @@ function initValue() {
   getOptionByIdentificationApi('system_setting').then(res => {
     if (res.code === 200) {
       formData.value = res.data.reduce((acc, { key, value }) => {
-        acc[key] = value;
+        const formRule = fApi.value.getRule(key);
+        if (formRule) {
+          if (formRule.type === 'select' && formRule.props.multiple && value) {
+            acc[key] = value.split(',');
+          } else {
+            acc[key] = value;
+          }
+        }
         return acc;
       }, {});
     } else {
@@ -61,14 +69,23 @@ function submitSetting(formData) {
   let param = {
     options: []
   }
-  keys.forEach( key => {
+  for (let key of keys) {
+    let value = formData[key];
+    const formRule = fApi.value.getRule(key);
+    if (!formRule) {
+      continue;
+    }
+    if (formRule.type === 'select' && formRule.props.multiple && value) {
+      value = value.join(',');
+    }
     let option = {
       key,
-      value: formData[key],
+      value: value,
+      title: formRule.title,
       identification: 'system_setting'
     }
     param.options.push(option);
-  })
+  }
 
   saveOptionListApi(param).then(res => {
     if (res.code === 200) {

@@ -12,6 +12,9 @@ public class OptionBaseVO {
     @Schema(description = "value" )
     private String value;
 
+    @Schema(description = "title" )
+    private String title;
+
     @Schema(description = "标识" )
     private String identification;
 }

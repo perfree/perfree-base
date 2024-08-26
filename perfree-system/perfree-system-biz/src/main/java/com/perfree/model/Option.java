@@ -39,6 +39,8 @@ public class Option extends BaseModel implements Serializable {
     @TableField(value = "`key`")
     private String key;
 
+    private String title;
+
     /**
      * value
      */

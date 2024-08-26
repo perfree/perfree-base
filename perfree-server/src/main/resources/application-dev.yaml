@@ -111,7 +111,7 @@ knife4j:
     enable-version: true
     enable-home-custom: true
     enable-footer-custom: true
-    footer-custom-content: Apache License 2.0 | Copyright  2019-[浙江八一菜刀股份有限公司](https://gitee.com/xiaoym/knife4j)
+    footer-custom-content: MIT License | Copyright  2024-[PerfreeBase](https://base.perfree.org.cn)
   cors: false
   production: false
   basic:
