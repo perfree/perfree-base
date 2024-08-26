@@ -24,6 +24,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
+import org.apache.commons.lang3.StringUtils;
 import org.dromara.hutool.core.codec.binary.Base64;
 import org.dromara.hutool.core.data.id.IdUtil;
 import org.dromara.hutool.swing.captcha.CaptchaUtil;
@@ -75,9 +76,16 @@ public class SystemController {
     @Operation(summary = "获取未登录时可拥有的配置信息")
     public CommonResult<List<OptionRespVO>> getOptionByNoAuth(){
         List<OptionDTO> optionDTOList = new ArrayList<>();
-        optionDTOList.add(optionCacheService.getOption(OptionEnum.WEB_OPEN_CAPTCHA.getKey()));
-        optionDTOList.add(optionCacheService.getOption(OptionEnum.WEB_NAME.getKey()));
-        optionDTOList.add(optionCacheService.getOption(OptionEnum.WEB_IS_REGISTER.getKey()));
+        OptionDTO option = optionCacheService.getOption(OptionEnum.OPEN_OPTIONS.getKey());
+        if (null == option || StringUtils.isBlank(option.getValue())) {
+            return CommonResult.success(OptionConvert.INSTANCE.convertCacheDTO2RespListVO(optionDTOList));
+        }
+        String[] split = option.getValue().split(",");
+        for (String key : split) {
+            OptionDTO openOption = optionCacheService.getOption(key);
+            optionDTOList.add(openOption);
+        }
+
         return CommonResult.success(OptionConvert.INSTANCE.convertCacheDTO2RespListVO(optionDTOList));
     }
 
