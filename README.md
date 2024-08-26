@@ -25,4 +25,4 @@
 
 ![插件](./images/plugins.jpg)
 
-![菜单](./images/plugins.jpg)
+![菜单](./images/menu.jpg)
