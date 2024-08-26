@@ -36,8 +36,9 @@ public class FileLocalHandleImpl extends BaseFileHandle {
 
         String datePath = DateUtil.format(new Date(), "yyyy-MM-dd") + SystemConstants.FILE_SEPARATOR;
         fileLocalConfig.setBasePath(fileLocalConfig.getBasePath() + datePath);
-        if (!FileUtil.exists(fileLocalConfig.getBasePath())) {
-            FileUtil.mkdir(fileLocalConfig.getBasePath());
+        File baseDir = new File(fileLocalConfig.getBasePath());
+        if (!FileUtil.exists(baseDir.getAbsoluteFile())) {
+            FileUtil.mkdir(baseDir.getAbsoluteFile());
         }
 
         String fileName = IdUtil.fastSimpleUUID() + "." + FileNameUtil.extName(attachUploadDTO.getFile().getOriginalFilename());
@@ -46,7 +47,7 @@ public class FileLocalHandleImpl extends BaseFileHandle {
         String originalFilename = attachUploadDTO.getFile().getOriginalFilename();
         attachFileDTO.setMineType(mineType);
         attachFileDTO.setType(FileTypeUtils.getFileTypeByMineType(mineType));
-        attachUploadDTO.getFile().transferTo(new File(fileLocalConfig.getBasePath() + fileName));
+        attachUploadDTO.getFile().transferTo(new File(baseDir.getAbsolutePath() + SystemConstants.FILE_SEPARATOR + fileName));
         attachFileDTO.setName(originalFilename);
         attachFileDTO.setPath( datePath  + fileName);
         attachFileDTO.setDesc(attachUploadDTO.getDesc());

@@ -49,8 +49,8 @@ const initPageOption= () => {
   const WEB_TITLE = getOptionByKey('WEB_TITLE');
   document.title = WEB_TITLE ? WEB_TITLE.value : 'Perfree';
 
-  const WEB_LOGO = getOptionByKey('WEB_LOGO');
-  changeFaviconByUrl(WEB_LOGO ? WEB_LOGO.value : '/src/assets/favicon.ico');
+  const WEB_ICO = getOptionByKey('WEB_ICO');
+  changeFaviconByUrl(WEB_ICO && WEB_ICO.value ? WEB_ICO.value : '/assets/favicon.ico');
 }
 
 const changeFaviconByUrl = (url) => {

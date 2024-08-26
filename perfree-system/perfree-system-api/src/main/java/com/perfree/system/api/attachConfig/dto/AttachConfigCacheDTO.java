@@ -33,5 +33,5 @@ public class AttachConfigCacheDTO {
     /**
      * 是否为主配置
      */
-    private Boolean master;
+    private Boolean master = false;
 }

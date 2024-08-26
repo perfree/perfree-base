@@ -1,0 +1,1 @@
+import{f as t}from"../../index-DMCNJIlT.js";const s=(i,r)=>i.pluginId&&i.pluginIsDev?t(()=>import(`${i.pluginFrontDevAddress}/plugin/${i.pluginId}/src/modules/${r}/index.js`),[]):i.pluginId?t(()=>import(`/plugin-static/${i.pluginId}/modules/${r}/index.js`),[]):t(()=>import(`/modules/${r}/index.js`),[]);export{s as default};

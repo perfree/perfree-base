@@ -1,7 +1,7 @@
 <template>
   <el-aside :class="{ sider: true, fullMaxHeight: true, collapseSider: menuIsCollapse }">
     <div class="logoBox">
-      <img src="@/assets/logo.png" class="logo-img" />
+      <img :src="WEB_LOGO && WEB_LOGO.value ? WEB_LOGO.value : '/assets/logo.png'" class="logo-img" />
       <h2 :class="{ logoTitle: true, logoHide: menuIsCollapse }">{{WEB_NAME? WEB_NAME.value: 'Perfree'}}</h2>
     </div>
     <el-menu
@@ -31,6 +31,7 @@ const props = defineProps(['menuIsCollapse'])
 let currRouter = ref(router.currentRoute.value.path)
 let menuList = ref(commonStore.menuList)
 const WEB_NAME = getOptionByKey('WEB_NAME');
+const WEB_LOGO = getOptionByKey('WEB_LOGO');
 watch(route, () => {
   currRouter.value = route.fullPath
 })
@@ -113,7 +114,7 @@ watch(
 .side-menu::-webkit-scrollbar {
   width: 0;
 }
- 
+
 .side-menu::-webkit-scrollbar {
   height: 0;
 }
