@@ -82,13 +82,14 @@
 
 <script setup>
 // 验证码开关
-import {getCodeImg, getOptionByNoAuth, login} from "@/core/api/system.js";
+import {getCodeImg, login} from "@/core/api/system.js";
 import {CONSTANTS} from "@/core/utils/constants.js";
 import {ElMessage} from "element-plus";
 import {useCommonStore} from "@/core/stores/commonStore.js";
 import {clearTabs} from "@/core/utils/tabs.js";
 import {useRouter} from "vue-router";
 import {computed, getCurrentInstance, ref} from "vue";
+import {getOptionByKey} from "@/core/utils/optionUtils.js";
 
 const {proxy} = getCurrentInstance();
 const router = useRouter();
@@ -152,19 +153,11 @@ const getCode = () => {
 }
 
 const initOption = () => {
-  getOptionByNoAuth().then(res => {
-    if (res.code === 200) {
-      let options = {};
-      res.data.forEach(item => {
-        options[item.key] = item;
-      })
-      captchaEnabled.value = options["WEB_OPEN_CAPTCHA"] ? options["WEB_OPEN_CAPTCHA"].value === 'ON' : true;
-      isOpenRegister.value = options["WEB_IS_REGISTER"]? options["WEB_IS_REGISTER"].value === 'ON' : true;
-      if (captchaEnabled.value) {
-        getCode();
-      }
-    }
-  })
+  captchaEnabled.value = getOptionByKey('WEB_OPEN_CAPTCHA') ? getOptionByKey('WEB_OPEN_CAPTCHA').value === 'ON' : true;
+  isOpenRegister.value = getOptionByKey('WEB_IS_REGISTER') ? getOptionByKey('WEB_IS_REGISTER').value === 'ON' : true;
+  if (captchaEnabled.value) {
+    getCode();
+  }
 }
 
 initOption();

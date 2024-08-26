@@ -113,13 +113,12 @@
 
 <script setup>
 // 验证码开关
-import {getCodeImg, getOptionByNoAuth, login, register} from "@/core/api/system.js";
-import {CONSTANTS} from "@/core/utils/constants.js";
+import {getCodeImg, register} from "@/core/api/system.js";
 import {ElMessage, ElMessageBox} from "element-plus";
 import {useCommonStore} from "@/core/stores/commonStore.js";
-import {clearTabs} from "@/core/utils/tabs.js";
 import {useRouter} from "vue-router";
 import {computed, ref} from "vue";
+import {getOptionByKey} from "@/core/utils/optionUtils.js";
 
 const router = useRouter();
 
@@ -195,18 +194,10 @@ const getCode = () => {
 }
 
 const initOption = () => {
-  getOptionByNoAuth().then(res => {
-    if (res.code === 200) {
-      let options = {};
-      res.data.forEach(item => {
-        options[item.key] = item;
-      })
-      captchaEnabled.value = options["WEB_OPEN_CAPTCHA"] ? options["WEB_OPEN_CAPTCHA"].value === 'ON' : true;
-      if (captchaEnabled.value) {
-        getCode();
-      }
-    }
-  })
+  captchaEnabled.value = getOptionByKey('WEB_OPEN_CAPTCHA') ? getOptionByKey('WEB_OPEN_CAPTCHA').value === 'ON' : true;
+  if (captchaEnabled.value) {
+    getCode();
+  }
 }
 
 initOption();

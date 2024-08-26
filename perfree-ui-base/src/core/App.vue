@@ -3,12 +3,11 @@
 </template>
 
 <script setup>
-import { useAppStore } from '@/core/stores/appStore'
-import { themeSettings } from '@/core/theme'
+import {useAppStore} from '@/core/stores/appStore'
+import {themeSettings} from '@/core/theme'
 import {useCssVar} from '@vueuse/core'
 import {ref} from "vue";
-import {userInfo} from "@/core/api/system.js";
-import {CONSTANTS} from "@/core/utils/constants.js";
+import {getOptionByKey} from "@/core/utils/optionUtils.js";
 
 const appStore = useAppStore()
 const el = ref(null)
@@ -46,6 +45,42 @@ const initTheme = () => {
   document.getElementsByTagName('body')[0].setAttribute('class', 'theme-' + appStore.theme)
 }
 
+const initPageOption= () => {
+  const WEB_TITLE = getOptionByKey('WEB_TITLE');
+  document.title = WEB_TITLE ? WEB_TITLE.value : 'Perfree';
+
+  const WEB_LOGO = getOptionByKey('WEB_LOGO');
+  changeFaviconByUrl(WEB_LOGO ? WEB_LOGO.value : '/src/assets/favicon.ico');
+}
+
+const changeFaviconByUrl = (url) => {
+  const ext = url.split('.').pop().toLowerCase();
+  let type = '';
+  if (ext === 'ico') {
+    type = 'image/x-icon';
+  } else if (ext === 'png') {
+    type = 'image/png';
+  } else {
+    console.error('Unsupported favicon format. Only .ico and .png are supported.');
+    return;
+  }
+
+  // 创建或更新 favicon
+  const link = document.createElement('link');
+  link.rel = 'icon';
+  link.type = type;
+  link.href = url;
+
+  // 移除已有的 favicon 链接
+  const head = document.querySelector('head');
+  const existingLinks = head.querySelectorAll('link[rel*="icon"]');
+  existingLinks.forEach(link => head.removeChild(link));
+
+  // 添加新的 favicon
+  head.appendChild(link);
+}
+
+initPageOption();
 initPrimaryColor()
 initTheme()
 </script>

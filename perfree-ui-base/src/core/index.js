@@ -24,6 +24,8 @@ import install from '@form-create/element-ui/auto-import'
 import {CONSTANTS} from "@/core/utils/constants.js";
 import {hasPermission} from "@/core/directive/permission/hasPermission.js";
 import download from "@/core/utils/download.js";
+import {getOptionByNoAuth} from "@/core/api/system.js";
+import {useOptionStore} from "@/core/stores/optionStore.js";
 
 const app = createApp(App);
 
@@ -81,4 +83,12 @@ window.axios = axios;
 window.pinia = pinia;
 window.download = download;
 
-app.mount('#app')
+
+// 加载开放的配置信息
+const optionStore = useOptionStore()
+getOptionByNoAuth().then(res => {
+    optionStore.setOptions(res.data);
+    app.mount('#app')
+}).catch(e => {
+    app.mount('#app')
+})

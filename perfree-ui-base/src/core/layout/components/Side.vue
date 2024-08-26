@@ -2,7 +2,7 @@
   <el-aside :class="{ sider: true, fullMaxHeight: true, collapseSider: menuIsCollapse }">
     <div class="logoBox">
       <img src="@/assets/logo.png" class="logo-img" />
-      <h2 :class="{ logoTitle: true, logoHide: menuIsCollapse }">Perfree</h2>
+      <h2 :class="{ logoTitle: true, logoHide: menuIsCollapse }">{{WEB_NAME? WEB_NAME.value: 'Perfree'}}</h2>
     </div>
     <el-menu
       class="side-menu"
@@ -22,6 +22,7 @@ import MenuTree from '@/core/layout/components/MenuTree.vue'
 import {useCommonStore} from "@/core/stores/commonStore.js";
 import {useRoute, useRouter} from "vue-router";
 import {ref, watch} from "vue";
+import {getOptionByKey} from "@/core/utils/optionUtils.js";
 
 const commonStore = useCommonStore()
 const router = useRouter()
@@ -29,7 +30,7 @@ const route = useRoute()
 const props = defineProps(['menuIsCollapse'])
 let currRouter = ref(router.currentRoute.value.path)
 let menuList = ref(commonStore.menuList)
-
+const WEB_NAME = getOptionByKey('WEB_NAME');
 watch(route, () => {
   currRouter.value = route.fullPath
 })
