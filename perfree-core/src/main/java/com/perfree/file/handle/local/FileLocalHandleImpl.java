@@ -63,11 +63,11 @@ public class FileLocalHandleImpl extends BaseFileHandle {
         FileLocalConfig fileLocalConfig = JSONUtil.toBean(getAttachConfig().getConfig(), FileLocalConfig.class);
         // 统一使用/
         fileLocalConfig.setBasePath(fileLocalConfig.getBasePath().replaceAll("\\\\", SystemConstants.FILE_SEPARATOR));
-        if (FileUtil.exists(fileLocalConfig.getBasePath() + SystemConstants.FILE_SEPARATOR + attachFileDTO.getPath())) {
-            FileUtil.del(fileLocalConfig.getBasePath() + SystemConstants.FILE_SEPARATOR + attachFileDTO.getPath());
-            return true;
+        File file = new File(fileLocalConfig.getBasePath());
+        if (FileUtil.exists(file.getAbsolutePath() + SystemConstants.FILE_SEPARATOR + attachFileDTO.getPath())) {
+            FileUtil.del(file.getAbsolutePath() + SystemConstants.FILE_SEPARATOR + attachFileDTO.getPath());
         }
-        return false;
+        return true;
     }
 
     @Override
@@ -75,6 +75,7 @@ public class FileLocalHandleImpl extends BaseFileHandle {
         FileLocalConfig fileLocalConfig = JSONUtil.toBean(getAttachConfig().getConfig(), FileLocalConfig.class);
         // 统一使用/
         fileLocalConfig.setBasePath(fileLocalConfig.getBasePath().replaceAll("\\\\", SystemConstants.FILE_SEPARATOR));
-        return FileUtil.readBytes(fileLocalConfig.getBasePath() + SystemConstants.FILE_SEPARATOR + path);
+        File file = new File(fileLocalConfig.getBasePath());
+        return FileUtil.readBytes(file.getAbsolutePath() + SystemConstants.FILE_SEPARATOR + path);
     }
 }

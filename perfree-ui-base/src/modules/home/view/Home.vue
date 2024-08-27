@@ -1,5 +1,5 @@
 <template>
-  <el-row :gutter="15">
+  <el-row :gutter="15" style="height: 100%;">
     <el-col :span="24">
       <div class="panelBox">
         <div style="display: flex">

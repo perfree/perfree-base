@@ -12,7 +12,7 @@ const X = (h, p) => {
   for (const [r, f] of p)
     g[r] = f;
   return g;
-}, _ = window.Vue.resolveComponent, e = window.Vue.createVNode, n = window.Vue.toDisplayString, a = window.Vue.createElementVNode, t = window.Vue.withCtx, l = window.Vue.unref, o = window.Vue.createTextVNode, Q = window.Vue.resolveDirective, v = window.Vue.openBlock, P = window.Vue.createElementBlock, I = window.Vue.withDirectives, A = window.Vue.createBlock, Y = window.Vue.pushScopeId, Z = window.Vue.popScopeId, c = (h) => (Y("data-v-f72b23e6"), h = h(), Z(), h), ee = { class: "panelBox" }, te = { style: { display: "flex" } }, le = { class: "loginBoxRight" }, ae = { class: "title" }, oe = /* @__PURE__ */ c(() => /* @__PURE__ */ a("div", { class: "welcome" }, "工欲善其事，必先利其器。 -- 论语", -1)), se = /* @__PURE__ */ c(() => /* @__PURE__ */ a("div", { style: { "margin-left": "auto" } }, [
+}, _ = window.Vue.resolveComponent, e = window.Vue.createVNode, n = window.Vue.toDisplayString, a = window.Vue.createElementVNode, t = window.Vue.withCtx, l = window.Vue.unref, o = window.Vue.createTextVNode, Q = window.Vue.resolveDirective, v = window.Vue.openBlock, P = window.Vue.createElementBlock, I = window.Vue.withDirectives, A = window.Vue.createBlock, Y = window.Vue.pushScopeId, Z = window.Vue.popScopeId, c = (h) => (Y("data-v-03afe36f"), h = h(), Z(), h), ee = { class: "panelBox" }, te = { style: { display: "flex" } }, le = { class: "loginBoxRight" }, ae = { class: "title" }, oe = /* @__PURE__ */ c(() => /* @__PURE__ */ a("div", { class: "welcome" }, "工欲善其事，必先利其器。 -- 论语", -1)), se = /* @__PURE__ */ c(() => /* @__PURE__ */ a("div", { style: { "margin-left": "auto" } }, [
   /* @__PURE__ */ a("iframe", {
     scrolling: "no",
     src: "https://widget.tianqiapi.com/?style=tg&skin=pitaya",
@@ -21,7 +21,7 @@ const X = (h, p) => {
     height: "60",
     allowtransparency: "true"
   })
-], -1)), ne = { class: "panelBox" }, ie = { class: "panelBox" }, ce = { class: "panelBox" }, de = { class: "panelBox" }, ue = { class: "panelBox" }, re = /* @__PURE__ */ c(() => /* @__PURE__ */ a("div", { class: "panelTitle" }, "服务器CPU使用率", -1)), _e = { style: { "text-align": "center", "margin-top": "10px" } }, pe = { class: "panelBox" }, fe = /* @__PURE__ */ c(() => /* @__PURE__ */ a("div", { class: "panelTitle" }, "服务器内存使用率", -1)), me = { style: { "text-align": "center", "margin-top": "10px" } }, he = { class: "panelBox" }, ve = /* @__PURE__ */ c(() => /* @__PURE__ */ a("div", { class: "panelTitle" }, "服务器JVM使用率", -1)), ge = { style: { "text-align": "center", "margin-top": "10px" } }, be = { class: "panelBox" }, we = /* @__PURE__ */ c(() => /* @__PURE__ */ a("div", { class: "panelTitle" }, "服务器信息", -1)), ye = { class: "panelBox" }, xe = /* @__PURE__ */ c(() => /* @__PURE__ */ a("div", { class: "panelTitle" }, "快捷功能", -1)), Ve = /* @__PURE__ */ c(() => /* @__PURE__ */ a("div", { class: "shortcuts-item-name" }, "菜单管理", -1)), ke = /* @__PURE__ */ c(() => /* @__PURE__ */ a("div", { class: "shortcuts-item-name" }, "用户管理", -1)), Be = /* @__PURE__ */ c(() => /* @__PURE__ */ a("div", { class: "shortcuts-item-name" }, "角色管理", -1)), Ce = /* @__PURE__ */ c(() => /* @__PURE__ */ a("div", { class: "shortcuts-item-name" }, "系统设置", -1)), Ie = /* @__PURE__ */ c(() => /* @__PURE__ */ a("div", { class: "shortcuts-item-name" }, "字典管理", -1)), Se = /* @__PURE__ */ c(() => /* @__PURE__ */ a("div", { class: "shortcuts-item-name" }, "插件管理", -1)), Te = { class: "panelBox" }, Pe = /* @__PURE__ */ c(() => /* @__PURE__ */ a("div", { class: "panelTitle" }, "相关文档", -1)), Ne = { class: "link-ul" }, Ee = { class: "panelBox" }, De = /* @__PURE__ */ c(() => /* @__PURE__ */ a("div", { class: "panelTitle" }, "附件统计", -1)), He = /* @__PURE__ */ c(() => /* @__PURE__ */ a("div", {
+], -1)), ne = { class: "panelBox" }, ie = { class: "panelBox" }, ce = { class: "panelBox" }, de = { class: "panelBox" }, ue = { class: "panelBox" }, re = /* @__PURE__ */ c(() => /* @__PURE__ */ a("div", { class: "panelTitle" }, "服务器CPU使用率", -1)), _e = { style: { "text-align": "center", "margin-top": "10px" } }, pe = { class: "panelBox" }, fe = /* @__PURE__ */ c(() => /* @__PURE__ */ a("div", { class: "panelTitle" }, "服务器内存使用率", -1)), me = { style: { "text-align": "center", "margin-top": "10px" } }, he = { class: "panelBox" }, ve = /* @__PURE__ */ c(() => /* @__PURE__ */ a("div", { class: "panelTitle" }, "服务器JVM使用率", -1)), ge = { style: { "text-align": "center", "margin-top": "10px" } }, we = { class: "panelBox" }, be = /* @__PURE__ */ c(() => /* @__PURE__ */ a("div", { class: "panelTitle" }, "服务器信息", -1)), ye = { class: "panelBox" }, xe = /* @__PURE__ */ c(() => /* @__PURE__ */ a("div", { class: "panelTitle" }, "快捷功能", -1)), Ve = /* @__PURE__ */ c(() => /* @__PURE__ */ a("div", { class: "shortcuts-item-name" }, "菜单管理", -1)), ke = /* @__PURE__ */ c(() => /* @__PURE__ */ a("div", { class: "shortcuts-item-name" }, "用户管理", -1)), Be = /* @__PURE__ */ c(() => /* @__PURE__ */ a("div", { class: "shortcuts-item-name" }, "角色管理", -1)), Ce = /* @__PURE__ */ c(() => /* @__PURE__ */ a("div", { class: "shortcuts-item-name" }, "系统设置", -1)), Ie = /* @__PURE__ */ c(() => /* @__PURE__ */ a("div", { class: "shortcuts-item-name" }, "字典管理", -1)), Se = /* @__PURE__ */ c(() => /* @__PURE__ */ a("div", { class: "shortcuts-item-name" }, "插件管理", -1)), Te = { class: "panelBox" }, Pe = /* @__PURE__ */ c(() => /* @__PURE__ */ a("div", { class: "panelTitle" }, "相关文档", -1)), Ne = { class: "link-ul" }, Ee = { class: "panelBox" }, De = /* @__PURE__ */ c(() => /* @__PURE__ */ a("div", { class: "panelTitle" }, "附件统计", -1)), He = /* @__PURE__ */ c(() => /* @__PURE__ */ a("div", {
   class: "echartsBox",
   id: "attachEcharts",
   style: { height: "130px" }
@@ -38,7 +38,7 @@ const X = (h, p) => {
       sys: 0,
       total: 0,
       used: 0
-    }), b = m({}), w = m({}), N = m({});
+    }), w = m({}), b = m({}), N = m({});
     const $ = m(window.pinia.state._value.userStore.userInfo), M = [
       { color: getComputedStyle(document.documentElement).getPropertyValue("--el-color-primary").trim(), percentage: 70 },
       { color: "#e6a23c", percentage: 90 },
@@ -46,7 +46,7 @@ const X = (h, p) => {
     ];
     function U() {
       g.value = !0, R().then((d) => {
-        d.code === 200 ? (f.value = d.data.cpuInfo, b.value = d.data.jvmInfo, w.value = d.data.memInfo, N.value = d.data.sysInfo) : J.error(d.msg), g.value = !1;
+        d.code === 200 ? (f.value = d.data.cpuInfo, w.value = d.data.jvmInfo, b.value = d.data.memInfo, N.value = d.data.sysInfo) : J.error(d.msg), g.value = !1;
       });
     }
     function F() {
@@ -85,7 +85,10 @@ const X = (h, p) => {
       F();
     }), U(), (d, u) => {
       const O = _("el-avatar"), s = _("el-col"), E = _("el-icon"), D = _("el-statistic"), G = _("el-progress"), i = _("el-descriptions-item"), H = _("el-descriptions"), S = _("el-row"), x = _("el-button"), V = _("el-link"), k = Q("loading");
-      return v(), A(S, { gutter: 15 }, {
+      return v(), A(S, {
+        gutter: 15,
+        style: { height: "100%" }
+      }, {
         default: t(() => [
           e(s, { span: 24 }, {
             default: t(() => [
@@ -261,7 +264,7 @@ const X = (h, p) => {
                                 a("div", me, [
                                   e(G, {
                                     type: "dashboard",
-                                    percentage: l(w).usage,
+                                    percentage: l(b).usage,
                                     color: M
                                   }, null, 8, ["percentage"]),
                                   e(H, {
@@ -274,7 +277,7 @@ const X = (h, p) => {
                                         "label-class-name": "my-label"
                                       }, {
                                         default: t(() => [
-                                          o(n(l(w).total) + "G", 1)
+                                          o(n(l(b).total) + "G", 1)
                                         ]),
                                         _: 1
                                       }),
@@ -283,7 +286,7 @@ const X = (h, p) => {
                                         "label-class-name": "my-label"
                                       }, {
                                         default: t(() => [
-                                          o(n(l(w).used) + "G", 1)
+                                          o(n(l(b).used) + "G", 1)
                                         ]),
                                         _: 1
                                       })
@@ -302,7 +305,7 @@ const X = (h, p) => {
                                 a("div", ge, [
                                   e(G, {
                                     type: "dashboard",
-                                    percentage: l(b).usage,
+                                    percentage: l(w).usage,
                                     color: M
                                   }, null, 8, ["percentage"]),
                                   e(H, {
@@ -315,7 +318,7 @@ const X = (h, p) => {
                                         "label-class-name": "my-label"
                                       }, {
                                         default: t(() => [
-                                          o(n(l(b).total) + "M", 1)
+                                          o(n(l(w).total) + "M", 1)
                                         ]),
                                         _: 1
                                       }),
@@ -324,7 +327,7 @@ const X = (h, p) => {
                                         "label-class-name": "my-label"
                                       }, {
                                         default: t(() => [
-                                          o(n(l(b).used) + "M", 1)
+                                          o(n(l(w).used) + "M", 1)
                                         ]),
                                         _: 1
                                       })
@@ -338,8 +341,8 @@ const X = (h, p) => {
                           }),
                           e(s, { span: 24 }, {
                             default: t(() => [
-                              a("div", be, [
-                                we,
+                              a("div", we, [
+                                be,
                                 e(H, {
                                   column: 2,
                                   border: "",
@@ -384,25 +387,25 @@ const X = (h, p) => {
                                     }),
                                     e(i, { label: "总内存" }, {
                                       default: t(() => [
-                                        o(n(l(w).total) + "G", 1)
+                                        o(n(l(b).total) + "G", 1)
                                       ]),
                                       _: 1
                                     }),
                                     e(i, { label: "可用内存" }, {
                                       default: t(() => [
-                                        o(n(l(w).free) + "G", 1)
+                                        o(n(l(b).free) + "G", 1)
                                       ]),
                                       _: 1
                                     }),
                                     e(i, { label: "JDK版本" }, {
                                       default: t(() => [
-                                        o(n(l(b).version), 1)
+                                        o(n(l(w).version), 1)
                                       ]),
                                       _: 1
                                     }),
                                     e(i, { label: "JDK路径" }, {
                                       default: t(() => [
-                                        o(n(l(b).home), 1)
+                                        o(n(l(w).home), 1)
                                       ]),
                                       _: 1
                                     })
@@ -653,7 +656,7 @@ const X = (h, p) => {
       });
     };
   }
-}, Oe = /* @__PURE__ */ X($e, [["__scopeId", "data-v-f72b23e6"]]);
+}, Oe = /* @__PURE__ */ X($e, [["__scopeId", "data-v-03afe36f"]]);
 export {
   Oe as default
 };

@@ -1,4 +1,4 @@
-import { s as we, r as Y, d as ve, p as _e, e as he, f as Ve, a as be, b as xe } from "./lib/@element-plus.js";
+import { s as ge, r as Y, d as ve, p as _e, e as he, f as Ve, a as be, b as xe } from "./lib/@element-plus.js";
 function ye(a) {
   return axios.post("/api/auth/user/page", a);
 }
@@ -100,7 +100,7 @@ function Te(a, s) {
 function Be(a) {
   return !window.pinia || !window.pinia.state._value.dictList ? (console.error("pinia or pinia dictList not found"), null) : window.pinia.state._value.dictList.dictList.filter((u) => u.parentDictType === a);
 }
-const g = window.Vue.resolveComponent, l = window.Vue.createVNode, o = window.Vue.withCtx, r = window.Vue.unref, w = window.Vue.createTextVNode, G = window.Vue.resolveDirective, m = window.Vue.openBlock, h = window.Vue.createBlock, k = window.Vue.withDirectives, C = window.Vue.createElementVNode, P = window.Vue.toDisplayString, ze = window.Vue.withModifiers, J = window.Vue.renderList, K = window.Vue.Fragment, M = window.Vue.createElementBlock, A = window.Vue.isRef, Pe = window.Vue.createCommentVNode, Me = { class: "page" }, $e = { class: "search-box" }, Ie = { class: "right-tool" }, qe = { class: "table-box" }, Xe = { class: "dialog-footer" }, je = { class: "dialog-footer" }, v = window.ElementPlus.ElMessage, $ = window.ElementPlus.ElMessageBox, Q = window.Vue.h, Oe = window.Vue.reactive, _ = window.Vue.ref, Ze = {
+const w = window.Vue.resolveComponent, l = window.Vue.createVNode, o = window.Vue.withCtx, r = window.Vue.unref, g = window.Vue.createTextVNode, G = window.Vue.resolveDirective, m = window.Vue.openBlock, h = window.Vue.createBlock, k = window.Vue.withDirectives, C = window.Vue.createElementVNode, P = window.Vue.toDisplayString, ze = window.Vue.withModifiers, J = window.Vue.renderList, K = window.Vue.Fragment, M = window.Vue.createElementBlock, A = window.Vue.isRef, Pe = window.Vue.createCommentVNode, Me = { class: "page" }, $e = { class: "search-box" }, Ie = { class: "right-tool" }, qe = { class: "table-box" }, Xe = { class: "dialog-footer" }, je = { class: "dialog-footer" }, v = window.ElementPlus.ElMessage, $ = window.ElementPlus.ElMessageBox, Q = window.Vue.h, Oe = window.Vue.reactive, _ = window.Vue.ref, Ze = {
   __name: "UserView",
   setup(a) {
     const s = _({
@@ -276,7 +276,7 @@ const g = window.Vue.resolveComponent, l = window.Vue.createVNode, o = window.Vu
       });
     }
     return V(), (n, t) => {
-      const d = g("el-input"), p = g("el-form-item"), f = g("el-button"), z = g("el-form"), de = g("el-col"), ce = g("el-row"), b = g("el-table-column"), pe = g("el-switch"), me = g("el-table"), fe = g("el-pagination"), X = g("el-option"), j = g("el-select"), O = g("el-dialog"), U = G("hasPermission"), ge = G("loading");
+      const d = w("el-input"), p = w("el-form-item"), f = w("el-button"), z = w("el-form"), de = w("el-col"), ce = w("el-row"), b = w("el-table-column"), pe = w("el-switch"), me = w("el-table"), fe = w("el-pagination"), X = w("el-option"), j = w("el-select"), O = w("el-dialog"), U = G("hasPermission"), we = G("loading");
       return m(), M("div", Me, [
         C("div", $e, [
           l(z, {
@@ -314,10 +314,10 @@ const g = window.Vue.resolveComponent, l = window.Vue.createVNode, o = window.Vu
                   k((m(), h(f, {
                     type: "primary",
                     onClick: V,
-                    icon: r(we)
+                    icon: r(ge)
                   }, {
                     default: o(() => [
-                      w("查询")
+                      g("查询")
                     ]),
                     _: 1
                   }, 8, ["icon"])), [
@@ -328,7 +328,7 @@ const g = window.Vue.resolveComponent, l = window.Vue.createVNode, o = window.Vu
                     onClick: ie
                   }, {
                     default: o(() => [
-                      w("重置")
+                      g("重置")
                     ]),
                     _: 1
                   }, 8, ["icon"]),
@@ -337,7 +337,7 @@ const g = window.Vue.resolveComponent, l = window.Vue.createVNode, o = window.Vu
                     onClick: re
                   }, {
                     default: o(() => [
-                      w("导出")
+                      g("导出")
                     ]),
                     _: 1
                   }, 8, ["icon"])), [
@@ -364,7 +364,7 @@ const g = window.Vue.resolveComponent, l = window.Vue.createVNode, o = window.Vu
                   onClick: oe
                 }, {
                   default: o(() => [
-                    w("新增")
+                    g("新增")
                   ]),
                   _: 1
                 }, 8, ["icon"])), [
@@ -408,7 +408,7 @@ const g = window.Vue.resolveComponent, l = window.Vue.createVNode, o = window.Vu
                 default: o((e) => {
                   var y;
                   return [
-                    w(P((y = r(Te)(r(H).SEX, e.row.sex)) == null ? void 0 : y.dictLabel), 1)
+                    g(P((y = r(Te)(r(H).SEX, e.row.sex)) == null ? void 0 : y.dictLabel), 1)
                   ];
                 }),
                 _: 1
@@ -416,12 +416,14 @@ const g = window.Vue.resolveComponent, l = window.Vue.createVNode, o = window.Vu
               l(b, {
                 prop: "email",
                 label: "邮箱",
-                "min-width": "120"
+                "min-width": "120",
+                "show-overflow-tooltip": ""
               }),
               l(b, {
                 prop: "website",
                 label: "网站",
-                "min-width": "150"
+                "min-width": "150",
+                "show-overflow-tooltip": ""
               }),
               l(b, {
                 prop: "loginIp",
@@ -481,7 +483,7 @@ const g = window.Vue.resolveComponent, l = window.Vue.createVNode, o = window.Vu
                     onClick: (y) => ne(e.row)
                   }, {
                     default: o(() => [
-                      w("修改")
+                      g("修改")
                     ]),
                     _: 2
                   }, 1032, ["icon", "onClick"])), [
@@ -495,7 +497,7 @@ const g = window.Vue.resolveComponent, l = window.Vue.createVNode, o = window.Vu
                     onClick: (y) => se(e.row)
                   }, {
                     default: o(() => [
-                      w("分配角色")
+                      g("分配角色")
                     ]),
                     _: 2
                   }, 1032, ["icon", "onClick"])), [
@@ -509,7 +511,7 @@ const g = window.Vue.resolveComponent, l = window.Vue.createVNode, o = window.Vu
                     onClick: (y) => ee(e.row)
                   }, {
                     default: o(() => [
-                      w("重置密码")
+                      g("重置密码")
                     ]),
                     _: 2
                   }, 1032, ["icon", "onClick"])), [
@@ -523,7 +525,7 @@ const g = window.Vue.resolveComponent, l = window.Vue.createVNode, o = window.Vu
                     onClick: (y) => ue(e.row)
                   }, {
                     default: o(() => [
-                      w("删除")
+                      g("删除")
                     ]),
                     _: 2
                   }, 1032, ["icon", "onClick"])), [
@@ -535,7 +537,7 @@ const g = window.Vue.resolveComponent, l = window.Vue.createVNode, o = window.Vu
             ]),
             _: 1
           }, 8, ["data"])), [
-            [ge, r(S)]
+            [we, r(S)]
           ]),
           l(fe, {
             "current-page": s.value.pageNo,
@@ -564,7 +566,7 @@ const g = window.Vue.resolveComponent, l = window.Vue.createVNode, o = window.Vu
                 onClick: le
               }, {
                 default: o(() => [
-                  w("确 定")
+                  g("确 定")
                 ]),
                 _: 1
               }),
@@ -574,7 +576,7 @@ const g = window.Vue.resolveComponent, l = window.Vue.createVNode, o = window.Vu
                 })
               }, {
                 default: o(() => [
-                  w("取 消")
+                  g("取 消")
                 ]),
                 _: 1
               })
@@ -662,7 +664,7 @@ const g = window.Vue.resolveComponent, l = window.Vue.createVNode, o = window.Vu
                 onClick: ae
               }, {
                 default: o(() => [
-                  w("确 定")
+                  g("确 定")
                 ]),
                 _: 1
               }),
@@ -672,7 +674,7 @@ const g = window.Vue.resolveComponent, l = window.Vue.createVNode, o = window.Vu
                 })
               }, {
                 default: o(() => [
-                  w("取 消")
+                  g("取 消")
                 ]),
                 _: 1
               })

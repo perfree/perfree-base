@@ -4,11 +4,11 @@
 
     <select id="getTypeCount" resultType="com.perfree.controller.auth.adminHome.vo.HomeStatisticRespVO">
         SELECT
-            SUM(CASE WHEN type = 'img' THEN num ELSE 0 END) AS attachImageTotal,
-            SUM(CASE WHEN type = 'video' THEN num ELSE 0 END) AS attachVideoTotal,
-            SUM(CASE WHEN type = 'audio' THEN num ELSE 0 END) AS attachAudioTotal,
-            SUM(CASE WHEN type = 'other' THEN num ELSE 0 END) AS attachOtherTotal,
-            SUM(num) AS attachTotal
+            IFNULL(SUM(CASE WHEN type = 'img' THEN num ELSE 0 END),0) AS attachImageTotal,
+            IFNULL(SUM(CASE WHEN type = 'video' THEN num ELSE 0 END),0) AS attachVideoTotal,
+            IFNULL(SUM(CASE WHEN type = 'audio' THEN num ELSE 0 END),0) AS attachAudioTotal,
+            IFNULL(SUM(CASE WHEN type = 'other' THEN num ELSE 0 END),0) AS attachOtherTotal,
+            IFNULL(SUM(num),0) AS attachTotal
         FROM (
                  SELECT count(1) as num , type FROM p_attach  GROUP BY type
              ) as subquery

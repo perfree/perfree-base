@@ -35,8 +35,8 @@
             {{getDictByParentDictTypeAndValue(DICT_TYPE.SEX, scope.row.sex)?.dictLabel}}
           </template>
         </el-table-column>
-        <el-table-column prop="email" label="邮箱" min-width="120" />
-        <el-table-column prop="website" label="网站" min-width="150" />
+        <el-table-column prop="email" label="邮箱" min-width="120"  show-overflow-tooltip/>
+        <el-table-column prop="website" label="网站" min-width="150"  show-overflow-tooltip/>
         <el-table-column prop="loginIp" label="最后登录ip" min-width="120" />
         <el-table-column prop="loginDate" label="最后登录时间" min-width="120" >
           <template v-slot="scope">
