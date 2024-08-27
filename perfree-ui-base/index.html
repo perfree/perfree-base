@@ -4,18 +4,18 @@
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>加载中...</title>
-    <style media="screen" type="text/css">#app-cockpit-loading{width:120px;height:40px;position:absolute;font-size:50px;line-height:50px;top:50%;left:50%;transform:translateY(-50%) translateX(-50%);}#app-cockpit-loading span{display:inline-block;width:8px;height:100%;border-radius:4px;background:#1890ff;-webkit-animation:load 1s ease infinite;}@-webkit-keyframes load{0%,100%{height:40px;background:#1890ff;}50%{height:70px;margin:-15px 0;background:lightblue;}}#app-cockpit-loading span:nth-child(2){-webkit-animation-delay:0.2s;}#app-cockpit-loading span:nth-child(3){-webkit-animation-delay:0.4s;}#app-cockpit-loading span:nth-child(4){-webkit-animation-delay:0.6s;}#app-cockpit-loading span:nth-child(5){-webkit-animation-delay:0.8s;}</style>
+    <style media="screen" type="text/css">#loading-box{z-index: 999999;width:120px;height:40px;position:absolute;font-size:50px;line-height:50px;top:50%;left:50%;transform:translateY(-50%) translateX(-50%);}#loading-box span{display:inline-block;width:8px;height:100%;border-radius:4px;background:#1890ff;-webkit-animation:load 1s ease infinite;}@-webkit-keyframes load{0%,100%{height:40px;background:#1890ff;}50%{height:70px;margin:-15px 0;background:lightblue;}}#loading-box span:nth-child(2){-webkit-animation-delay:0.2s;}#loading-box span:nth-child(3){-webkit-animation-delay:0.4s;}#loading-box span:nth-child(4){-webkit-animation-delay:0.6s;}#loading-box span:nth-child(5){-webkit-animation-delay:0.8s;}</style>
 
 </head>
 <body>
+<div id="loading-box">
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+</div>
 <div id="app">
-    <div id="app-cockpit-loading">
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-    </div>
 </div>
 <script type="module" src="/src/core/index.js"></script>
 </body>

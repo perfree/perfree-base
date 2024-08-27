@@ -6,7 +6,7 @@
 import {useAppStore} from '@/core/stores/appStore'
 import {themeSettings} from '@/core/theme'
 import {useCssVar} from '@vueuse/core'
-import {ref} from "vue";
+import {onMounted, ref} from "vue";
 import {getOptionByKey} from "@/core/utils/optionUtils.js";
 
 const appStore = useAppStore()
@@ -19,6 +19,9 @@ const primaryColor8 = useCssVar('--el-color-primary-light-8', el)
 const primaryColor9 = useCssVar('--el-color-primary-light-9', el)
 const primaryColor2 = useCssVar('--el-color-primary-dark-2', el)
 
+onMounted(() => {
+  document.getElementById('loading-box').remove();
+})
 if (appStore.headerUnified === null) {
   appStore.setHeaderUnified(themeSettings.headerUnified)
   appStore.setTheme(themeSettings.theme)
