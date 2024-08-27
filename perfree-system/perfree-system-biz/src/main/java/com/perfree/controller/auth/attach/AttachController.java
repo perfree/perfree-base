@@ -77,8 +77,7 @@ public class AttachController {
     @GetMapping("/getAllAttachGroup")
     @Operation(summary = "获取所有附件分组")
     public CommonResult<List<AttachGroupRespVO>> getAllAttachGroup() {
-        List<Attach> attachList = attachService.getAllAttachGroup();
-        return success(AttachConvert.INSTANCE.convertGroupRespVO(attachList));
+        return success(attachService.getAllAttachGroup());
     }
 
     @PostMapping("/uploadAttachByUrl")

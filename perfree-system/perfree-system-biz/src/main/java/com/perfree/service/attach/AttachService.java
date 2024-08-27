@@ -3,6 +3,7 @@ package com.perfree.service.attach;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.perfree.commons.common.PageResult;
 import com.perfree.controller.auth.adminHome.vo.HomeStatisticRespVO;
+import com.perfree.controller.auth.attach.vo.AttachGroupRespVO;
 import com.perfree.controller.auth.attach.vo.AttachPageReqVO;
 import com.perfree.controller.auth.attach.vo.AttachUpdateVO;
 import com.perfree.controller.auth.attach.vo.AttachUploadVO;
@@ -56,7 +57,7 @@ public interface AttachService extends IService<Attach> {
      * 获取所有附件分组
      * @return List<AttachGroupRespVO>
      */
-    List<Attach> getAllAttachGroup();
+    List<AttachGroupRespVO> getAllAttachGroup();
 
     /**
      * 附件修改

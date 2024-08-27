@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.perfree.commons.common.PageResult;
 import com.perfree.commons.mapper.BaseMapperX;
 import com.perfree.controller.auth.adminHome.vo.HomeStatisticRespVO;
+import com.perfree.controller.auth.attach.vo.AttachGroupRespVO;
 import com.perfree.controller.auth.attach.vo.AttachPageReqVO;
 import com.perfree.model.Attach;
 import org.apache.commons.lang3.StringUtils;
@@ -39,11 +40,7 @@ public interface AttachMapper extends BaseMapperX<Attach> {
         );
     }
 
-    default List<Attach> getAllAttachGroup(){
-        return selectList(new LambdaQueryWrapper<Attach>()
-                .groupBy(Attach::getAttachGroup)
-                .orderByDesc(Attach::getCreateTime));
-    }
+    List<AttachGroupRespVO> getAllAttachGroup();
 
     HomeStatisticRespVO getTypeCount();
 

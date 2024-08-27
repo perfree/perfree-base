@@ -7,6 +7,7 @@ import com.perfree.commons.common.PageResult;
 import com.perfree.commons.constant.SystemConstants;
 import com.perfree.commons.exception.ServiceException;
 import com.perfree.controller.auth.adminHome.vo.HomeStatisticRespVO;
+import com.perfree.controller.auth.attach.vo.AttachGroupRespVO;
 import com.perfree.controller.auth.attach.vo.AttachPageReqVO;
 import com.perfree.controller.auth.attach.vo.AttachUpdateVO;
 import com.perfree.controller.auth.attach.vo.AttachUploadVO;
@@ -101,7 +102,7 @@ public class AttachServiceImpl extends ServiceImpl<AttachMapper, Attach> impleme
     }
 
     @Override
-    public List<Attach> getAllAttachGroup() {
+    public List<AttachGroupRespVO> getAllAttachGroup() {
         return attachMapper.getAllAttachGroup();
     }
 

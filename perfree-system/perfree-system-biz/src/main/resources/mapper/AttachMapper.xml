@@ -13,4 +13,7 @@
                  SELECT count(1) as num , type FROM p_attach  GROUP BY type
              ) as subquery
     </select>
+    <select id="getAllAttachGroup" resultType="com.perfree.controller.auth.attach.vo.AttachGroupRespVO">
+        select attachGroup from  p_attach GROUP BY attachGroup
+    </select>
 </mapper>
