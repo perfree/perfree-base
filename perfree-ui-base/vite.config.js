@@ -84,16 +84,6 @@ export default defineConfig(({mode })=> {
           changeOrigin: true,
           rewrite: path => path.replace(/^\/plugin-dev/, '')
         },
-        "/attach": {
-          target: 'http://127.0.0.1:8080/attach',
-          changeOrigin: true,
-          rewrite: path => path.replace(/^\/attach/, '')
-        },
-        "/static": {
-          target: 'http://127.0.0.1:8080/static',
-          changeOrigin: true,
-          rewrite: path => path.replace(/^\/static/, '')
-        },
       }
     },
     base: "/",
@@ -103,7 +93,7 @@ export default defineConfig(({mode })=> {
       }
     },
     build: {
-      outDir: "../perfree-server/src/main/resources/static/admin",
+      outDir: "./dist",
       modulePreload: true,
       emptyOutDir: true,
       rollupOptions: {

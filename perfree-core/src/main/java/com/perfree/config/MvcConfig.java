@@ -41,7 +41,7 @@ public class MvcConfig implements WebMvcConfigurer {
                 .addResourceLocations("file:resources/upload/")
                 .setCachePeriod(3600)
                 .setCacheControl(CacheControl.maxAge(Duration.ofMinutes(30)));
-        registry.addResourceHandler("/static/**").addResourceLocations(
+        registry.addResourceHandler("/api/static/**").addResourceLocations(
                 "classpath:/static/",
                 "file:./resources/static/"
         );
@@ -57,7 +57,7 @@ public class MvcConfig implements WebMvcConfigurer {
 
         registry.addResourceHandler("doc.html").addResourceLocations("classpath:/META-INF/resources/");
         registry.addResourceHandler("/webjars/**").addResourceLocations("classpath:/META-INF/resources/webjars/");
-        String pathPattern = "/plugin-static/**";
+        String pathPattern = "/api/plugin-static/**";
         ResourceHandlerRegistration resourceHandlerRegistration = registry.addResourceHandler(pathPattern);
         resourceHandlerRegistration.resourceChain(false).addResolver(new PluginResourceResolver());
         WebMvcConfigurer.super.addResourceHandlers(registry);

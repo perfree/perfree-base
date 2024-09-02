@@ -22,7 +22,7 @@ import java.util.Date;
 @Service
 public class FileLocalHandleImpl extends BaseFileHandle {
 
-    private final String DEFAULT_ATTACH_URL_PREFIX = "/attach/";
+    private final String DEFAULT_ATTACH_URL_PREFIX = "/api/attach/";
 
 
     @Override
