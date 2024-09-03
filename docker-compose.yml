@@ -1,0 +1,53 @@
+version: '1.0.0'
+services:
+  # MySQL容器配置
+  mysql-container:
+    image: registry.cn-hangzhou.aliyuncs.com/perfree/perfree_mysql:8.0
+    restart: always
+    environment:
+      # 设置MySQL的root用户密码
+      MYSQL_ROOT_PASSWORD: 123456
+      # 设置时区为亚洲/上海
+      TZ: Asia/Shanghai
+      # 创建名为reggie的数据库
+      MYSQL_DATABASE: perfree_base
+      # 设置MySQL字符集为utf8mb4
+      MYSQL_CHARSET: utf8mb4
+      # 设置MySQL排序规则为utf8mb4_unicode_ci
+      MYSQL_COLLATION: utf8mb4_unicode_ci
+    volumes:
+      - ./perfree_base/mysql/data:/var/lib/mysql
+      - ./sql/perfree_base.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+  # perfree-base容器配置
+  perfree-base-container:
+    image: registry.cn-hangzhou.aliyuncs.com/perfree/perfree_base:v1.0.9-demo
+    restart: always
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-container:3306/perfree_base?useSSL=false&allowPublicKeyRetrieval=true&useUnicode=true&characterEncoding=UTF-8&nullCatalogMeansCurrent=true
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: 123456
+    depends_on:
+      mysql-container:
+        condition: service_healthy  # 等待MySQL容器健康检查通过
+    volumes:
+      - ./perfree_base/plugins:/perfree-server/resources/plugins
+      - ./perfree_base/upload:/perfree-server/resources/upload
+
+  # perfree-base-ui容器配置
+  perfree-base-ui-container:
+    image: registry.cn-hangzhou.aliyuncs.com/perfree/perfree_base_ui:v1.0.9-demo
+    restart: always
+    ports:
+      # 将主机的80端口映射到容器的80端口
+      - 8066:80
+    environment:
+      SERVER_ADDR_IP: perfree-base-container
+      SERVER_ADDR_PORT: 8080
+    depends_on:
+      - perfree-base-container
