@@ -26,6 +26,7 @@ import {hasPermission} from "@/core/directive/permission/hasPermission.js";
 import download from "@/core/utils/download.js";
 import {getOptionByNoAuth} from "@/core/api/system.js";
 import {useOptionStore} from "@/core/stores/optionStore.js";
+import {AttachSelectInputRule} from "@/core/components/attach/AttachSelectInput.js";
 
 const app = createApp(App);
 
@@ -58,6 +59,7 @@ app.use(VueDOMPurifyHTML)
 // form-create
 FcDesigner.component('AttachSelectInput', AttachSelectInput);
 formCreate.use(install)
+formCreate.component('AttachSelectInput', AttachSelectInput);
 formCreate.fetch = (options) => {
     if (!options.headers) {
         options.headers = [];

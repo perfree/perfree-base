@@ -1,6 +1,6 @@
 <template>
   <div class="page" v-loading="loading">
-    <form-create v-model="formData" v-model:api="fApi" :rule="rule" :option="option"></form-create>
+    <form-create v-model="formData" v-model:api="fApi" :rule="rule" :option="option" ref="formCreateRef"></form-create>
     <el-empty description="当前主题无设置项" v-if="notSetting" />
   </div>
 </template>
@@ -8,10 +8,12 @@
 
 import {extraGetByKeyApi} from "../api/extra.js";
 import {ElMessage} from "element-plus";
-import {ref} from "vue";
+import {onMounted, ref} from "vue";
 import {getOptionByIdentificationApi, saveOptionListApi} from "../api/option.js";
 import formCreate from "@form-create/element-ui";
+import {AttachSelectInputRule} from "@/core/components/attach/AttachSelectInput.js";
 
+const formCreateRef = ref();
 const fApi = ref({});
 const formData = ref({});
 const option = ref({})
@@ -96,6 +98,11 @@ function submitSetting(formData) {
     loading.value = false;
   })
 }
+
+/** 初始化 **/
+onMounted(async () => {
+  formCreateRef.value.addComponent(AttachSelectInputRule)
+})
 
 initSettingFrom();
 </script>
