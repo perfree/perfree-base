@@ -57,9 +57,8 @@ app.use(VueDOMPurifyHTML)
 
 
 // form-create
-FcDesigner.component('AttachSelectInput', AttachSelectInput);
 formCreate.use(install)
-formCreate.component('AttachSelectInput', AttachSelectInput);
+formCreate.register(AttachSelectInputRule);
 formCreate.fetch = (options) => {
     if (!options.headers) {
         options.headers = [];
@@ -76,6 +75,8 @@ formCreate.fetch = (options) => {
         options.onError(e);
     })
 }
+
+app.component('AttachSelectInput', AttachSelectInput);
 app.use(formCreate)
 app.use(FcDesigner)
 
