@@ -1,4 +1,4 @@
-FROM perfree/perfree-jre:21-jre
+FROM registry.cn-hangzhou.aliyuncs.com/perfree/perfree-jre:21-jre
 MAINTAINER perfree <perfree@126.com>
 
 ADD target/perfree-server.zip perfree-server.zip
