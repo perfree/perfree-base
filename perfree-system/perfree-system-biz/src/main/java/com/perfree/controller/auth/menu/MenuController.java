@@ -6,6 +6,7 @@ import com.perfree.controller.auth.menu.vo.MenuAddOrUpdateReqVO;
 import com.perfree.controller.auth.menu.vo.MenuListReqVO;
 import com.perfree.controller.auth.menu.vo.MenuRespVO;
 import com.perfree.convert.menu.MenuConvert;
+import com.perfree.demoModel.DemoMode;
 import com.perfree.model.Menu;
 import com.perfree.service.menu.MenuService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -57,6 +58,7 @@ public class MenuController {
 
     @PostMapping("/add")
     @Operation(summary = "添加菜单")
+    @DemoMode
     @PreAuthorize("@ss.hasPermission('admin:menu:create')")
     public CommonResult<MenuRespVO> add(@RequestBody @Valid MenuAddOrUpdateReqVO menuAddOrUpdateReqVO) {
         Menu menu = menuService.addOrUpdate(menuAddOrUpdateReqVO);
@@ -65,6 +67,7 @@ public class MenuController {
 
     @PostMapping("/update")
     @Operation(summary = "更新菜单")
+    @DemoMode
     @PreAuthorize("@ss.hasPermission('admin:menu:update')")
     public CommonResult<MenuRespVO> update(@RequestBody @Valid MenuAddOrUpdateReqVO menuAddOrUpdateReqVO) {
         Menu menu = menuService.addOrUpdate(menuAddOrUpdateReqVO);
@@ -73,6 +76,7 @@ public class MenuController {
 
     @DeleteMapping("/del")
     @Operation(summary = "删除菜单")
+    @DemoMode
     @PreAuthorize("@ss.hasPermission('admin:menu:del')")
     public CommonResult<Boolean> del(@RequestParam(value = "id") String id) {
         return success(menuService.del(id));

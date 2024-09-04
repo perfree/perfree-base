@@ -5,6 +5,7 @@ import com.perfree.commons.common.CommonResult;
 import com.perfree.commons.common.PageResult;
 import com.perfree.controller.auth.attach.vo.*;
 import com.perfree.convert.attach.AttachConvert;
+import com.perfree.demoModel.DemoMode;
 import com.perfree.model.Attach;
 import com.perfree.service.attach.AttachService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -37,6 +38,7 @@ public class AttachController {
 
     @PostMapping("/upload")
     @Operation(summary = "附件上传")
+    @DemoMode
     @PreAuthorize("@ss.hasPermission('admin:attach:upload')")
     public CommonResult<AttachRespVO> upload(AttachUploadVO attachUploadVO) {
         Attach attach = attachService.create(attachUploadVO);
@@ -60,6 +62,7 @@ public class AttachController {
 
     @PutMapping("/update")
     @Operation(summary = "修改附件")
+    @DemoMode
     @PreAuthorize("@ss.hasPermission('admin:attach:update')")
     public CommonResult<Boolean> update(@RequestBody AttachUpdateVO attachUpdateVO) {
         return success(attachService.updateAttach(attachUpdateVO));
@@ -68,6 +71,7 @@ public class AttachController {
 
     @DeleteMapping("/del")
     @Operation(summary = "删除附件")
+    @DemoMode
     @PreAuthorize("@ss.hasPermission('admin:attach:delete')")
     public CommonResult<Boolean> del(@RequestParam(value = "id") Integer id) {
         return success(attachService.del(id));
@@ -82,6 +86,7 @@ public class AttachController {
 
     @PostMapping("/uploadAttachByUrl")
     @Operation(summary = "通过url下载并上传附件")
+    @DemoMode
     public CommonResult<AttachByUrlRespVO> uploadAttachByUrl(@Valid @RequestBody AttachUploadByUrlVO attachUploadByUrlVO) {
         Attach attach = attachService.uploadAttachByUrl(attachUploadByUrlVO.getUrl());
         AttachByUrlRespVO attachByUrlRespVO = AttachConvert.INSTANCE.convertByUrlRespVO(attach);

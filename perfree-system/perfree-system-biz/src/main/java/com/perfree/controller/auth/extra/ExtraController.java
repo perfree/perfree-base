@@ -8,6 +8,7 @@ import com.perfree.controller.auth.extra.vo.ExtraPageReqVO;
 import com.perfree.controller.auth.extra.vo.ExtraRespVO;
 import com.perfree.controller.auth.extra.vo.ExtraUpdateReqVO;
 import com.perfree.convert.extra.ExtraConvert;
+import com.perfree.demoModel.DemoMode;
 import com.perfree.model.Extra;
 import com.perfree.service.extra.ExtraService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -50,6 +51,7 @@ public class ExtraController {
 
     @PostMapping("/add")
     @Operation(summary = "添加附加数据")
+    @DemoMode
     @PreAuthorize("@ss.hasPermission('admin:extra:create')")
     public CommonResult<ExtraRespVO> add(@RequestBody @Valid ExtraAddReqVO extraAddReqVO) {
         return success(ExtraConvert.INSTANCE.convertRespVO(extraService.add(extraAddReqVO)));
@@ -57,6 +59,7 @@ public class ExtraController {
 
     @PostMapping("/update")
     @Operation(summary = "更新附加数据")
+    @DemoMode
     @PreAuthorize("@ss.hasPermission('admin:extra:update')")
     public CommonResult<ExtraRespVO> update(@RequestBody @Valid ExtraUpdateReqVO extraUpdateReqVO) {
         return success(ExtraConvert.INSTANCE.convertRespVO(extraService.updateExtra(extraUpdateReqVO)));
@@ -64,6 +67,7 @@ public class ExtraController {
 
     @DeleteMapping("/del")
     @Operation(summary = "删除附加数据")
+    @DemoMode
     @PreAuthorize("@ss.hasPermission('admin:extra:delete')")
     public CommonResult<Boolean> del(@RequestParam(value = "id") Integer id) {
         return success(extraService.del(id));

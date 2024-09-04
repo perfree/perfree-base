@@ -14,6 +14,7 @@ public enum ResultCodeEnum {
     SC_UNAUTHORIZED(401,"无效的会话或登录已过期"),
     AUTH_UNAUTHORIZED(401,"账号未登录"),
     AUTH_FORBIDDEN(403,"没有该操作权限"),
+    DEMO_MODEL(4002,"演示环境,不允许操作!"),
     DATASOURCE_NOT_INIT(40001,"数据库未初始化,请先进行安装配置");
 
     private final Integer code;

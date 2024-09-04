@@ -5,6 +5,7 @@ import com.perfree.commons.common.CommonResult;
 import com.perfree.commons.common.PageResult;
 import com.perfree.controller.auth.dict.vo.*;
 import com.perfree.convert.dict.DictConvert;
+import com.perfree.demoModel.DemoMode;
 import com.perfree.model.Dict;
 import com.perfree.service.dict.DictService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -41,6 +42,7 @@ public class DictController {
 
     @PostMapping("/add")
     @Operation(summary = "添加数据字典")
+    @DemoMode
     @PreAuthorize("@ss.hasPermission('admin:dict:create')")
     public CommonResult<DictRespVO> add(@RequestBody @Valid DictAddReqVO dictAddReqVO) {
         return success(DictConvert.INSTANCE.convertRespVO(dictService.add(dictAddReqVO)));
@@ -48,6 +50,7 @@ public class DictController {
 
     @PostMapping("/update")
     @Operation(summary = "更新数据字典")
+    @DemoMode
     @PreAuthorize("@ss.hasPermission('admin:dict:update')")
     public CommonResult<DictRespVO> update(@RequestBody @Valid DictUpdateReqVO dictUpdateReqVO) {
         return success(DictConvert.INSTANCE.convertRespVO(dictService.update(dictUpdateReqVO)));
@@ -60,6 +63,7 @@ public class DictController {
     }
 
     @DeleteMapping("/del")
+    @DemoMode
     @Operation(summary = "根据id删除数据字典")
     @PreAuthorize("@ss.hasPermission('admin:dict:delete')")
     public CommonResult<Boolean> del(@RequestParam(value = "id") Integer id) {

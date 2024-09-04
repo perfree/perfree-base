@@ -3,9 +3,11 @@ package com.perfree.exception;
 import com.perfree.commons.common.CommonResult;
 import com.perfree.commons.enums.ResultCodeEnum;
 import com.perfree.commons.exception.ServiceException;
+import com.perfree.demoModel.DemoModelException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageConversionException;
 import org.springframework.security.access.AccessDeniedException;
@@ -98,6 +100,12 @@ public class GlobalExceptionHandler{
     public CommonResult<?> handleServiceException(ServiceException exception) {
         LOGGER.error(exception.getMessage(),exception);
         return CommonResult.error(exception.getCode(), exception.getMessage());
+    }
+
+    @ExceptionHandler(DemoModelException.class)
+    public ResponseEntity<Object> handleDemoModelException(DemoModelException exception) {
+        LOGGER.error(exception.getMessage(),exception);
+        return new ResponseEntity<>(CommonResult.error(ResultCodeEnum.FAIL.getCode(), exception.getMessage()), HttpStatus.OK);
     }
 
     @ExceptionHandler(AccessDeniedException.class)

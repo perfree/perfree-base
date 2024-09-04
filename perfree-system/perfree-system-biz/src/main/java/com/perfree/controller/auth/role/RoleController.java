@@ -5,6 +5,7 @@ import com.perfree.commons.common.CommonResult;
 import com.perfree.commons.common.PageResult;
 import com.perfree.controller.auth.role.vo.*;
 import com.perfree.convert.role.RoleConvert;
+import com.perfree.demoModel.DemoMode;
 import com.perfree.model.Role;
 import com.perfree.model.RoleMenu;
 import com.perfree.service.role.RoleService;
@@ -55,6 +56,7 @@ public class RoleController {
 
     @PostMapping("/assignRoleMenu")
     @Operation(summary = "设置角色菜单权限")
+    @DemoMode
     @PreAuthorize("@ss.hasPermission('admin:role:permission')")
     public CommonResult<Boolean> assignRoleMenu(@RequestBody @Valid RoleMenuReqVO roleMenuReqVO) {
         return success(roleService.assignRoleMenu(roleMenuReqVO));
@@ -74,6 +76,7 @@ public class RoleController {
 
     @PostMapping("/add")
     @Operation(summary = "添加角色")
+    @DemoMode
     @PreAuthorize("@ss.hasPermission('admin:role:create')")
     public CommonResult<RoleRespVO> add(@RequestBody @Valid RoleAddReqVO roleAddReqVO) {
         return success(RoleConvert.INSTANCE.convertRespVO(roleService.add(roleAddReqVO)));
@@ -81,6 +84,7 @@ public class RoleController {
 
     @PostMapping("/update")
     @Operation(summary = "更新角色")
+    @DemoMode
     @PreAuthorize("@ss.hasPermission('admin:role:update')")
     public CommonResult<RoleRespVO> update(@RequestBody @Valid RoleUpdateReqVO roleUpdateReqVO) {
         return success(RoleConvert.INSTANCE.convertRespVO(roleService.update(roleUpdateReqVO)));
@@ -88,6 +92,7 @@ public class RoleController {
 
     @DeleteMapping("/del")
     @Operation(summary = "删除角色")
+    @DemoMode
     @PreAuthorize("@ss.hasPermission('admin:role:delete')")
     public CommonResult<Boolean> del(@RequestParam(value = "id") Integer id) {
         return success(roleService.del(id));

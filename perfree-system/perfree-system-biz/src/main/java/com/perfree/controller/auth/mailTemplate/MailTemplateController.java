@@ -5,6 +5,7 @@ import com.perfree.commons.common.CommonResult;
 import com.perfree.commons.common.PageResult;
 import com.perfree.controller.auth.mailTemplate.vo.*;
 import com.perfree.convert.mailTemplate.MailTemplateConvert;
+import com.perfree.demoModel.DemoMode;
 import com.perfree.model.MailTemplate;
 import com.perfree.service.mailTemplate.MailTemplateService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -43,6 +44,7 @@ public class MailTemplateController {
 
     @PostMapping("/add")
     @Operation(summary = "添加邮件模板")
+    @DemoMode
     @PreAuthorize("@ss.hasPermission('admin:mailTemplate:create')")
     public CommonResult<MailTemplateRespVO> add(@RequestBody @Valid MailTemplateAddReqVO mailTemplateAddReqVO) {
         return success(MailTemplateConvert.INSTANCE.convertRespVO(mailTemplateService.add(mailTemplateAddReqVO)));
@@ -50,6 +52,7 @@ public class MailTemplateController {
 
     @PostMapping("/update")
     @Operation(summary = "更新邮件模板")
+    @DemoMode
     @PreAuthorize("@ss.hasPermission('admin:mailTemplate:update')")
     public CommonResult<MailTemplateRespVO> update(@RequestBody @Valid MailTemplateUpdateReqVO mailTemplateUpdateReqVO) {
         return success(MailTemplateConvert.INSTANCE.convertRespVO(mailTemplateService.update(mailTemplateUpdateReqVO)));
@@ -63,6 +66,7 @@ public class MailTemplateController {
 
     @DeleteMapping("/del")
     @Operation(summary = "根据id删除邮件模板")
+    @DemoMode
     @PreAuthorize("@ss.hasPermission('admin:mailTemplate:delete')")
     public CommonResult<Boolean> del(@RequestParam(value = "id") Integer id) {
         return success(mailTemplateService.del(id));

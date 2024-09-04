@@ -21,6 +21,7 @@ public class MvcConfig implements WebMvcConfigurer {
 
     private final PluginInterceptorBaseHandler pluginInterceptorBaseHandler;
 
+
     public MvcConfig(PluginPreAuthorizeInterceptor pluginPreAuthorizeInterceptor, PluginInterceptorBaseHandler pluginInterceptorBaseHandler) {
         this.pluginPreAuthorizeInterceptor = pluginPreAuthorizeInterceptor;
         this.pluginInterceptorBaseHandler = pluginInterceptorBaseHandler;

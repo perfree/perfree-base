@@ -6,6 +6,7 @@ import com.perfree.controller.auth.plugins.vo.InstallPluginReqVO;
 import com.perfree.controller.auth.plugins.vo.PluginsPageReqVO;
 import com.perfree.controller.auth.plugins.vo.PluginsRespVO;
 import com.perfree.convert.plugins.PluginsConvert;
+import com.perfree.demoModel.DemoMode;
 import com.perfree.model.Plugins;
 import com.perfree.service.plugins.PluginsService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -35,6 +36,7 @@ public class PluginsController {
 
     @PostMapping("/installPlugin")
     @Operation(summary = "插件安装")
+    @DemoMode
     @PreAuthorize("@ss.hasPermission('admin:plugin:install')")
     public CommonResult<Boolean> installPlugin(InstallPluginReqVO installPluginReqVO) {
         return success( pluginsService.installPlugin(installPluginReqVO.getFile()));
@@ -42,6 +44,7 @@ public class PluginsController {
 
     @PostMapping("/disablePlugin")
     @Operation(summary = "插件禁用")
+    @DemoMode
     @PreAuthorize("@ss.hasPermission('admin:plugin:disable')")
     public CommonResult<Boolean> disablePlugin(@RequestParam(value = "pluginId") String pluginId) {
         return success( pluginsService.disablePlugin(pluginId));
@@ -49,6 +52,7 @@ public class PluginsController {
 
     @PostMapping("/enablePlugin")
     @Operation(summary = "插件启用")
+    @DemoMode
     @PreAuthorize("@ss.hasPermission('admin:plugin:enable')")
     public CommonResult<Boolean> enablePlugin(@RequestParam(value = "pluginId") String pluginId) {
         return success( pluginsService.enablePlugin(pluginId));
@@ -56,6 +60,7 @@ public class PluginsController {
 
     @PostMapping("/uninstallPlugin")
     @Operation(summary = "卸载插件")
+    @DemoMode
     @PreAuthorize("@ss.hasPermission('admin:plugin:uninstall')")
     public CommonResult<Boolean> uninstallPlugin(@RequestParam(value = "pluginId") String pluginId) {
         return success( pluginsService.unInstallPlugin(pluginId));

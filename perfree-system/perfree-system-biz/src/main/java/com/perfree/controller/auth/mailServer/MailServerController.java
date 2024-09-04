@@ -5,6 +5,7 @@ import com.perfree.commons.common.CommonResult;
 import com.perfree.commons.common.PageResult;
 import com.perfree.controller.auth.mailServer.vo.*;
 import com.perfree.convert.mailServer.MailServerConvert;
+import com.perfree.demoModel.DemoMode;
 import com.perfree.model.MailServer;
 import com.perfree.service.mailServer.MailServerService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -43,6 +44,7 @@ public class MailServerController {
 
     @PostMapping("/add")
     @Operation(summary = "添加邮箱服务")
+    @DemoMode
     @PreAuthorize("@ss.hasPermission('admin:mailServer:create')")
     public CommonResult<MailServerRespVO> add(@RequestBody @Valid MailServerAddReqVO mailServerAddReqVO) {
         return success(MailServerConvert.INSTANCE.convertRespVO(mailServerService.add(mailServerAddReqVO)));
@@ -50,6 +52,7 @@ public class MailServerController {
 
     @PostMapping("/update")
     @Operation(summary = "更新邮箱服务")
+    @DemoMode
     @PreAuthorize("@ss.hasPermission('admin:mailServer:update')")
     public CommonResult<MailServerRespVO> update(@RequestBody @Valid MailServerUpdateReqVO mailServerUpdateReqVO) {
         return success(MailServerConvert.INSTANCE.convertRespVO(mailServerService.update(mailServerUpdateReqVO)));
@@ -63,6 +66,7 @@ public class MailServerController {
 
     @DeleteMapping("/del")
     @Operation(summary = "根据id删除邮箱服务")
+    @DemoMode
     @PreAuthorize("@ss.hasPermission('admin:mailServer:delete')")
     public CommonResult<Boolean> del(@RequestParam(value = "id") Integer id) {
         return success(mailServerService.del(id));

@@ -80,9 +80,9 @@ const isDark = useDark()
 const target = ref(null)
 const { isFullscreen, toggle } = useFullscreen(target)
 const themeSettingRef = ref(null)
-const userInfo = ref(window.pinia.state._value.userStore.userInfo)
+const userInfo = ref(window.pinia.state._value?.userStore?.userInfo)
 
-watch(() => window.pinia.state._value.userStore.userInfo, (val) => {
+watch(() => window.pinia.state._value?.userStore?.userInfo, (val) => {
   userInfo.value = val;
 })
 

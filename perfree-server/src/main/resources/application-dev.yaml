@@ -123,3 +123,5 @@ perfree:
   autoLoadDevPlugin: true
   # 监听插件是否发生改变的时间间隔(毫秒)
   autoLoadDevPluginTime: 5000
+  # 是否为演示环境
+  demoModel: false

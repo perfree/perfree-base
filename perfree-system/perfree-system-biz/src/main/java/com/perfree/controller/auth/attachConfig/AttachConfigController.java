@@ -5,6 +5,7 @@ import com.perfree.commons.common.CommonResult;
 import com.perfree.commons.common.PageResult;
 import com.perfree.controller.auth.attachConfig.vo.*;
 import com.perfree.convert.attachConfig.AttachConfigConvert;
+import com.perfree.demoModel.DemoMode;
 import com.perfree.model.AttachConfig;
 import com.perfree.service.attachConfig.AttachConfigService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -43,6 +44,7 @@ public class AttachConfigController {
 
     @PostMapping("/add")
     @Operation(summary = "新增配置")
+    @DemoMode
     @PreAuthorize("@ss.hasPermission('admin:attachConfig:create')")
     public CommonResult<AttachConfigRespVO> add(@RequestBody @Valid AttachConfigCreateVO attachConfigCreateVO) {
         AttachConfig attachConfig = attachConfigService.add(attachConfigCreateVO);
@@ -52,6 +54,7 @@ public class AttachConfigController {
 
     @PutMapping("/update")
     @Operation(summary = "修改配置")
+    @DemoMode
     @PreAuthorize("@ss.hasPermission('admin:attachConfig:update')")
     public CommonResult<Boolean> update(@RequestBody @Valid AttachConfigUpdateVO attachConfigUpdateVO) {
         return CommonResult.success(attachConfigService.updateAttachConfig(attachConfigUpdateVO));
@@ -59,6 +62,7 @@ public class AttachConfigController {
 
     @PutMapping("/updateMaster")
     @Operation(summary = "修改默认配置")
+    @DemoMode
     @PreAuthorize("@ss.hasPermission('admin:attachConfig:master')")
     public CommonResult<Boolean> updateMaster(@RequestBody @Valid AttachConfigUpdateMasterVO attachConfigUpdateMasterVO) {
         return CommonResult.success(attachConfigService.updateMaster(attachConfigUpdateMasterVO));
@@ -74,6 +78,7 @@ public class AttachConfigController {
 
     @DeleteMapping("/del")
     @Operation(summary = "根据id删除配置")
+    @DemoMode
     @PreAuthorize("@ss.hasPermission('admin:attachConfig:delete')")
     public CommonResult<Boolean> del(@RequestParam(value = "id") Integer id) {
         return CommonResult.success(attachConfigService.del(id));

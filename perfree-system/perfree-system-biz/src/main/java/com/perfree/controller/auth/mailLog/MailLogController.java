@@ -5,6 +5,7 @@ import com.perfree.commons.common.CommonResult;
 import com.perfree.commons.common.PageResult;
 import com.perfree.controller.auth.mailLog.vo.*;
 import com.perfree.convert.mailLog.MailLogConvert;
+import com.perfree.demoModel.DemoMode;
 import com.perfree.model.MailLog;
 import com.perfree.service.mailLog.MailLogService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -43,6 +44,7 @@ public class MailLogController {
 
     @PostMapping("/add")
     @Operation(summary = "添加邮件日志")
+    @DemoMode
     @PreAuthorize("@ss.hasPermission('admin:mailLog:create')")
     public CommonResult<MailLogRespVO> add(@RequestBody @Valid MailLogAddReqVO mailLogAddReqVO) {
         return success(MailLogConvert.INSTANCE.convertRespVO(mailLogService.add(mailLogAddReqVO)));
@@ -50,6 +52,7 @@ public class MailLogController {
 
     @PostMapping("/update")
     @Operation(summary = "更新邮件日志")
+    @DemoMode
     @PreAuthorize("@ss.hasPermission('admin:mailLog:update')")
     public CommonResult<MailLogRespVO> update(@RequestBody @Valid MailLogUpdateReqVO mailLogUpdateReqVO) {
         return success(MailLogConvert.INSTANCE.convertRespVO(mailLogService.update(mailLogUpdateReqVO)));
@@ -63,6 +66,7 @@ public class MailLogController {
 
     @DeleteMapping("/del")
     @Operation(summary = "根据id删除邮件日志")
+    @DemoMode
     @PreAuthorize("@ss.hasPermission('admin:mailLog:delete')")
     public CommonResult<Boolean> del(@RequestParam(value = "id") Integer id) {
         return success(mailLogService.del(id));
