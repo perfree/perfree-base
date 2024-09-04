@@ -190,7 +190,7 @@ import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
 import {Checked, Link, List, PictureFilled, UserFilled} from "@element-plus/icons-vue";
 import {getHomeStatisticApi, getServerInfoApi} from "../api/adminHome.js";
 import {ElMessage} from "element-plus";
-import {onMounted, ref} from "vue";
+import {onMounted, ref, watch} from "vue";
 import * as echarts from 'echarts';
 
 let statisticLoading = ref(true);
@@ -207,7 +207,10 @@ let cpuInfo = ref({
 let jvmInfo = ref({});
 let memInfo = ref({});
 let sysInfo = ref({});
-const userInfo = ref(window.pinia.state._value.userStore.userInfo)
+const userInfo = ref(window.pinia.state._value?.userStore?.userInfo)
+watch(() => window.pinia.state._value?.userStore?.userInfo, (val) => {
+  userInfo.value = val;
+})
 
 const primaryColor = getComputedStyle(document.documentElement).getPropertyValue('--el-color-primary').trim();
 
