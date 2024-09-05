@@ -10,6 +10,10 @@ export function menuAdminList() {
     return axios.get('/api/auth/menuAdminList');
 }
 
+export function isDemoModelApi() {
+    return axios.get('/api/isDemoModel');
+}
+
 export function userInfo() {
     return axios.get('/api/auth/userInfo');
 }

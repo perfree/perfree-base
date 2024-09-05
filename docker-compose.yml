@@ -26,7 +26,7 @@ services:
       start_period: 40s
   # perfree-base容器配置
   perfree-base-container:
-    image: registry.cn-hangzhou.aliyuncs.com/perfree/perfree_base:v1.0.8
+    image: registry.cn-hangzhou.aliyuncs.com/perfree/perfree_base:v1.0.9
     restart: always
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql-container:3306/perfree_base?useSSL=false&allowPublicKeyRetrieval=true&useUnicode=true&characterEncoding=UTF-8&nullCatalogMeansCurrent=true
@@ -41,7 +41,7 @@ services:
 
   # perfree-base-ui容器配置
   perfree-base-ui-container:
-    image: registry.cn-hangzhou.aliyuncs.com/perfree/perfree_base_ui:v1.0.8
+    image: registry.cn-hangzhou.aliyuncs.com/perfree/perfree_base_ui:v1.0.9
     restart: always
     ports:
       # 将主机的80端口映射到容器的80端口

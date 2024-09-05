@@ -3,6 +3,7 @@
     <div class="login-box">
       <el-form ref="loginRef" :model="loginForm" :rules="loginRules" class="login-form">
         <h3 class="title">Perfree</h3>
+        <div style="font-size: 13px;color: var(--el-text-color-regular);margin-bottom: 10px" v-if="isDemo">演示环境默认账户admin,密码123456</div>
         <el-form-item prop="username">
           <el-input
               v-model="loginForm.username"
@@ -82,7 +83,7 @@
 
 <script setup>
 // 验证码开关
-import {getCodeImg, login} from "@/core/api/system.js";
+import {getCodeImg, isDemoModelApi, login} from "@/core/api/system.js";
 import {CONSTANTS} from "@/core/utils/constants.js";
 import {ElMessage} from "element-plus";
 import {useCommonStore} from "@/core/stores/commonStore.js";
@@ -94,6 +95,7 @@ import {getOptionByKey} from "@/core/utils/optionUtils.js";
 const {proxy} = getCurrentInstance();
 const router = useRouter();
 
+let isDemo = ref(false);
 let captchaEnabled = ref(false);
 let isOpenRegister = ref(false);
 const commonStore = useCommonStore()
@@ -160,6 +162,19 @@ const initOption = () => {
   }
 }
 
+const initDemoModel= () => {
+  isDemoModelApi().then(res => {
+    if (res.code === 200) {
+      isDemo.value = res.data;
+    }
+    if (isDemo.value) {
+      loginForm.value.username = 'admin';
+      loginForm.value.password = '123456';
+    }
+  })
+}
+
+initDemoModel();
 initOption();
 </script>
 

@@ -18,7 +18,7 @@ export default (moduleInfo, name) => {
     if (moduleInfo.pluginId && moduleInfo.pluginIsDev) {
         importPromise = import(/* @vite-ignore */`${moduleInfo.pluginFrontDevAddress}/plugin/${moduleInfo.pluginId}/src/modules/${name}/index.js`)
     } else if (moduleInfo.pluginId) {
-        importPromise = import(/* @vite-ignore */`/plugin-dev/plugin-static/${moduleInfo.pluginId}/modules/${name}/index.js`)
+        importPromise = import(/* @vite-ignore */`/plugin-dev/api/plugin-static/${moduleInfo.pluginId}/modules/${name}/index.js`)
     } else {
         importPromise =import(/* @vite-ignore */`../../modules/${name}/index.js`)
     }

@@ -30,6 +30,7 @@ import org.dromara.hutool.core.data.id.IdUtil;
 import org.dromara.hutool.swing.captcha.CaptchaUtil;
 import org.dromara.hutool.swing.captcha.LineCaptcha;
 import org.dromara.hutool.swing.captcha.generator.RandomGenerator;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.util.FastByteArrayOutputStream;
 import org.springframework.web.bind.annotation.*;
 
@@ -57,6 +58,15 @@ public class SystemController {
 
     @Resource
     private OptionCacheService optionCacheService;
+
+    @Value("${perfree.demoModel}")
+    private Boolean demoModel;
+
+    @GetMapping("isDemoModel")
+    @Operation(summary = "获取是否为演示环境")
+    public CommonResult<Boolean> isDemoModel(){
+        return CommonResult.success(demoModel);
+    }
 
 
     @PostMapping("login")
