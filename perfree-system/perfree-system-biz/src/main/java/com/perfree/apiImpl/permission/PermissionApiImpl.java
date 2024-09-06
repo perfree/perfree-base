@@ -11,6 +11,7 @@ import jakarta.annotation.Resource;
 import org.dromara.hutool.core.array.ArrayUtil;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -45,6 +46,24 @@ public class PermissionApiImpl implements PermissionApi {
         List<String> permissionByUserId = menuService.getPermissionByUserId(loginUser.getId());
         for (String permission : permissions) {
             if (permissionByUserId.contains(permission)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public boolean hasAnyRole(String... roleCodes) {
+        // 如果为空，说明已经有权限
+        if (ArrayUtil.isEmpty(roleCodes)) {
+            return true;
+        }
+        List<String> roleCodeList = Arrays.stream(roleCodes).toList();
+        LoginUserVO loginUser = SecurityFrameworkUtils.getLoginUser();
+        assert loginUser != null;
+        List<Role> roles = roleService.getByUserId(loginUser.getId());
+        for (Role role : roles) {
+            if (role.getCode().equals(RoleEnum.ADMIN_CODE.getCode()) || roleCodeList.contains(role.getCode())) {
                 return true;
             }
         }

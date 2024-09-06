@@ -20,4 +20,7 @@ public interface PermissionApi {
      * @return boolean
      */
     boolean hasPermissions(String... permissions);
+
+    boolean hasAnyRole(String... roleCodes);
+
 }

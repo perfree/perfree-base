@@ -23,6 +23,7 @@ public interface UserConvert {
 
     UserConvert INSTANCE = Mappers.getMapper(UserConvert.class);
 
+
     User convert(LoginUserReqVO bean);
 
     LoginUserRespVO convert(User bean);

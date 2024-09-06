@@ -18,4 +18,14 @@ public class SecurityFrameworkServiceImpl implements SecurityFrameworkService{
     public boolean hasAnyPermissions(String... permissions) {
         return permissionApi.hasPermissions(permissions);
     }
+
+    @Override
+    public boolean hasRole(String roleCode) {
+        return permissionApi.hasAnyRole(roleCode);
+    }
+
+    @Override
+    public boolean hasAnyRole(String... roleCodes) {
+        return permissionApi.hasAnyRole(roleCodes);
+    }
 }
